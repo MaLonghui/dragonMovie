@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:background="@mipmap/bitmap"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edit_name_regist"
+        android:layout_marginTop="@dimen/dp_130"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="昵称"
+        android:textColor="@color/colorWhite"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawableLeft="@mipmap/register_icon_name_default"
+        android:textColorHint="@color/colorWhite"
+        android:textSize="@dimen/sp_16"
+        android:drawablePadding="@dimen/dp_10"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit_sex_regist"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="性别"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_16"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawablePadding="@dimen/sp_20"
+        android:drawableLeft="@mipmap/register_icon_sex_default"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit_date_regist"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="出生日期"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_16"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawablePadding="@dimen/sp_20"
+        android:drawableLeft="@mipmap/register_icon_date_default"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit_phone_regist"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="手机号"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_16"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawablePadding="@dimen/sp_20"
+        android:drawableLeft="@mipmap/register_icon_phone_default"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit_email_regist"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="邮箱"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_16"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawablePadding="@dimen/sp_20"
+        android:drawableLeft="@mipmap/register_icon_mail_default"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit_pwd_regist"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="登录密码"
+        android:password="true"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_16"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawablePadding="@dimen/sp_20"
+        android:drawableLeft="@mipmap/register_icon_lock_default"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content" />
+    <!-- 登录按钮 -->
+    <Button
+        android:id="@+id/btn_regist"
+        android:layout_width="@dimen/dp_280"
+        android:layout_height="@dimen/dp_40"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_78"
+        android:text="注册"
+        android:background="@drawable/btn_shape_login"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_16" />
+
+</LinearLayout>
