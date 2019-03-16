@@ -1,7 +1,10 @@
 package com.bw.movie.api;
 
 public class Api {
-    public static final String BASE_URL = "http://172.17.8.100/";
-    public static final String DETAILS_URL = "small/commodity/v1/findCommodityDetailsById";
-    public static final String SEARCH_URL = "small/commodity/v1/findCommodityByKeyword";
+    public static final String BASE_URL = "http://mobile.bwstudent.com/";
+    //注册
+    public static final String REGIST_URL = "movieApi/user/v1/registerUser";
+    //登录
+    public static final String LOGIN_URL = "movieApi/user/v1/login";
+
 }
