@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".activity.ShowActivity">
+
+    <FrameLayout
+        android:id="@+id/fram_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_100"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_10">
+
+        <!--影片-->
+        <RadioButton
+            android:id="@+id/rb_film"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:background="@mipmap/com_icon_film_selected"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginLeft="@dimen/dp_24"
+            android:button="@null"
+            android:checked="true"
+            android:gravity="center" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+        <!--影院-->
+        <RadioButton
+            android:id="@+id/rb_cinema"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:background="@mipmap/com_icon_cinema_default"
+            android:layout_marginTop="@dimen/dp_10"
+            android:button="@null"
+            android:gravity="center" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_1"
+            android:layout_weight="1" />
+        <!--我的-->
+        <RadioButton
+            android:id="@+id/rb_my"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:background="@mipmap/com_icon_my_default"
+            android:layout_marginTop="@dimen/dp_10"
+            android:button="@null"
+            android:layout_marginRight="@dimen/dp_24"
+            android:gravity="center" />
+    </RadioGroup>
+</RelativeLayout>

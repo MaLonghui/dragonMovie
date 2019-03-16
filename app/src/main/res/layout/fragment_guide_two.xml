@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.GuideTwo">
+
+    <ImageView
+        android:id="@+id/one_img"
+        android:layout_width="@dimen/dp_205"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_150"
+        android:layout_height="@dimen/dp_205"
+        android:src="@mipmap/two"
+        android:scaleType="centerCrop"/>
+    <TextView
+        android:id="@+id/radio_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="一场电影"
+        android:layout_below="@id/one_img"
+        android:textSize="@dimen/sp_14"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_60"/>
+    <TextView
+        android:id="@+id/radio_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="看遍人生百态"
+        android:textSize="@dimen/sp_14"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/radio_text"
+        android:layout_marginTop="@dimen/dp_21"/>
+
+</RelativeLayout>
