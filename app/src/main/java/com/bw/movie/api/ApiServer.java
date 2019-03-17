@@ -16,6 +16,29 @@ import retrofit2.http.Url;
 
 public interface ApiServer {
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //热门电影
     @GET
     Observable<ReFilmBean> getReData(@Url String url, @HeaderMap HashMap<String,Object> headMap,@QueryMap HashMap<String,Object> parms);

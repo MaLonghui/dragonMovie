@@ -1,6 +1,22 @@
 package com.bw.movie.api;
 
 public class Api {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     //base
     public static final String BASE_URL = "http://mobile.bwstudent.com/";
     //查询热门电影列表
