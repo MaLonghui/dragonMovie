@@ -10,8 +10,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.bw.movie.R;
-import com.bw.movie.fragment.CinemaFragment;
 import com.bw.movie.fragment.FilmFragment;
+import com.bw.movie.fragment.cinema.CinemaFragment;
 import com.bw.movie.fragment.mine.MineFragment;
 
 import java.util.ArrayList;
