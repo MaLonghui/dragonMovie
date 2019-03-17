@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@mipmap/bitmap"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/edit_phone"
+        android:layout_marginTop="@dimen/dp_130"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="手机号"
+        android:textColor="@color/colorWhite"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawableLeft="@mipmap/log_icon_phone_default"
+        android:textColorHint="@color/colorWhite"
+        android:textSize="@dimen/sp_18"
+        android:drawablePadding="@dimen/dp_20"
+        android:layout_height="wrap_content" />
+    <EditText
+        android:id="@+id/edit_pwd"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="@dimen/dp_280"
+        android:hint="密码"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_18"
+        android:paddingBottom="@dimen/dp_10"
+        android:drawablePadding="@dimen/sp_20"
+        android:drawableLeft="@mipmap/log_icon_lock_default"
+        android:textColorHint="@color/colorWhite"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dp_40"
+        android:layout_marginRight="@dimen/dp_40"
+        android:layout_marginTop="@dimen/sp_20"
+        android:layout_height="wrap_content">
+        <CheckBox
+            android:id="@+id/check_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="记住密码"
+            android:textSize="@dimen/sp_14"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorWhite"/>
+        <TextView
+            android:id="@+id/jump_regist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#fff"
+            android:textSize="@dimen/sp_14"
+
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:text="快速注册"/>
+    </RelativeLayout>
+    <!-- 登录按钮 -->
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="@dimen/dp_280"
+        android:layout_height="@dimen/dp_40"
+        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_130"
+        android:text="登录"
+        android:background="@drawable/btn_shape_login"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/sp_18" />
+    <LinearLayout
+        android:id="@+id/layout_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_login"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_40">
+
+        <View
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_2"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorWhite" />
+
+        <TextView
+            android:id="@+id/dsf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/dp_5"
+            android:layout_marginRight="@dimen/dp_5"
+            android:text="第三方账号快速登录"
+            android:textColor="@color/colorWhite"
+            android:textSize="@dimen/sp_10" />
+
+        <View
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_2"
+            android:layout_gravity="center_vertical"
+            android:background="@color/colorWhite" />
+
+    </LinearLayout>
+
+    <!-- 微信 -->
+    <ImageView
+        android:id="@+id/login_wx"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_below="@id/layout_login"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_16"
+        android:src="@mipmap/log_icon_weixin_default" />
+
+</LinearLayout>
