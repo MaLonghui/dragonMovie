@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@mipmap/banner_back"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <recycler.coverflow.RecyclerCoverFlow
+        android:id="@+id/recycler_flow"
+        android:layout_marginTop="@dimen/dp_85"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_200"></recycler.coverflow.RecyclerCoverFlow>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dp_20"
+
+        android:layout_height="wrap_content">
+        <View
+            android:layout_width="@dimen/dp_312"
+            android:background="@drawable/film_group_shape"
+            android:layout_centerInParent="true"
+            android:layout_height="@dimen/dp_3" />
+        <View
+            android:layout_width="@dimen/dp_30"
+            android:background="@drawable/film_group_center"
+            android:layout_centerHorizontal="true"
+            android:layout_height="3dp"/>
+    </RelativeLayout>
+
+</LinearLayout>

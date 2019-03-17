@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_marginTop="@dimen/dp_20"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/flim_relative"
+        android:layout_centerHorizontal="true"
+        android:layout_width="@dimen/dp_312"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/film_title"
+            android:textSize="@dimen/sp_16"
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:layout_alignParentLeft="true"
+            android:layout_height="wrap_content" />
+        <View
+            android:id="@+id/film_view"
+            android:layout_width="@dimen/dp_30"
+            android:layout_below="@id/film_title"
+            android:background="@drawable/file_underline"
+            android:layout_height="@dimen/dp_3"></View>
+        <ImageView
+            android:layout_alignParentRight="true"
+            android:id="@+id/flim_img_next"
+            android:layout_alignBottom="@id/film_view"
+            android:layout_width="@dimen/dp_24"
+            android:src="@mipmap/com_icon_next_default"
+            android:layout_height="@dimen/dp_24" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_marginLeft="@dimen/dp_24"
+        android:id="@+id/film_item_recycler_view"
+        android:layout_below="@id/flim_relative"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>

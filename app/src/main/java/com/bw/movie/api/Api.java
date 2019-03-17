@@ -1,7 +1,13 @@
 package com.bw.movie.api;
 
 public class Api {
-    public static final String BASE_URL = "http://172.17.8.100/";
-    public static final String DETAILS_URL = "small/commodity/v1/findCommodityDetailsById";
-    public static final String SEARCH_URL = "small/commodity/v1/findCommodityByKeyword";
+    //base
+    public static final String BASE_URL = "http://mobile.bwstudent.com/";
+    //查询热门电影列表
+    public static final String FILM_RE_URL = "movieApi/movie/v1/findHotMovieList";
+    //查询正在上映电影列表
+    public static final String FILM_ZHENG_URL = "movieApi/movie/v1/findReleaseMovieList";
+    //查询即将上映电影列表
+    public static final String FILM_JI_URL = "movieApi/movie/v1/findComingSoonMovieList";
+
 }
