@@ -14,5 +14,12 @@ public class Api {
     public static final String FILM_ZHENG_URL = "movieApi/movie/v1/findReleaseMovieList";
     //查询即将上映电影列表
     public static final String FILM_JI_URL = "movieApi/movie/v1/findComingSoonMovieList";
+    
+     //查询推荐影院
+    public static final String RECOMMEND_URL = "movieApi/cinema/v1/findRecommendCinemas";
+    //查询附近影院
+    public static final String NEARBY_URL = "movieApi/cinema/v1/findNearbyCinemas";
+    //根据用户ID查询用户信息
+    public static final String FINDUSERID_URL = "movieApi/user/v1/verify/getUserInfoByUserId";
 
 }
