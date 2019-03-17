@@ -21,17 +21,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-
-
-
-
-
-
-
-
-
+        <activity android:name=".activity.login.LoginActivity" />
+        <activity android:name=".activity.regist.RegistActivity" />
         <activity android:name=".activity.GuideActivity" />
         <activity android:name=".activity.ShowActivity" />
         <activity android:name=".activity.FilmSearchActivity"></activity>
