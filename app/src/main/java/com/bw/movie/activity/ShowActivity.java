@@ -1,11 +1,9 @@
 package com.bw.movie.activity;
 
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
@@ -14,9 +12,8 @@ import android.widget.RadioGroup;
 import com.bw.movie.R;
 import com.bw.movie.fragment.CinemaFragment;
 import com.bw.movie.fragment.FilmFragment;
-import com.bw.movie.fragment.MineFragment;
+import com.bw.movie.fragment.mine.MineFragment;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
