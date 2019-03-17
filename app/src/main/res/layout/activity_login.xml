@@ -44,6 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="记住密码"
+            android:theme="@style/Login_CheckBox"
             android:textSize="@dimen/sp_14"
             android:layout_centerVertical="true"
             android:textColor="@color/colorWhite"/>
