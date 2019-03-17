@@ -6,7 +6,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-//git config --global user.email“1971658757@qq.com”
+    //git config --global user.email“1971658757@qq.com”
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -17,14 +17,16 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.MainActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.GuideActivity" />
-        <activity android:name=".activity.ShowActivity" />
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.regist.RegistActivity" />
+        <activity android:name=".activity.GuideActivity" />
+        <activity android:name=".activity.ShowActivity" />
+        <activity android:name=".activity.FilmSearchActivity"></activity>
     </application>
 
 </manifest>
