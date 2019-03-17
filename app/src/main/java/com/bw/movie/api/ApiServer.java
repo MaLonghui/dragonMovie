@@ -40,5 +40,15 @@ public interface ApiServer {
     //即将上映
     @GET
     Observable<JiFilmBean> getJiData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
+    
+     //查询推荐影院
+    @GET
+    Observable<RecommendCinemasBean> recommend(@Url String url, @HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //查询附近影院
+    @GET
+    Observable<NearbyCinemasBean> nearby(@Url String url, @HeaderMap Map<String,Object> headMap, @QueryMap Map<String,Object> parms);
+    //根据用户ID查询用户信息
+    @GET
+    Observable<FindInfoBean> finduserid(@Url String url, @HeaderMap Map<String,Object> headMap);
 
 }
