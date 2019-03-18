@@ -1,6 +1,8 @@
 package com.bw.movie.fragment.mine;
 
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.FindInfoBean;
@@ -55,20 +58,29 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     @BindView(R.id.my_logout)
     RelativeLayout myLogout;
     Unbinder unbinder;
-    private String userId = "589";
-    private String sessionId = "1552806657000";
     private FindInfoBean findInfoBean;
+    private SharedPreferences sp;
+    private Map<String, Object> headMap;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         unbinder = ButterKnife.bind(this, view);
+        sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+        return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        String userId = sp.getString("userId", "");
+        String sessionId = sp.getString("sessionId", "");
+        Log.i("aa",userId+"++++"+sessionId);
         Map<String,Object> headMap = new HashMap<>();
-        headMap.put("userId",userId);
+        headMap.put("userId", userId);
         headMap.put("sessionId",sessionId);
         mPresenter.userInfoPresenter(headMap);
-        return view;
     }
 
     @Override
@@ -87,7 +99,6 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
 
     @OnClick({R.id.my_message, R.id.my_icon, R.id.my_name, R.id.my_sign_in, R.id.my_info, R.id.my_attentions, R.id.my_rccord, R.id.my_feedbacks, R.id.my_version, R.id.my_logout})
     public void onViewClicked(View view) {
-
         if (findInfoBean.getStatus().equals("9999")){
             AlertDialogUtils.AlertDialogLogin(getActivity());
         }else{
@@ -95,6 +106,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 case R.id.my_message:
                     break;
                 case R.id.my_icon:
+                    Toast.makeText(getActivity(),"头",Toast.LENGTH_LONG).show();
                     break;
                 case R.id.my_name:
                     break;
