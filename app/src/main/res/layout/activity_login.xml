@@ -52,6 +52,16 @@
             android:textSize="@dimen/sp_14"
             android:layout_centerVertical="true"
             android:textColor="@color/colorWhite"/>
+        <CheckBox
+            android:id="@+id/check_autoLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动登录"
+            android:theme="@style/Login_CheckBox"
+            android:textSize="@dimen/sp_14"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/colorWhite"/>
         <TextView
             android:id="@+id/jump_regist"
             android:layout_width="wrap_content"

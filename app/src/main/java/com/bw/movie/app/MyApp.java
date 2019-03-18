@@ -2,6 +2,7 @@ package com.bw.movie.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Environment;
 
 import com.facebook.cache.disk.DiskCacheConfig;
@@ -12,6 +13,7 @@ public class MyApp extends Application {
 
 
     private static Context context;
+    private SharedPreferences sp;
 
     @Override
     public void onCreate() {
@@ -27,6 +29,12 @@ public class MyApp extends Application {
                 .build();
         Fresco.initialize(this,config);
 
+        //sp
+        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit = sp.edit();
+        edit.putString("userId","");
+        edit.putString("sessionId","");
+        edit.commit();
     }
 
     public static Context getContext(){
