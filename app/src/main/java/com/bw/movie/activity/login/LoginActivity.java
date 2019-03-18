@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.ShowActivity;
 import com.bw.movie.activity.regist.RegistActivity;
 import com.bw.movie.aes.EncryptUtil;
 import com.bw.movie.bean.LoginBean;
@@ -87,6 +88,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 String pwd = editPwd.getText().toString().trim();
                 encrypt = EncryptUtil.encrypt(pwd);
                 mPresenter.loginPresenter(phone, encrypt);
+                startActivity(new Intent(this,ShowActivity.class));
                 break;
             case R.id.login_wx:
                 break;
@@ -97,6 +99,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     public void loginView(Object object) {
         LoginBean loginBean = (LoginBean) object;
         if (loginBean.getStatus().equals("0000")){
+
             SharedPreferences.Editor edit = sp.edit();
             Toast.makeText(LoginActivity.this,loginBean.getMessage(),Toast.LENGTH_LONG).show();
             if (checkLogin.isChecked()){
