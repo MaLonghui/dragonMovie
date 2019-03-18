@@ -11,8 +11,8 @@ import android.widget.RadioGroup;
 
 import com.bw.movie.R;
 import com.bw.movie.fragment.CinemaFragment;
-import com.bw.movie.fragment.MineFragment;
 import com.bw.movie.fragment.film.FilmFragment;
+import com.bw.movie.fragment.mine.MineFragment;
 
 import java.util.ArrayList;
 import java.util.List;

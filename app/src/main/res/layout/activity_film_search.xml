@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,56 +7,98 @@
     android:orientation="vertical"
     tools:context=".activity.FilmSearchActivity">
 
-    <RadioGroup
-        android:id="@+id/search_radio_group"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_100"
-        android:orientation="horizontal"
-        android:padding="@dimen/dp_10">
-
-        <!--影片-->
-        <RadioButton
-            android:id="@+id/rb_re"
-            android:layout_width="@dimen/dp_83"
-            android:layout_height="@dimen/dp_25"
-            android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginLeft="@dimen/dp_24"
-            android:button="@null"
-            android:text="热门电影"
-            android:textSize="@dimen/sp_14"
-            android:textColor="#fff"
-            android:checked="true"
-            android:gravity="center" />
-
-        <Space
-            android:layout_width="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
-        <!--影院-->
-        <RadioButton
-            android:id="@+id/rb_cinema"
+            android:layout_marginTop="@dimen/dp_16"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_5">
+
+            <android.support.v7.widget.CardView
+                android:layout_width="@dimen/dp_83"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_30"
+                app:cardCornerRadius="@dimen/dp_4"
+                app:cardElevation="@dimen/dp_4"
+                android:layout_margin="@dimen/dp_5"
+                app:cardPreventCornerOverlap="true">
+
+                <Button
+                    android:id="@+id/btn_re"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/top_btn_shape"
+                    android:text="热门电影"
+                    android:textColor="#ffffff"
+                    android:textSize="@dimen/sp_14" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="@dimen/dp_83"
+                android:layout_margin="@dimen/dp_5"
+                android:layout_height="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_30"
+                app:cardCornerRadius="@dimen/dp_4"
+                app:cardElevation="@dimen/dp_4"
+                app:cardPreventCornerOverlap="true">
+
+                <Button
+                    android:id="@+id/btn_zheng"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    android:text="正在热映"
+                    android:textSize="@dimen/sp_14" />
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="@dimen/dp_83"
+                android:layout_height="@dimen/dp_25"
+                android:layout_margin="@dimen/dp_5"
+                app:cardCornerRadius="@dimen/dp_4"
+                app:cardElevation="@dimen/dp_4"
+                app:cardPreventCornerOverlap="true">
+
+                <Button
+                    android:id="@+id/btn_jijiang"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#ffffff"
+                    android:text="即将上映"
+                    android:textSize="@dimen/sp_14" />
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_marginTop="@dimen/dp_24"
+            android:id="@+id/search_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/search_linear"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="@dimen/dp_24"
+        android:layout_marginRight="@dimen/dp_24"
+        android:layout_height="@dimen/dp_100">
+        <ImageView
+            android:id="@+id/search_return"
             android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
-            android:background="@mipmap/com_icon_cinema_default"
-            android:layout_marginTop="@dimen/dp_10"
-            android:button="@null"
-            android:gravity="center" />
+            android:src="@mipmap/com_icon_return_default"
+            android:layout_height="@dimen/dp_60" />
 
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/dp_1"
-            android:layout_weight="1" />
-        <!--我的-->
-        <RadioButton
-            android:id="@+id/rb_my"
-            android:layout_width="@dimen/dp_60"
-            android:layout_height="@dimen/dp_60"
-            android:background="@mipmap/com_icon_my_default"
-            android:layout_marginTop="@dimen/dp_10"
-            android:button="@null"
-            android:layout_marginRight="@dimen/dp_24"
-            android:gravity="center" />
-    </RadioGroup>
+    </LinearLayout>
 
 
-</LinearLayout>
+
+</RelativeLayout>
