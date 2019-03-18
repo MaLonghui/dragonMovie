@@ -72,10 +72,7 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        final Bundle bundle = new Bundle();
-        bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
-        bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
-        bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
+
         if (holder instanceof ItemOneViewHoder) {
             ((ItemOneViewHoder) holder).recyclerFlow.setAdapter(new FlowAdapter(context));
         }
@@ -92,10 +89,15 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ItemTwoViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
                     Intent intent = new Intent(context,FilmSearchActivity.class);
                     intent.putExtras(bundle);
+                    intent.putExtra("type",0);
                     context.startActivity(intent);
+
 
                 }
             });
@@ -112,9 +114,13 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ItemThreeViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
                     Intent intent = new Intent(context,FilmSearchActivity.class);
                     intent.putExtras(bundle);
+                    intent.putExtra("type",1);
                     context.startActivity(intent);
                 }
             });
@@ -131,8 +137,13 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((ItemFourViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
                     Intent intent = new Intent(context,FilmSearchActivity.class);
                     intent.putExtras(bundle);
+                    intent.putExtra("type",2);
                     context.startActivity(intent);
                 }
             });

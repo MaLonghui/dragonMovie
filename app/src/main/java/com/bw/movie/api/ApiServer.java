@@ -1,11 +1,11 @@
 package com.bw.movie.api;
 
 
-import com.bw.movie.bean.FindInfoBean;
+import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.LoginBean;
-import com.bw.movie.bean.NearbyCinemasBean;
-import com.bw.movie.bean.RecommendCinemasBean;
+import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.RegistBean;
+import com.bw.movie.bean.ShangFilmBean;
 
 import java.util.Map;
 
