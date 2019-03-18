@@ -11,7 +11,6 @@ import com.bw.movie.activity.MainActivity;
 import com.bw.movie.activity.ShowActivity;
 import com.bw.movie.activity.login.LoginActivity;
 import com.bw.movie.app.MyApp;
-import com.bw.movie.fragment.FilmFragment;
 import com.bw.movie.fragment.mine.MineFragment;
 
 public class AlertDialogUtils {
