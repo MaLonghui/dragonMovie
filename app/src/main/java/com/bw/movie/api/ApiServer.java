@@ -38,5 +38,15 @@ public interface ApiServer {
     Observable<NearbyCinemasBean> nearby(@Url String url, @HeaderMap Map<String,Object> headMap, @QueryMap Map<String,Object> parms);
     //根据用户ID查询用户信息
     @GET
-    Observable<FindInfoBean> finduserid(@Url String url, @HeaderMap Map<String,Object> headMap);
+    Observable<FindInfoBean> finduserid(@Url String url, @HeaderMap Map<String,Object> headMap
+    
+    //热门电影
+    @GET
+    Observable<ReFilmBean> getReData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
+    //正在上映
+    @GET
+    Observable<ShangFilmBean> getShangData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
+    //即将上映
+    @GET
+    Observable<JiFilmBean> getJiData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
 }
