@@ -1,17 +1,20 @@
 package com.bw.movie.app;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
+import android.widget.Toast;
 
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
 
 public class MyApp extends Application {
-
-
-    private static Context context;
 
     @Override
     public void onCreate() {
@@ -29,7 +32,5 @@ public class MyApp extends Application {
 
     }
 
-    public static Context getContext(){
-        return context;
-    }
+
 }

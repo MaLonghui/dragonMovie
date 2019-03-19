@@ -1,6 +1,9 @@
 package com.bw.movie.fragment.film;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,6 +51,7 @@ public class FilmFragment extends MVPBaseFragment<FilmContract.View, FilmPresent
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_film, container, false);
         unbinder = ButterKnife.bind(this, view);
+
         //布局管理器
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
@@ -62,6 +66,7 @@ public class FilmFragment extends MVPBaseFragment<FilmContract.View, FilmPresent
         headMap.put("sessionId", sessionId);
         prams.put("page", 1);
         prams.put("count", 10);
+
         mPresenter.getReMenPresenter(headMap, prams);
         mPresenter.getZhengPresenter(headMap, prams);
         mPresenter.getJiPresenter(headMap, prams);

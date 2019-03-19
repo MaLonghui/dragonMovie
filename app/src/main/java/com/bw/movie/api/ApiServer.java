@@ -1,6 +1,8 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.FilmDetailsBean;
+import com.bw.movie.bean.FilmReviewBean;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.LoginBean;
@@ -52,6 +54,13 @@ public interface ApiServer {
     //即将上映
     @GET
     Observable<JiFilmBean> getJiData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
+    //电影详情
+    @GET
+    Observable<FilmDetailsBean> getDetailsData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
+    //影片评论
+    @GET
+    Observable<FilmReviewBean> getReviewData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
+
 
 
 }
