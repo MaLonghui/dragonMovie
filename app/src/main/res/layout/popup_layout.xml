@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_alignParentBottom="true"
+       android:background="@color/colorBlack"
+
+       android:layout_height="wrap_content">
+       <Button
+           android:id="@+id/btn_camera"
+           android:layout_marginTop="@dimen/dp_20"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:textSize="@dimen/sp_18"
+           android:layout_marginBottom="@dimen/dp_5"
+           android:background="@drawable/top_btn_shape"
+           android:textColor="@color/colorWhite"
+           android:text="拍照"/>
+       <Button
+           android:id="@+id/btn_album"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginBottom="@dimen/dp_5"
+           android:layout_below="@+id/btn_camera"
+           android:textSize="@dimen/sp_18"
+           android:background="@drawable/top_btn_shape"
+           android:textColor="@color/colorWhite"
+           android:text="相册"/>
+       <Button
+           android:id="@+id/btn_qu"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_below="@+id/btn_album"
+           android:textSize="@dimen/sp_18"
+           android:background="@drawable/top_btn_shape"
+           android:textColor="@color/colorWhite"
+           android:layout_marginBottom="@dimen/dp_20"
+           android:text="取消"/>
+   </RelativeLayout>
+
+</RelativeLayout>

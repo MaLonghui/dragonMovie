@@ -31,9 +31,13 @@ public class MyApp extends Application {
 
         //sp
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        boolean a = sp.getBoolean("自动登录", false);
         SharedPreferences.Editor edit = sp.edit();
-        edit.putString("userId","");
-        edit.putString("sessionId","");
+
+        if (!a){
+            edit.putString("userId","");
+            edit.putString("sessionId","");
+        }
         edit.commit();
     }
 

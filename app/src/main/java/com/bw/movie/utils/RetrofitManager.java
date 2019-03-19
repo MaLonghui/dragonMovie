@@ -1,8 +1,13 @@
 package com.bw.movie.utils;
 
+import java.io.File;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
+import okhttp3.RequestBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
@@ -65,6 +70,19 @@ public class RetrofitManager {
 
     public <T> T setCreate(Class<T> meq){
         return retrofit.create(meq);
+    }
+
+    public static MultipartBody filesMutipar(Map<String,String> map){
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        for (Map.Entry<String,String> entry:map.entrySet()){
+            if (entry.getKey().equals("image")){
+                File file = new File(entry.getValue());
+                builder.addFormDataPart(entry.getKey(),"tp.png",RequestBody.create(MediaType.parse("multipart/form-data"),file));
+            }
+        }
+        builder.setType(MultipartBody.FORM);
+        MultipartBody multipartBody = builder.build();
+        return multipartBody;
     }
 
 }

@@ -21,7 +21,9 @@ import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.mvp.MVPBaseFragment;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -52,6 +54,11 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     private Map<String, Object> headMap;
     private Map<String, Object> parms;
     private Map<String, Object> parms1;
+    private List<Object> list = new ArrayList<>();
+    private RecommendCinemasBean recommendCinemasBean;
+    private MyRecommendAdapter myRecommendAdapter;
+    private List<RecommendCinemasBean.ResultBean> result;
+    private boolean flag = false;
 
     @Nullable
     @Override
@@ -72,6 +79,31 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         mPresenter.recommendPresenter(headMap, parms);
         btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
         btnRecommend.setTextColor(Color.WHITE);
+        xrecyclerView.setLoadingListener(new XRecyclerView.LoadingListener() {
+            @Override
+            public void onRefresh() {
+                flag = true;
+                count=10;
+                parms.put("count",count);
+                parms1.put("count",count);
+                mPresenter.recommendPresenter(headMap,parms);
+                mPresenter.nearbyPresenter(headMap,parms1);
+                myRecommendAdapter.notifyDataSetChanged();
+                xrecyclerView.refreshComplete();
+            }
+
+            @Override
+            public void onLoadMore() {
+                list.addAll(result);
+                count++;
+                parms.put("count",count);
+                parms1.put("count",count);
+                mPresenter.recommendPresenter(headMap,parms);
+                mPresenter.nearbyPresenter(headMap,parms1);
+                myRecommendAdapter.notifyDataSetChanged();
+                xrecyclerView.loadMoreComplete();
+            }
+        });
         return view;
     }
 
@@ -87,9 +119,10 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         xrecyclerView.setLayoutManager(linearLayoutManager);
         if (obj!=null){
-            RecommendCinemasBean recommendCinemasBean = (RecommendCinemasBean) obj;
+            recommendCinemasBean = (RecommendCinemasBean) obj;
+            result = recommendCinemasBean.getResult();
 //            Log.i("aa","recommendCinemasBean:"+recommendCinemasBean.getMessage());
-            MyRecommendAdapter myRecommendAdapter = new MyRecommendAdapter(getActivity(),recommendCinemasBean);
+            myRecommendAdapter = new MyRecommendAdapter(getActivity(), recommendCinemasBean);
             xrecyclerView.setAdapter(myRecommendAdapter);
         }
     }

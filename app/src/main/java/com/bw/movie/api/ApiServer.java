@@ -1,25 +1,35 @@
 package com.bw.movie.api;
 
 
+import android.icu.util.MeasureUnit;
+
+import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.NearbyCinemasBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.RecommendCinemasBean;
+import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.bean.RegistBean;
 import com.bw.movie.bean.ShangFilmBean;
+import com.bw.movie.bean.UserHeadIconBean;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.reactivex.Observable;
+import okhttp3.MultipartBody;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
 
@@ -53,5 +63,16 @@ public interface ApiServer {
     @GET
     Observable<JiFilmBean> getJiData(@Url String url, @HeaderMap HashMap<String,Object> headMap, @QueryMap HashMap<String,Object> parms);
 
-
+    //上传用户头像
+    @POST
+    Observable<UserHeadIconBean> headicon(@Url String url, @HeaderMap Map<String,Object> headMap, @Body MultipartBody multipartBody);
+    //查询电影信息明细
+    @GET
+    Observable<RecommendDetailsBean> details(@Url String url, @HeaderMap Map<String,String> headMap,@Query("cinemaId") String cinemaId);
+    //14.根据影院ID查询该影院当前排期的电影列表
+    @GET
+    Observable<FilmFromIdBean> filmfromid(@Url String url,@Query("cinemaId") String cinemaId);
+    //15.根据电影ID和影院ID查询电影排期列表
+    @GET
+    Observable<MovieIdAndFilmBean> movieandfilmid(@Url String url,@Query("movieId") String movieId,@Query("cinemasId")String cinemasId);
 }
