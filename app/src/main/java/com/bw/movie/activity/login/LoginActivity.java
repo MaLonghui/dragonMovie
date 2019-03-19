@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.ShowActivity;
 import com.bw.movie.activity.regist.RegistActivity;
 import com.bw.movie.aes.EncryptUtil;
 import com.bw.movie.bean.LoginBean;
@@ -50,9 +50,14 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     TextView dsf;
     @BindView(R.id.layout_login)
     LinearLayout layoutLogin;
+    @BindView(R.id.check_autoLogin)
+    CheckBox checkAutoLogin;
+    @BindView(R.id.btn_eyePwd)
+    ImageView btnEyePwd;
     private String phone;
     private String encrypt;
     private SharedPreferences sp;
+    private LoginBean loginBean;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,13 +65,13 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        boolean flag = sp.getBoolean("flag",false);
-        Log.i("aa","flag"+flag);
-        checkLogin.setChecked(flag);
-        if (flag){
+        boolean flag = sp.getBoolean("flag", false);
+        Log.i("aa", "flag" + flag);
+        if (flag) {
             String phone = sp.getString("phone", "");
             String pwd = sp.getString("pwd", "");
             editPhone.setText(phone);
+            checkLogin.setChecked(flag);
             String decrypt = EncryptUtil.decrypt(pwd);
             editPwd.setText(decrypt);
         }
@@ -77,18 +82,26 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
 //        editPwd.setText(decrypt);
     }
 
-    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.login_wx})
+    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.login_wx,R.id.btn_eyePwd})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.jump_regist:
-                startActivity(new Intent(LoginActivity.this,RegistActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegistActivity.class));
                 break;
             case R.id.btn_login:
                 phone = editPhone.getText().toString().trim();
                 String pwd = editPwd.getText().toString().trim();
                 encrypt = EncryptUtil.encrypt(pwd);
                 mPresenter.loginPresenter(phone, encrypt);
-                startActivity(new Intent(this,ShowActivity.class));
+                break;
+            case R.id.btn_eyePwd:
+                if (editPwd.getInputType()==InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD){
+                    //密码可见,点击之后设置成不可见的
+                    editPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }else{
+                    //不可见设置成可见
+                    editPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                }
                 break;
             case R.id.login_wx:
                 break;
@@ -97,21 +110,23 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
 
     @Override
     public void loginView(Object object) {
-        LoginBean loginBean = (LoginBean) object;
-        if (loginBean.getStatus().equals("0000")){
+        loginBean = (LoginBean) object;
+        String userId = loginBean.getResult().getUserId();
+        String sessionId = loginBean.getResult().getSessionId();
+        if (loginBean.getStatus().equals("0000")) {
 
             SharedPreferences.Editor edit = sp.edit();
-            Toast.makeText(LoginActivity.this,loginBean.getMessage(),Toast.LENGTH_LONG).show();
-            if (checkLogin.isChecked()){
-                edit.putBoolean("flag",true);
-                edit.putString("phone",phone);
-                edit.putString("pwd",encrypt);
-            }else{
-                edit.putBoolean("flag",false);
-            }
+            Toast.makeText(LoginActivity.this, loginBean.getMessage(), Toast.LENGTH_LONG).show();
+            edit.putBoolean("flag", checkLogin.isChecked());
+            edit.putBoolean("自动登录", checkAutoLogin.isChecked());
+            edit.putString("phone", phone);
+            edit.putString("pwd", encrypt);
+            edit.putString("userId", userId);
+            edit.putString("sessionId", sessionId);
             edit.commit();
-        }else{
-            Toast.makeText(LoginActivity.this,"登录失败",Toast.LENGTH_LONG).show();
+            finish();
+        } else {
+            Toast.makeText(LoginActivity.this, "登录失败", Toast.LENGTH_LONG).show();
         }
     }
 }

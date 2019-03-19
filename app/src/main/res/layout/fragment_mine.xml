@@ -49,7 +49,7 @@
                 android:layout_below="@id/my_icon"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_10"
-                android:hint="昵称"
+                android:hint="@string/my_name"
                 android:textColorHint="@color/colorWhite"
                 android:textColor="@color/colorWhite" />
 
@@ -61,7 +61,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_12"
                 android:background="@drawable/shape_bg_button"
-                android:text="签到"
+                android:text="@string/mine_sign"
                 android:textColor="@color/colorWhite"
                 android:textSize="@dimen/sp_14" />
 
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/info"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="我的信息"
+                    android:text="@string/mine_message"
                     android:textSize="@dimen/sp_12" />
 
             </RelativeLayout>
@@ -129,7 +129,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/attention"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="我的关注"
+                    android:text="@string/mine_attentions"
                     android:textSize="@dimen/sp_12" />
 
             </RelativeLayout>
@@ -154,7 +154,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/rccord"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="购票记录"
+                    android:text="@string/mine_rccord"
                     android:textSize="@dimen/sp_12" />
 
             </RelativeLayout>
@@ -191,7 +191,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/feedback"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="意见反馈"
+                    android:text="@string/mine_feedbacks"
                     android:textSize="@dimen/sp_12" />
 
             </RelativeLayout>
@@ -216,12 +216,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/version"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="最新版本"
+                    android:text="@string/mine_version"
                     android:textSize="@dimen/sp_12" />
 
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/my_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -241,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/logout"
                     android:layout_marginTop="@dimen/dp_10"
-                    android:text="退出登录"
+                    android:text="@string/mine_logout"
                     android:textSize="@dimen/sp_12" />
 
             </RelativeLayout>
@@ -254,8 +255,8 @@
             android:layout_below="@id/layout_myss"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_20"
-            android:text="©八维移动通信学院作品"
-            android:textColor="#666666" />
+            android:text="@string/bw"
+            android:textColor="@color/colorBlack" />
 
     </RelativeLayout>
 

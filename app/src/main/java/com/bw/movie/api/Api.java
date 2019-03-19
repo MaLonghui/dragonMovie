@@ -26,4 +26,12 @@ public class Api {
     public static final String FILM_REVIEW = "movieApi/movie/v1/findAllMovieComment";
     
 
+    //上传用户头像
+    public static final String HEADICON_URL = "movieApi/user/v1/verify/uploadHeadPic";
+    //查询电影信息明细
+    public static final String RECOMMENDDETAILS_URL = "movieApi/cinema/v1/findCinemaInfo";
+    //14.根据影院ID查询该影院当前排期的电影列表
+    public static final String FILMFROMID_URL = "movieApi/movie/v1/findMovieListByCinemaId";
+    //15.根据电影ID和影院ID查询电影排期列表
+    public static final String MOVIEIDANDFILMID_URL = "movieApi/movie/v1/findMovieScheduleList?";
 }
