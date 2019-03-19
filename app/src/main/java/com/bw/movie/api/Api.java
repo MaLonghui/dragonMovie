@@ -20,6 +20,11 @@ public class Api {
     public static final String FILM_ZHENG_URL = "movieApi/movie/v1/findReleaseMovieList";
     //查询即将上映电影列表
     public static final String FILM_JI_URL = "movieApi/movie/v1/findComingSoonMovieList";
+    //查看电影详情
+    public static final String FILM_DETAILS = "movieApi/movie/v1/findMoviesDetail";
+    //.查询影片评论
+    public static final String FILM_REVIEW = "movieApi/movie/v1/findAllMovieComment";
+
 
     //上传用户头像
     public static final String HEADICON_URL = "movieApi/user/v1/verify/uploadHeadPic";

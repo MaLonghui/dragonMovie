@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_100"
+        android:background="@drawable/popwindow_shape">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/detail_son_simpleview"
+            android:layout_width="@dimen/dp_111"
+            android:layout_height="@dimen/dp_145"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="@dimen/dp_24"/>
+        <RelativeLayout
+            android:id="@+id/pop_relative"
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/detail_son_simpleview"
+            android:layout_marginLeft="@dimen/dp_20"
+            android:layout_height="wrap_content">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20"
+                android:layout_toLeftOf="@id/son_popwindow_down"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/son_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:text="类型"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/son_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:text="导演"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/son_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:text="时长"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/son_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="产地"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/son_popwindow_down"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="@dimen/dp_20"
+                android:src="@mipmap/com_icon_down_default" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/detail_son_simpleview"
+            android:layout_marginTop="@dimen/dp_20"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/dp_24"
+            android:paddingRight="@dimen/dp_24">
+
+            <RelativeLayout
+                android:id="@+id/son_rela_tive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/juqing"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="剧情简介"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_16" />
+
+                <View
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_3"
+                    android:layout_below="@id/juqing"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/top_btn_shape"></View>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/text_jianjie"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="#333333"
+                android:textSize="@dimen/dp_12" />
+
+            <RelativeLayout
+                android:id="@+id/son_rela_tive_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_20">
+
+                <TextView
+                    android:id="@+id/yanyuan"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="演职人员"
+                    android:textColor="#333333"
+                    android:textSize="@dimen/sp_16" />
+
+                <View
+                    android:layout_width="@dimen/dp_30"
+                    android:layout_height="@dimen/dp_3"
+                    android:layout_below="@id/yanyuan"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="@dimen/dp_6"
+                    android:background="@drawable/top_btn_shape"></View>
+            </RelativeLayout>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

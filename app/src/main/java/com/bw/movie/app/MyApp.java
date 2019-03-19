@@ -1,9 +1,15 @@
 package com.bw.movie.app;
 
 import android.app.Application;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Environment;
+import android.widget.Toast;
 
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -14,7 +20,6 @@ public class MyApp extends Application {
 
     private static Context context;
     private SharedPreferences sp;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -41,7 +46,5 @@ public class MyApp extends Application {
         edit.commit();
     }
 
-    public static Context getContext(){
-        return context;
-    }
+
 }

@@ -1,6 +1,7 @@
 package com.bw.movie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.bean.ShangFilmBean;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -36,11 +40,19 @@ public class MyZhengAdapter extends RecyclerView.Adapter<MyZhengAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
         Uri uri = Uri.parse(shangBeanList.get(position).getImageUrl());
         holder.searchSimpleView.setImageURI(uri);
         holder.searchFilmName.setText(shangBeanList.get(position).getName());
         holder.searchSummary.setText("简介："+shangBeanList.get(position).getSummary());
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                context.startActivity(new Intent(context,FilmDetailsActivity.class));
+                EventBus.getDefault().postSticky(shangBeanList.get(position).getId());
+            }
+        });
     }
 
     @Override

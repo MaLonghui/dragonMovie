@@ -8,7 +8,9 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    //git config --global user.email“1971658757@qq.com”
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -32,6 +34,7 @@
         <activity android:name=".activity.regist.RegistActivity" />
         <activity android:name=".activity.FilmSearchActivity" />
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" />
+        <activity android:name=".activity.filmdetails.FilmDetailsActivity"/>
     </application>
 
 </manifest>

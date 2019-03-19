@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/dp_24"
+    android:paddingRight="@dimen/dp_24"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_12"
+        android:layout_height="wrap_content">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/review_simple_view"
+            app:roundAsCircle="true"
+            android:layout_width="@dimen/dp_40"
+            android:layout_height="@dimen/dp_40" />
+
+        <TextView
+            android:id="@+id/review_name"
+            android:layout_width="match_parent"
+            android:layout_toRightOf="@id/review_simple_view"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/sp_14"
+            android:textColor="#333333"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/review_comment"
+        android:layout_width="match_parent"
+        android:textSize="@dimen/sp_12"
+        android:textColor="#333333"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/review_time"
+            android:textColor="#999999"
+            android:textSize="@dimen/sp_12"
+            android:text="weewrwe"
+
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/review_time"
+            android:layout_marginLeft="@dimen/dp_100"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:id="@+id/review_relative"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/review_prise_img"
+                    android:src="@mipmap/com_icon_praise_default"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_alignParentLeft="true"
+                    android:layout_height="@dimen/dp_16" />
+                <TextView
+                    android:id="@+id/review_prise_num"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="#666666"
+                    android:layout_toRightOf="@id/review_prise_img"
+                    android:layout_marginLeft="@dimen/dp_6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_marginLeft="@dimen/dp_18"
+                android:layout_toRightOf="@+id/review_relative"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/review_reply_img"
+                    android:src="@mipmap/com_icon_comment_default"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_alignParentLeft="true"
+                    android:layout_height="@dimen/dp_16" />
+                <TextView
+                    android:id="@+id/review_reply_num"
+                    android:textSize="@dimen/sp_12"
+                    android:textColor="#666666"
+                    android:layout_toRightOf="@id/review_reply_img"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/review_view"
+            android:layout_alignParentRight="true"
+            android:layout_width="@dimen/dp_1"
+            android:background="#00ffffff"
+            android:layout_height="@dimen/dp_16"></View>
+    </RelativeLayout>
+
+
+
+
+</LinearLayout>

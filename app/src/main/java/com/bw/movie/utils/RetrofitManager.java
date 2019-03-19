@@ -44,6 +44,7 @@ public class RetrofitManager {
     }
 
     public static OkHttpClient getOkHttpClient(){
+
         if (okHttpClient==null){
             synchronized (OkHttpClient.class){
                 if (null==okHttpClient){
@@ -66,6 +67,7 @@ public class RetrofitManager {
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();
+
     }
 
     public <T> T setCreate(Class<T> meq){
