@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/popwindow_shape"
+        android:layout_marginTop="@dimen/dp_100"
+        android:paddingLeft="@dimen/dp_24"
+        android:paddingRight="@dimen/dp_24"
+        android:layout_height="wrap_content">
+        <RelativeLayout
+            android:id="@+id/pop_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_20">
+
+            <TextView
+                android:id="@+id/popwindow_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="详情"
+                android:textColor="#333333"
+                android:textSize="@dimen/sp_16" />
+
+            <View
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_3"
+                android:layout_below="@id/popwindow_name"
+                android:layout_alignParentLeft="true"
+                android:layout_marginTop="@dimen/dp_6"
+                android:background="@drawable/top_btn_shape"></View>
+
+            <ImageView
+                android:id="@+id/popwindow_down"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@mipmap/com_icon_down_default" />
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/pop_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/pop_relative"
+            android:layout_marginTop="@dimen/dp_20"></android.support.v7.widget.RecyclerView>
+        <ImageView
+            android:id="@+id/write_pinglun_img"
+            android:layout_width="@dimen/dp_60"
+            android:src="@mipmap/com_icon_publish_default"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@id/pop_recycler_view"
+            android:layout_marginRight="@dimen/dp_24"
+            android:visibility="gone"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_height="@dimen/dp_60" />
+
+    </RelativeLayout>
+
+
+
+
+</RelativeLayout>

@@ -1,6 +1,7 @@
 package com.bw.movie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.recommenddetails.RecommenddetailsActivity;
 import com.bw.movie.bean.NearbyCinemasBean;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -36,7 +38,7 @@ public class MyNearbyAdapter extends RecyclerView.Adapter<MyNearbyAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         Uri uri = Uri.parse(nearbyCinemasBean.getResult().get(i).getLogo());
         viewHolder.simPleRecommend.setImageURI(uri);
         viewHolder.textNameRecommend.setText(nearbyCinemasBean.getResult().get(i).getName());
@@ -44,6 +46,14 @@ public class MyNearbyAdapter extends RecyclerView.Adapter<MyNearbyAdapter.ViewHo
         paint.setFakeBoldText(true);
         viewHolder.textAddressRecommend.setText(nearbyCinemasBean.getResult().get(i).getAddress());
         viewHolder.textKmRecommend.setText(nearbyCinemasBean.getResult().get(i).getDistance()+"km");
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context,RecommenddetailsActivity.class);
+                intent.putExtra("eid", nearbyCinemasBean.getResult().get(i).getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
