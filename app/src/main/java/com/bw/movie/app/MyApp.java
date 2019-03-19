@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.content.SharedPreferences;
 import android.os.Environment;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ public class MyApp extends Application {
 
     private static Context context;
     private SharedPreferences sp;
+
     @Override
     public void onCreate() {
         super.onCreate();
