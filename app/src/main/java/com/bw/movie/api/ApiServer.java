@@ -1,11 +1,10 @@
 package com.bw.movie.api;
 
 
-import com.bw.movie.bean.FilmDetailsBean;
-import com.bw.movie.bean.FilmReviewBean;
-import android.icu.util.MeasureUnit;
 
 import com.bw.movie.bean.FilmFromIdBean;
+import com.bw.movie.bean.FilmDetailsBean;
+import com.bw.movie.bean.FilmReviewBean;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.LoginBean;
