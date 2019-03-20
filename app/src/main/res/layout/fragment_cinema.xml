@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#fff"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:fitsSystemWindows="true">
+    android:paddingLeft="@dimen/dp_24"
+    android:paddingRight="@dimen/dp_24">
+
     <LinearLayout
+        android:id="@+id/linear_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
         android:gravity="center"
         android:orientation="horizontal">
-
 
         <android.support.v7.widget.CardView
             android:layout_width="@dimen/dp_83"
             android:layout_height="@dimen/dp_25"
+            android:layout_margin="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_30"
             app:cardCornerRadius="@dimen/dp_4"
             app:cardElevation="@dimen/dp_4"
-            android:layout_margin="@dimen/dp_5"
             app:cardPreventCornerOverlap="true">
 
             <Button
@@ -34,8 +39,8 @@
 
         <android.support.v7.widget.CardView
             android:layout_width="@dimen/dp_83"
-            android:layout_margin="@dimen/dp_5"
             android:layout_height="@dimen/dp_25"
+            android:layout_margin="@dimen/dp_5"
             android:layout_marginRight="@dimen/dp_30"
             app:cardCornerRadius="@dimen/dp_4"
             app:cardElevation="@dimen/dp_4"
@@ -54,6 +59,8 @@
     <com.jcodecraeer.xrecyclerview.XRecyclerView
         android:id="@+id/xrecycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/linear_layout"
+        android:layout_marginTop="@dimen/dp_10" />
 
-</LinearLayout>
+</RelativeLayout>

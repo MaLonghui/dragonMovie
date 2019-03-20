@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.info.InfoActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.UserHeadIconBean;
 import com.bw.movie.mvp.MVPBaseFragment;
@@ -165,6 +166,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 case R.id.my_sign_in:
                     break;
                 case R.id.my_info:
+                    startActivity(new Intent(getActivity(),InfoActivity.class));
                     break;
                 case R.id.my_attentions:
                     break;

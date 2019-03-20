@@ -1,7 +1,14 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.CinemaByIdBean;
+import com.bw.movie.bean.FilmCommentBean;
+import com.bw.movie.bean.FilmDetailsBean;
+import com.bw.movie.bean.FilmReviewBean;
+import android.icu.util.MeasureUnit;
 
+import com.bw.movie.bean.CinemaCommentBean;
+import com.bw.movie.bean.CinemaPraiseBean;
 import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
@@ -76,11 +83,26 @@ public interface ApiServer {
     Observable<UserHeadIconBean> headicon(@Url String url, @HeaderMap Map<String,Object> headMap, @Body MultipartBody multipartBody);
     //查询电影信息明细
     @GET
-    Observable<RecommendDetailsBean> details(@Url String url, @HeaderMap Map<String,String> headMap,@Query("cinemaId") String cinemaId);
+    Observable<RecommendDetailsBean> details(@Url String url, @HeaderMap Map<String,Object> headMap,@Query("cinemaId") String cinemaId);
     //14.根据影院ID查询该影院当前排期的电影列表
     @GET
     Observable<FilmFromIdBean> filmfromid(@Url String url,@Query("cinemaId") String cinemaId);
     //15.根据电影ID和影院ID查询电影排期列表
     @GET
     Observable<MovieIdAndFilmBean> movieandfilmid(@Url String url,@Query("movieId") String movieId,@Query("cinemasId")String cinemasId);
+    //8.查询影院用户评论列表
+    @GET
+    Observable<CinemaCommentBean> cinemacomment(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //10.影院评论点赞
+    @POST
+    @FormUrlEncoded
+    Observable<CinemaPraiseBean> cinemapraise(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
+
+    //添加评论
+    @POST
+    @FormUrlEncoded
+    Observable<FilmCommentBean> filmComment(@Url String url, @HeaderMap HashMap<String,Object> headMap, @FieldMap HashMap<String,Object> parms);
+    //根据电影ID查询当前排片该电影的影院列表
+    @GET
+    Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@Query("movieId") String movieId);
 }
