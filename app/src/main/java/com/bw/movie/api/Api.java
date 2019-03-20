@@ -42,4 +42,8 @@ public class Api {
     public static final String FILM_COMMENT = "movieApi/movie/v1/verify/movieComment";
     //根据电影ID查询当前排片该电影的影院列表
     public static final String CinemasListByMovieId = "movieApi/movie/v1/findCinemasListByMovieId";
+    //8.查询影院用户评论列表
+    public static final String CINEMACOMMENT_URL = "movieApi/cinema/v1/findAllCinemaComment";
+    //10.影院评论点赞
+    public static final String CINEMAPRAISE_URL = "movieApi/cinema/v1/verify/cinemaCommentGreat";
 }
