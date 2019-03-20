@@ -93,7 +93,7 @@ public class FilmSearchActivity extends Activity {
     }
 
     private void setJiAdapter() {
-        btnJijiang.setBackgroundResource(R.drawable.top_btn_shape);
+        btnJijiang.setBackgroundResource(R.drawable.button_ripple);
         btnJijiang.setTextColor(Color.parseColor("#ffffff"));
         btnRe.setTextColor(Color.BLACK);
         btnRe.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -104,7 +104,7 @@ public class FilmSearchActivity extends Activity {
     }
 
     private void setZhengAdapter() {
-        btnZheng.setBackgroundResource(R.drawable.top_btn_shape);
+        btnZheng.setBackgroundResource(R.drawable.button_ripple);
         btnZheng.setTextColor(Color.parseColor("#ffffff"));
         btnRe.setTextColor(Color.BLACK);
         btnRe.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -115,7 +115,7 @@ public class FilmSearchActivity extends Activity {
     }
 
     private void setReAdapter() {
-        btnRe.setBackgroundResource(R.drawable.top_btn_shape);
+        btnRe.setBackgroundResource(R.drawable.button_ripple);
         btnRe.setTextColor(Color.parseColor("#ffffff"));
         btnJijiang.setTextColor(Color.BLACK);
         btnJijiang.setBackgroundColor(Color.parseColor("#ffffff"));

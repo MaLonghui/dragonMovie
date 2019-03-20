@@ -5,8 +5,9 @@ import com.bw.movie.bean.CinemaByIdBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
-import android.icu.util.MeasureUnit;
 
+import com.bw.movie.bean.CinemaCommentBean;
+import com.bw.movie.bean.CinemaPraiseBean;
 import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.JiFilmBean;
@@ -20,7 +21,6 @@ import com.bw.movie.bean.RegistBean;
 import com.bw.movie.bean.ShangFilmBean;
 import com.bw.movie.bean.UserHeadIconBean;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +79,7 @@ public interface ApiServer {
     Observable<UserHeadIconBean> headicon(@Url String url, @HeaderMap Map<String,Object> headMap, @Body MultipartBody multipartBody);
     //查询电影信息明细
     @GET
-    Observable<RecommendDetailsBean> details(@Url String url, @HeaderMap Map<String,String> headMap,@Query("cinemaId") String cinemaId);
+    Observable<RecommendDetailsBean> details(@Url String url, @HeaderMap Map<String,Object> headMap,@Query("cinemaId") String cinemaId);
     //14.根据影院ID查询该影院当前排期的电影列表
     @GET
     Observable<FilmFromIdBean> filmfromid(@Url String url,@Query("cinemaId") String cinemaId);
@@ -96,4 +96,11 @@ public interface ApiServer {
     Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@Query("movieId") String movieId);
 
 
+    //8.查询影院用户评论列表
+    @GET
+    Observable<CinemaCommentBean> cinemacomment(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //10.影院评论点赞
+    @POST
+    @FormUrlEncoded
+    Observable<CinemaPraiseBean> cinemapraise(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
 }
