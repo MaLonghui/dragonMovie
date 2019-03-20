@@ -60,10 +60,10 @@ public class RecommendDetailsBean {
 
         private String address;
         private String businessHoursContent;
-        private int commentTotal;
-        private int distance;
-        private int followCinema;
-        private int id;
+        private String commentTotal;
+        private String distance;
+        private String followCinema;
+        private String id;
         private String logo;
         private String name;
         private String phone;
@@ -85,35 +85,35 @@ public class RecommendDetailsBean {
             this.businessHoursContent = businessHoursContent;
         }
 
-        public int getCommentTotal() {
+        public String getCommentTotal() {
             return commentTotal;
         }
 
-        public void setCommentTotal(int commentTotal) {
+        public void setCommentTotal(String commentTotal) {
             this.commentTotal = commentTotal;
         }
 
-        public int getDistance() {
+        public String getDistance() {
             return distance;
         }
 
-        public void setDistance(int distance) {
+        public void setDistance(String distance) {
             this.distance = distance;
         }
 
-        public int getFollowCinema() {
+        public String getFollowCinema() {
             return followCinema;
         }
 
-        public void setFollowCinema(int followCinema) {
+        public void setFollowCinema(String followCinema) {
             this.followCinema = followCinema;
         }
 
-        public int getId() {
+        public String getId() {
             return id;
         }
 
-        public void setId(int id) {
+        public void setId(String id) {
             this.id = id;
         }
 

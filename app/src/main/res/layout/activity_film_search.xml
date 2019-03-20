@@ -33,7 +33,7 @@
                     android:id="@+id/btn_re"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/top_btn_shape"
+                    android:background="@drawable/button_ripple"
                     android:text="热门电影"
                     android:textColor="#ffffff"
                     android:textSize="@dimen/sp_14" />

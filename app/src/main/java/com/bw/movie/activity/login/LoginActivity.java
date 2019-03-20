@@ -111,10 +111,9 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     @Override
     public void loginView(Object object) {
         loginBean = (LoginBean) object;
-        String userId = loginBean.getResult().getUserId();
-        String sessionId = loginBean.getResult().getSessionId();
         if (loginBean.getStatus().equals("0000")) {
-
+            String userId = loginBean.getResult().getUserId();
+            String sessionId = loginBean.getResult().getSessionId();
             SharedPreferences.Editor edit = sp.edit();
             Toast.makeText(LoginActivity.this, loginBean.getMessage(), Toast.LENGTH_LONG).show();
             edit.putBoolean("flag", checkLogin.isChecked());

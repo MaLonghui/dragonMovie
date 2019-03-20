@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
+import com.bw.movie.bean.CinemaCommentBean;
+import com.bw.movie.bean.CinemaPraiseBean;
 import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.RecommendDetailsBean;
@@ -24,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 public class RecommenddetailsPresenter extends BasePresenterImpl<RecommenddetailsContract.View> implements RecommenddetailsContract.Presenter{
 
     @Override
-    public void recommendDetailsPresenter(Map<String, String> headMap, String cinemaId) {
+    public void recommendDetailsPresenter(Map<String, Object> headMap, String cinemaId) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
         apiServer.details(Api.RECOMMENDDETAILS_URL,headMap,cinemaId)
                 .subscribeOn(Schedulers.io())
@@ -61,6 +63,35 @@ public class RecommenddetailsPresenter extends BasePresenterImpl<Recommenddetail
                     @Override
                     public void accept(MovieIdAndFilmBean movieIdAndFilmBean) throws Exception {
                         mView.movieIdAndfilmIdView(movieIdAndFilmBean);
+                    }
+                });
+    }
+
+    @Override
+    public void cinemaCommentPresenter(Map<String, Object> headMap, Map<String, Object> parms) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.cinemacomment(Api.CINEMACOMMENT_URL,headMap,parms)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CinemaCommentBean>() {
+                    @Override
+                    public void accept(CinemaCommentBean cinemaCommentBean) throws Exception {
+                        mView.cinemaCommentView(cinemaCommentBean);
+                    }
+                });
+
+    }
+
+    @Override
+    public void cinemaPriasePresenter(Map<String, Object> headMap, String commentId) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.cinemapraise(Api.CINEMAPRAISE_URL,headMap,commentId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CinemaPraiseBean>() {
+                    @Override
+                    public void accept(CinemaPraiseBean cinemaPraiseBean) throws Exception {
+                        mView.cinemaPriaseView(cinemaPraiseBean);
                     }
                 });
     }

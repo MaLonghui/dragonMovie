@@ -101,7 +101,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_78"
         android:text="@string/btn_regist"
-        android:background="@drawable/btn_shape_login"
+        android:background="@drawable/login_ripple_shape"
         android:textColor="@color/colorWhite"
         android:textSize="@dimen/sp_16" />
 

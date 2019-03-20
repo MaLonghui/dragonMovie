@@ -147,14 +147,14 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         switch (view.getId()) {
             case R.id.btn_Recommend:
                 mPresenter.recommendPresenter(headMap,parms);
-                btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
+                btnRecommend.setBackgroundResource(R.drawable.button_ripple);
                 btnRecommend.setTextColor(Color.WHITE);
                 btnNearby.setTextColor(Color.BLACK);
                 btnNearby.setBackgroundResource(R.color.colorWhite);
                 break;
             case R.id.btn_Nearby:
                 mPresenter.nearbyPresenter(headMap,parms1);
-                btnNearby.setBackgroundResource(R.drawable.top_btn_shape);
+                btnNearby.setBackgroundResource(R.drawable.button_ripple);
                 btnRecommend.setBackgroundResource(R.color.colorWhite);
                 btnNearby.setTextColor(Color.WHITE);
                 btnRecommend.setTextColor(Color.BLACK);
