@@ -1,6 +1,7 @@
 package com.bw.movie.activity.filmdetails;
 
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -19,13 +20,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.cinemabymovieid.CinemaByMovieIdActivity;
 import com.bw.movie.adapter.FilmReviewAdapter;
 import com.bw.movie.adapter.MyJuZhaoAdapter;
 import com.bw.movie.adapter.MyPopwindowAdapter;
@@ -76,11 +77,31 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     @BindView(R.id.buy_ticket)
     TextView buyTicket;
     @BindView(R.id.content)
-    LinearLayout content;
+    RelativeLayout content;
+    /*@BindView(R.id.detail_title_icon)
+    ImageView detailTitleIcon;
+    @BindView(R.id.detail_prise)
+    ImageView detailPrise;
+    @BindView(R.id.detail_name)
+    TextView detailName;
+    @BindView(R.id.details_simple_view)
+    SimpleDraweeView detailsSimpleView;
+    @BindView(R.id.detail_btn_detail)
+    TextView detailBtnDetail;
+    @BindView(R.id.detail_btn_prevue)
+    TextView detailBtnPrevue;
+    @BindView(R.id.detail_btn_still)
+    TextView detailBtnStill;
+    @BindView(R.id.detail_btn_review)
+    TextView detailBtnReview;
+    @BindView(R.id.details_return)
+    ImageView detailsReturn;
+    @BindView(R.id.buy_ticket)
+    TextView buyTicket;
+    @BindView(R.id.content)
+    LinearLayout content;*/
 
     private String movieId = "";
-    /*  private String userId = "589";
-      private String sessionId = "1552717727805589";*/
     private int page = 1;
     private int count = 10;
     public static final String TAG = "FilmDetailsActivity";
@@ -95,7 +116,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     private TextView textn_send;
 
     @Override
-    protected void onCreate(@Nullable final Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_details);
         ButterKnife.bind(this);
@@ -135,6 +156,16 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             reviewHeadMap.put("sessionId", sessionId);
             mPresenter.getReviewPresenterData(reviewHeadMap, reviewPrams);
         }
+        buyTicket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //EventBus.getDefault().postSticky(resultBean.getId()+"");
+                Intent intent = new Intent(FilmDetailsActivity.this, CinemaByMovieIdActivity.class);
+                intent.putExtra("movieName", resultBean.getName());
+                intent.putExtra("movieId", resultBean.getId() + "");
+                startActivity(intent);
+            }
+        });
 
 
     }

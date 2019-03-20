@@ -36,6 +36,7 @@
         <activity android:name=".activity.FilmSearchActivity"></activity>
         <activity android:name=".activity.filmdetails.FilmDetailsActivity"/>
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" />
+        <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity"/>
     </application>
 
 </manifest>
