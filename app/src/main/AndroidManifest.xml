@@ -9,8 +9,8 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
-
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -36,6 +36,7 @@
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" />
         <activity android:name=".activity.filmdetails.FilmDetailsActivity"/>
         <activity android:name=".activity.info.InfoActivity"/>
+        <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity"/>
     </application>
 
 </manifest>

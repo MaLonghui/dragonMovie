@@ -1,6 +1,11 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.CinemaByIdBean;
+import com.bw.movie.bean.FilmCommentBean;
+import com.bw.movie.bean.FilmDetailsBean;
+import com.bw.movie.bean.FilmReviewBean;
+import android.icu.util.MeasureUnit;
 
 import com.bw.movie.bean.CinemaCommentBean;
 import com.bw.movie.bean.CinemaPraiseBean;
@@ -92,4 +97,12 @@ public interface ApiServer {
     @POST
     @FormUrlEncoded
     Observable<CinemaPraiseBean> cinemapraise(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
+
+    //添加评论
+    @POST
+    @FormUrlEncoded
+    Observable<FilmCommentBean> filmComment(@Url String url, @HeaderMap HashMap<String,Object> headMap, @FieldMap HashMap<String,Object> parms);
+    //根据电影ID查询当前排片该电影的影院列表
+    @GET
+    Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@Query("movieId") String movieId);
 }

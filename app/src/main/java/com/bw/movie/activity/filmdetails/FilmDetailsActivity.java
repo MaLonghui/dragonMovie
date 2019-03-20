@@ -1,6 +1,8 @@
 package com.bw.movie.activity.filmdetails;
 
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
@@ -10,31 +12,34 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.cinemabymovieid.CinemaByMovieIdActivity;
 import com.bw.movie.adapter.FilmReviewAdapter;
 import com.bw.movie.adapter.MyJuZhaoAdapter;
 import com.bw.movie.adapter.MyPopwindowAdapter;
+import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,11 +77,31 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     @BindView(R.id.buy_ticket)
     TextView buyTicket;
     @BindView(R.id.content)
-    LinearLayout content;
+    RelativeLayout content;
+    /*@BindView(R.id.detail_title_icon)
+    ImageView detailTitleIcon;
+    @BindView(R.id.detail_prise)
+    ImageView detailPrise;
+    @BindView(R.id.detail_name)
+    TextView detailName;
+    @BindView(R.id.details_simple_view)
+    SimpleDraweeView detailsSimpleView;
+    @BindView(R.id.detail_btn_detail)
+    TextView detailBtnDetail;
+    @BindView(R.id.detail_btn_prevue)
+    TextView detailBtnPrevue;
+    @BindView(R.id.detail_btn_still)
+    TextView detailBtnStill;
+    @BindView(R.id.detail_btn_review)
+    TextView detailBtnReview;
+    @BindView(R.id.details_return)
+    ImageView detailsReturn;
+    @BindView(R.id.buy_ticket)
+    TextView buyTicket;
+    @BindView(R.id.content)
+    LinearLayout content;*/
 
     private String movieId = "";
-    private String userId = "589";
-    private String sessionId = "1552717727805589";
     private int page = 1;
     private int count = 10;
     public static final String TAG = "FilmDetailsActivity";
@@ -86,33 +111,61 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     private FilmDetailsBean.ResultBean resultBean;
     private ImageView writePingunImg;
     private List<FilmReviewBean.ResultBean> reviewBeanResult;
+    private RelativeLayout commtenRealtive;
+    private EditText commtentEdit;
+    private TextView textn_send;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_details);
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
+        SharedPreferences preferences = getSharedPreferences("config", MODE_PRIVATE);
+        String userId = preferences.getString("userId", "");
+        String sessionId = preferences.getString("sessionId", "");
 
-        //电影详情请求头集合
-        HashMap<String, Object> headMap = new HashMap<>();
+
         //参数集合
         HashMap<String, Object> prams = new HashMap<>();
-        headMap.put("userId", userId);
-        headMap.put("sessionId", sessionId);
         prams.put("movieId", movieId);
-        mPresenter.getPresenterData(headMap, prams);
+        if (userId.equals("") || sessionId.equals("")) {
+            HashMap<String, Object> headMapNull = new HashMap<>();
+            mPresenter.getPresenterData(headMapNull, prams);
+        } else {
+            //电影详情请求头集合
+            HashMap<String, Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            mPresenter.getPresenterData(headMap, prams);
+        }
 
-        //影片评论
-        HashMap<String, Object> reviewHeadMap = new HashMap<>();
+
         //参数集合
         HashMap<String, Object> reviewPrams = new HashMap<>();
-        reviewHeadMap.put("userId", userId);
-        reviewHeadMap.put("sessionId", sessionId);
         reviewPrams.put("movieId", movieId);
         reviewPrams.put("page", page);
         reviewPrams.put("count", count);
-        mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
+        if (userId.equals("") || sessionId.equals("")) {
+            HashMap<String, Object> headMapNull = new HashMap<>();
+            mPresenter.getReviewPresenterData(headMapNull, reviewPrams);
+        } else {
+            //影片评论
+            HashMap<String, Object> reviewHeadMap = new HashMap<>();
+            reviewHeadMap.put("userId", userId);
+            reviewHeadMap.put("sessionId", sessionId);
+            mPresenter.getReviewPresenterData(reviewHeadMap, reviewPrams);
+        }
+        buyTicket.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //EventBus.getDefault().postSticky(resultBean.getId()+"");
+                Intent intent = new Intent(FilmDetailsActivity.this, CinemaByMovieIdActivity.class);
+                intent.putExtra("movieName", resultBean.getName());
+                intent.putExtra("movieId", resultBean.getId() + "");
+                startActivity(intent);
+            }
+        });
 
 
     }
@@ -135,11 +188,23 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
 
     @Override
     public void getFilmReviewData(Object o) {
-        if (o != null){
+        if (o != null) {
             FilmReviewBean filmReviewBean = (FilmReviewBean) o;
             reviewBeanResult = filmReviewBean.getResult();
-
         }
+    }
+
+    @Override
+    public void getFilmCommentData(Object object) {
+        if (object != null) {
+            FilmCommentBean filmCommentBean = (FilmCommentBean) object;
+            if (filmCommentBean.getStatus().equals("0000")) {
+                Toast.makeText(this, filmCommentBean.getMessage(), Toast.LENGTH_SHORT).show();
+            } else if (filmCommentBean.getStatus().equals("9999")) {
+                AlertDialogUtils.AlertDialogLogin(this);
+            }
+        }
+
     }
 
     @OnClick({R.id.detail_btn_detail, R.id.detail_btn_prevue, R.id.detail_btn_still, R.id.detail_btn_review, R.id.details_return})
@@ -154,11 +219,10 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 initPopupwindow(view, detailBtnPrevue.getText().toString(), resultBean);
                 break;
             case R.id.detail_btn_still:
-                initPopupwindow(view, detailBtnStill.getText().toString(),resultBean);
+                initPopupwindow(view, detailBtnStill.getText().toString(), resultBean);
                 break;
             case R.id.detail_btn_review:
-
-                initPopupwindow(view, detailBtnReview.getText().toString(),resultBean);
+                initPopupwindow(view, detailBtnReview.getText().toString(), resultBean);
                 break;
             case R.id.details_return:
                 finish();
@@ -167,6 +231,12 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     }
 
 
+    /**
+     * 详情pop
+     *
+     * @param v
+     * @param resultBean
+     */
     private void initSonPopupwindow(View v, FilmDetailsBean.ResultBean resultBean) {
 
         View view = View.inflate(this, R.layout.details_son_popwindow_layout, null);
@@ -221,15 +291,25 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
 
     }
 
-    private void initPopupwindow(View v, String string, FilmDetailsBean.ResultBean resultBean) {
+    /**
+     * 预告片、剧照、评论pop
+     *
+     * @param v
+     * @param string
+     * @param resultBean
+     */
+    private void initPopupwindow(View v, String string, final FilmDetailsBean.ResultBean resultBean) {
         View view = View.inflate(this, R.layout.details_popwindow_layout, null);
         popName = view.findViewById(R.id.popwindow_name);
         pop_down = view.findViewById(R.id.popwindow_down);
         popRecyclerView = view.findViewById(R.id.pop_recycler_view);
         writePingunImg = view.findViewById(R.id.write_pinglun_img);
+        commtenRealtive = (RelativeLayout) view.findViewById(R.id.comment_relative_layout);
+        commtentEdit = (EditText) view.findViewById(R.id.comment_ed_text);
+        textn_send = (TextView) view.findViewById(R.id.comment_send);
         popName.setText(string);
 
-        if (string.equals("预告片")){
+        if (string.equals("预告片")) {
             writePingunImg.setVisibility(View.GONE);
             //布局管理器
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -239,26 +319,53 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             MyPopwindowAdapter popwindowAdapter = new MyPopwindowAdapter(this, resultBean);
             popRecyclerView.setAdapter(popwindowAdapter);
         }
-        if (string.equals("剧照")){
+        if (string.equals("剧照")) {
             writePingunImg.setVisibility(View.GONE);
             //布局管理器
             StaggeredGridLayoutManager gridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
             popRecyclerView.setLayoutManager(gridLayoutManager);
             //设置适配器
-            MyJuZhaoAdapter juZhaoAdapter = new MyJuZhaoAdapter(this,resultBean);
+            MyJuZhaoAdapter juZhaoAdapter = new MyJuZhaoAdapter(this, resultBean);
             popRecyclerView.setAdapter(juZhaoAdapter);
         }
-        if (string.equals("影评")){
+        if (string.equals("影评")) {
             writePingunImg.setVisibility(View.VISIBLE);
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
             popRecyclerView.setLayoutManager(linearLayoutManager);
-            FilmReviewAdapter filmReviewAdapter = new FilmReviewAdapter(this,reviewBeanResult);
+            FilmReviewAdapter filmReviewAdapter = new FilmReviewAdapter(this, reviewBeanResult);
             popRecyclerView.setAdapter(filmReviewAdapter);
-
+            writePingunImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    writePingunImg.setVisibility(View.GONE);
+                    commtenRealtive.setVisibility(View.VISIBLE);
+                }
+            });
+            textn_send.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String send = commtentEdit.getText().toString();
+                    if (TextUtils.isEmpty(send)) {
+                        Toast.makeText(FilmDetailsActivity.this, "请输入评论内容", Toast.LENGTH_SHORT).show();
+                    } else {
+                        SharedPreferences preferences = getSharedPreferences("config", MODE_PRIVATE);
+                        String userId = preferences.getString("userId", "");
+                        String sessionId = preferences.getString("sessionId", "");
+                        HashMap<String, Object> comHeadMap = new HashMap<>();
+                        HashMap<String, Object> comPrams = new HashMap<>();
+                        comHeadMap.put("userId", userId);
+                        comHeadMap.put("sessionId", sessionId);
+                        comPrams.put("movieId", resultBean.getId());
+                        comPrams.put("commentContent", send);
+                        mPresenter.getFilmCommentPresenter(comHeadMap, comPrams);
+                        writePingunImg.setVisibility(View.VISIBLE);
+                        commtenRealtive.setVisibility(View.GONE);
+                        commtentEdit.setText("");
+                    }
+                }
+            });
         }
-
-
 
 
         final PopupWindow popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -297,6 +404,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         });
 
     }
+
 
     @Override
     public void onBackPressed() {
