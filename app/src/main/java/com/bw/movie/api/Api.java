@@ -34,4 +34,6 @@ public class Api {
     public static final String FILMFROMID_URL = "movieApi/movie/v1/findMovieListByCinemaId";
     //15.根据电影ID和影院ID查询电影排期列表
     public static final String MOVIEIDANDFILMID_URL = "movieApi/movie/v1/findMovieScheduleList?";
+    //添加评论
+    public static final String FILM_COMMENT = "movieApi/movie/v1/verify/movieComment";
 }

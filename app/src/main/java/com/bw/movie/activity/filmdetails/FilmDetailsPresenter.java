@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
+import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
 import com.bw.movie.mvp.BasePresenterImpl;
@@ -58,6 +59,25 @@ public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.
                     @Override
                     public void accept(FilmReviewBean filmReviewBean) throws Exception {
                         mView.getFilmReviewData(filmReviewBean);
+                    }
+                });
+    }
+
+    /**
+     * 添加评论
+     * @param headMap
+     * @param prams
+     */
+    @Override
+    public void getFilmCommentPresenter(HashMap<String, Object> headMap, HashMap<String, Object> prams) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.filmComment(Api.FILM_COMMENT,headMap,prams)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<FilmCommentBean>() {
+                    @Override
+                    public void accept(FilmCommentBean filmCommentBean) throws Exception {
+                        mView.getFilmCommentData(filmCommentBean);
                     }
                 });
     }

@@ -49,6 +49,37 @@
             android:layout_height="match_parent"
             android:layout_below="@id/pop_relative"
             android:layout_marginTop="@dimen/dp_20"></android.support.v7.widget.RecyclerView>
+
+        <RelativeLayout
+            android:id="@+id/comment_relative_layout"
+            android:layout_width="match_parent"
+            android:layout_alignParentRight="true"
+                android:visibility="gone"
+            android:background="#ffffff"
+            android:layout_alignBottom="@id/pop_recycler_view"
+            android:layout_height="@dimen/dp_80">
+
+            <EditText
+                android:id="@+id/comment_ed_text"
+                android:layout_width="@dimen/dp_284"
+                android:hint="写评论"
+                android:background="@drawable/comment_shape"
+                android:layout_centerVertical="true"
+                android:paddingLeft="@dimen/dp_10"
+                android:textColorHint="#666666"
+                android:textSize="@dimen/sp_14"
+                android:layout_height="@dimen/dp_60" />
+
+            <TextView
+                android:id="@+id/comment_send"
+                android:text="发送"
+                android:layout_alignBottom="@id/comment_ed_text"
+                android:layout_marginRight="@dimen/dp_24"
+                android:layout_alignParentRight="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </RelativeLayout>
         <ImageView
             android:id="@+id/write_pinglun_img"
             android:layout_width="@dimen/dp_60"
@@ -59,6 +90,10 @@
             android:visibility="gone"
             android:layout_marginBottom="@dimen/dp_20"
             android:layout_height="@dimen/dp_60" />
+
+
+
+
 
     </RelativeLayout>
 

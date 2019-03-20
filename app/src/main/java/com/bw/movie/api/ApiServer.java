@@ -1,6 +1,7 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
 import android.icu.util.MeasureUnit;
@@ -84,4 +85,10 @@ public interface ApiServer {
     //15.根据电影ID和影院ID查询电影排期列表
     @GET
     Observable<MovieIdAndFilmBean> movieandfilmid(@Url String url,@Query("movieId") String movieId,@Query("cinemasId")String cinemasId);
+
+    //添加评论
+    @POST
+    @FormUrlEncoded
+    Observable<FilmCommentBean> filmComment(@Url String url, @HeaderMap HashMap<String,Object> headMap, @FieldMap HashMap<String,Object> parms);
+
 }
