@@ -34,6 +34,7 @@ import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -78,28 +79,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     TextView buyTicket;
     @BindView(R.id.content)
     RelativeLayout content;
-    /*@BindView(R.id.detail_title_icon)
-    ImageView detailTitleIcon;
-    @BindView(R.id.detail_prise)
-    ImageView detailPrise;
-    @BindView(R.id.detail_name)
-    TextView detailName;
-    @BindView(R.id.details_simple_view)
-    SimpleDraweeView detailsSimpleView;
-    @BindView(R.id.detail_btn_detail)
-    TextView detailBtnDetail;
-    @BindView(R.id.detail_btn_prevue)
-    TextView detailBtnPrevue;
-    @BindView(R.id.detail_btn_still)
-    TextView detailBtnStill;
-    @BindView(R.id.detail_btn_review)
-    TextView detailBtnReview;
-    @BindView(R.id.details_return)
-    ImageView detailsReturn;
-    @BindView(R.id.buy_ticket)
-    TextView buyTicket;
-    @BindView(R.id.content)
-    LinearLayout content;*/
 
     private String movieId = "";
     private int page = 1;
@@ -131,13 +110,18 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         prams.put("movieId", movieId);
         if (userId.equals("") || sessionId.equals("")) {
             HashMap<String, Object> headMapNull = new HashMap<>();
-            mPresenter.getPresenterData(headMapNull, prams);
+            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
+                mPresenter.getPresenterData(headMapNull, prams);
+            }
+
         } else {
             //电影详情请求头集合
             HashMap<String, Object> headMap = new HashMap<>();
             headMap.put("userId", userId);
             headMap.put("sessionId", sessionId);
-            mPresenter.getPresenterData(headMap, prams);
+            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
+                mPresenter.getPresenterData(headMap, prams);
+            }
         }
 
 
@@ -148,13 +132,17 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         reviewPrams.put("count", count);
         if (userId.equals("") || sessionId.equals("")) {
             HashMap<String, Object> headMapNull = new HashMap<>();
-            mPresenter.getReviewPresenterData(headMapNull, reviewPrams);
+            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
+                mPresenter.getReviewPresenterData(headMapNull, reviewPrams);
+            }
         } else {
             //影片评论
             HashMap<String, Object> reviewHeadMap = new HashMap<>();
             reviewHeadMap.put("userId", userId);
             reviewHeadMap.put("sessionId", sessionId);
-            mPresenter.getReviewPresenterData(reviewHeadMap, reviewPrams);
+            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
+                mPresenter.getReviewPresenterData(reviewHeadMap, reviewPrams);
+            }
         }
         buyTicket.setOnClickListener(new View.OnClickListener() {
             @Override

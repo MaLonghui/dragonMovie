@@ -13,9 +13,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.ShowActivity;
 import com.bw.movie.adapter.MyCinemaByIdAdapter;
 import com.bw.movie.bean.CinemaByIdBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NoStudoInterent;
 
 import org.greenrobot.eventbus.Subscribe;
 
@@ -50,7 +52,10 @@ public class CinemaByMovieIdActivity extends MVPBaseActivity<CinemaByMovieIdCont
         String mName = intent.getStringExtra("movieName");
         String mId = intent.getStringExtra("movieId");
         movieName.setText(mName);
-        mPresenter.getPresenterData(mId);
+        if (NoStudoInterent.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
+            mPresenter.getPresenterData(mId);
+        }
+
         movieReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

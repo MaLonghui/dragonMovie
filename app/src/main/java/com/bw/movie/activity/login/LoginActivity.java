@@ -22,6 +22,7 @@ import com.bw.movie.activity.regist.RegistActivity;
 import com.bw.movie.aes.EncryptUtil;
 import com.bw.movie.bean.LoginBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NoStudoInterent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,6 +59,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     private String encrypt;
     private SharedPreferences sp;
     private LoginBean loginBean;
+    boolean netState;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,30 +77,27 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
             String decrypt = EncryptUtil.decrypt(pwd);
             editPwd.setText(decrypt);
         }
-//        String phone = sp.getString("phone", "");
-//        String pwd = sp.getString("pwd", "");
-//        String decrypt = EncryptUtil.decrypt(pwd);
-//        editPhone.setText(phone);
-//        editPwd.setText(decrypt);
     }
 
-    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.login_wx,R.id.btn_eyePwd})
+    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.login_wx, R.id.btn_eyePwd})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.jump_regist:
                 startActivity(new Intent(LoginActivity.this, RegistActivity.class));
                 break;
             case R.id.btn_login:
-                phone = editPhone.getText().toString().trim();
-                String pwd = editPwd.getText().toString().trim();
-                encrypt = EncryptUtil.encrypt(pwd);
-                mPresenter.loginPresenter(phone, encrypt);
-                break;
+                if (NoStudoInterent.isNetworkAvailable(this)) {
+                    phone = editPhone.getText().toString().trim();
+                    String pwd = editPwd.getText().toString().trim();
+                    encrypt = EncryptUtil.encrypt(pwd);
+                    mPresenter.loginPresenter(phone, encrypt);
+                    break;
+                }
             case R.id.btn_eyePwd:
-                if (editPwd.getInputType()==InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD){
+                if (editPwd.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                     //密码可见,点击之后设置成不可见的
                     editPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                }else{
+                } else {
                     //不可见设置成可见
                     editPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }

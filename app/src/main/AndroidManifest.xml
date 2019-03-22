@@ -37,6 +37,7 @@
         <activity android:name=".activity.filmdetails.FilmDetailsActivity"/>
         <activity android:name=".activity.info.InfoActivity"/>
         <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity"/>
+        <activity android:name=".activity.seat.SeatActivity"/>
     </application>
 
 </manifest>

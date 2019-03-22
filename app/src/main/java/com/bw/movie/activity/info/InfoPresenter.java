@@ -5,6 +5,7 @@ import android.content.Context;
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
 import com.bw.movie.bean.FindInfoBean;
+import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.mvp.BasePresenterImpl;
 import com.bw.movie.utils.RetrofitManager;
 
@@ -31,6 +32,20 @@ public class InfoPresenter extends BasePresenterImpl<InfoContract.View> implemen
                     @Override
                     public void accept(FindInfoBean findInfoBean) throws Exception {
                         mView.userInfoView(findInfoBean);
+                    }
+                });
+    }
+
+    @Override
+    public void updateInfoPresenter(Map<String, Object> headMap, Map<String, Object> parms) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.updateinfo(Api.UPDATEINFO_URL,headMap,parms)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<UpdateInfoBean>() {
+                    @Override
+                    public void accept(UpdateInfoBean updateInfoBean) throws Exception {
+                        mView.updateInfoView(updateInfoBean);
                     }
                 });
     }

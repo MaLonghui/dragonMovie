@@ -83,6 +83,7 @@
                 android:textSize="@dimen/sp_18"
                 />
             <ImageView
+                android:id="@+id/img_icon_sit"
                 android:layout_width="@dimen/dp_24"
                 android:layout_height="@dimen/dp_24"
                 android:layout_centerVertical="true"

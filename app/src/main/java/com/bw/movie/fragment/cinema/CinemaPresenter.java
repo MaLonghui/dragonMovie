@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
+import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.NearbyCinemasBean;
 import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.mvp.BasePresenterImpl;
@@ -46,6 +47,20 @@ public class CinemaPresenter extends BasePresenterImpl<CinemaContract.View> impl
                     @Override
                     public void accept(NearbyCinemasBean nearbyCinemasBean) throws Exception {
                         mView.nearbyView(nearbyCinemasBean);
+                    }
+                });
+    }
+
+    @Override
+    public void AttentionPresenter(Map<String, Object> headMap, String cinemaId) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.cinemaattention(Api.CINEMAATTENTION_URL,headMap,cinemaId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CinemaAttentionBean>() {
+                    @Override
+                    public void accept(CinemaAttentionBean cinemaAttentionBean) throws Exception {
+                        mView.AttentionView(cinemaAttentionBean);
                     }
                 });
     }

@@ -42,4 +42,9 @@ public class Api {
     public static final String FILM_COMMENT = "movieApi/movie/v1/verify/movieComment";
     //根据电影ID查询当前排片该电影的影院列表
     public static final String CinemasListByMovieId = "movieApi/movie/v1/findCinemasListByMovieId";
+    //4.修改用户信息
+    public static final String UPDATEINFO_URL = "movieApi/user/v1/verify/modifyUserInfo";
+    //6.关注影院
+    public static final String CINEMAATTENTION_URL = "movieApi/cinema/v1/verify/followCinema";
+
 }

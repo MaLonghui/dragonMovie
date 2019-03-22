@@ -11,8 +11,11 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.bean.FindInfoBean;
+import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NoStudoInterent;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
@@ -61,7 +64,15 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
         Map<String,Object> headMap = new HashMap<>();
         headMap.put("userId",userId);
         headMap.put("sessionId",sessionId);
-        mPresenter.userInfoPresenter(headMap);
+        if (NoStudoInterent.isNetworkAvailable(InfoActivity.this)) {
+            mPresenter.userInfoPresenter(headMap);
+            Map<String,Object> parms = new HashMap<>();
+            parms.put("nickName","杜拉拉");
+            parms.put("sex","1");
+            parms.put("email","1971658757@qq.com");
+            mPresenter.updateInfoPresenter(headMap,parms);
+        }
+
     }
 
     @Override
@@ -87,6 +98,14 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
                 infoPhone.setText(findInfoBean.getResult().getPhone());
                 infoMail.setText(findInfoBean.getResult().getEmail());
             }
+        }
+    }
+
+    @Override
+    public void updateInfoView(Object obj) {
+        if (obj!=null){
+            UpdateInfoBean updateInfoBean = (UpdateInfoBean) obj;
+            Log.i("aa","updateInfoBean:"+updateInfoBean.getMessage());
         }
     }
 

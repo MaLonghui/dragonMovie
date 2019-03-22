@@ -32,6 +32,7 @@ import com.bw.movie.activity.info.InfoActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.UserHeadIconBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.bw.movie.utils.FileImageUntils;
 import com.facebook.common.util.UriUtil;
@@ -47,6 +48,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -80,12 +84,10 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     private FindInfoBean findInfoBean;
     private SharedPreferences sp;
     private Map<String, Object> headMap;
-    private Bitmap head;
     private PopupWindow popupWindow;
-    //相机拍照的照片路径
-    private String filepath = Environment.getExternalStorageDirectory()
-            + "/file.png";
-    private String mPath;
+    private final int CAIJIAN_FLAG=200;
+    private String userId;
+    private String sessionId;
 
 
     @Nullable
@@ -94,6 +96,8 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
         unbinder = ButterKnife.bind(this, view);
         sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+        userId = sp.getString("userId", "");
+        sessionId = sp.getString("sessionId", "");
         return view;
     }
 
@@ -106,7 +110,10 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         Map<String, Object> headMap = new HashMap<>();
         headMap.put("userId", userId);
         headMap.put("sessionId", sessionId);
-        mPresenter.userInfoPresenter(headMap);
+        if (NoStudoInterent.isNetworkAvailable(getActivity())) {
+            mPresenter.userInfoPresenter(headMap);
+        }
+
     }
 
     @Override
@@ -124,6 +131,8 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 myLogout.setVisibility(View.GONE);
             } else {
                 myLogout.setVisibility(View.VISIBLE);
+                myIcon.setImageURI(findInfoBean.getResult().getHeadPic());
+                myName.setText(findInfoBean.getResult().getNickName());
             }
         }
     }
@@ -135,16 +144,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
             if (userHeadIconBean.getStatus().equals("0000")) {
                Toast.makeText(getActivity(),userHeadIconBean.getMessage(),Toast.LENGTH_LONG).show();
                 //重新请求数据实现即时更新头像图片
-                String userId = sp.getString("userId", "");
-                String sessionId = sp.getString("sessionId", "");
-                Map<String,Object> headMap = new HashMap<>();
-                headMap.put("userId",userId);
-                headMap.put("sessionId",sessionId);
-                Map<String, String> map = new HashMap<>();
-                map.put("image", filepath);
-                Log.i("aa","filepath:"+filepath);
-//            doPostImageData(Apis.MESSAGE_INFO_HEAD, map, InfoHeadBean.class);
-                mPresenter.headIconPresenter(headMap,map);
+
             }
         }
     }
@@ -199,8 +199,10 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         popupWindow.setTouchable(true);
         Button btnCamera = view.findViewById(R.id.btn_camera);
         Button btnAlbum = view.findViewById(R.id.btn_album);
+        Button btnQu = view.findViewById(R.id.btn_qu);
         btnCamera.setOnClickListener(this);
         btnAlbum.setOnClickListener(this);
+        btnQu.setOnClickListener(this);
         View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_mine, null);
         popupWindow.showAsDropDown(view1,Gravity.BOTTOM,0,0);
     }
@@ -209,21 +211,20 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_camera:
-                mPath = Environment.getExternalStorageDirectory() + "/image.png";
+                //意图
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //在Sdcard存入图片
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(mPath)));
-                startActivityForResult(intent, 300);
+                //带值跳转
+                startActivityForResult(intent,111);
                 popupWindow.dismiss();
-                initPermission();
                 break;
             case R.id.btn_album:
+                //意图
                 Intent intent1 = new Intent(Intent.ACTION_PICK);
-                //设置图片的格式
+                //类型
                 intent1.setType("image/*");
-                startActivityForResult(intent1, 100);
+                //带值跳转
+                startActivityForResult(intent1,222);
                 popupWindow.dismiss();
-                initPermission();
                 break;
             case R.id.btn_qu:
                 popupWindow.dismiss();
@@ -231,10 +232,8 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
 
         }
     }
-
     /**
-     * 剪切
-     *
+     * 吊起相机
      * @param requestCode
      * @param resultCode
      * @param data
@@ -242,58 +241,95 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        //调取裁剪
-        if (requestCode == 100 && resultCode == RESULT_OK) {
-            //得到相册图片的路径
-            Uri uri = data.getData();
-            Intent intent = new Intent("com.android.camera.action.CROP");
-            //将图片设置给裁剪
-            intent.setDataAndType(uri, "image/*");
-            //设置是否支持裁剪
-            intent.putExtra("CROP", true);
-            //设置宽高比
-            intent.putExtra("aspectX", 1);
-            intent.putExtra("aspectY", 1);
-            //设置输出的大小
-            intent.putExtra("outputX", 250);
-            intent.putExtra("outputY", 250);
-            //将图片进行返回
-            intent.putExtra("return-data", true);
-            startActivityForResult(intent, 200);
-
-        }
-        if(requestCode == 300 && resultCode == RESULT_OK ){
-            //将图片设置给裁剪
-            crop(Uri.fromFile(new File(mPath)));
-        }
-        if (requestCode == 200 && resultCode == RESULT_OK) {
-            Bitmap bitmap = data.getParcelableExtra("data");
-            Log.i("TAG","bitmap=="+bitmap);
-            FileImageUntils.setBitmap(bitmap, filepath, 50);
-            //TODO:网络请求
-            String userId = sp.getString("userId", "");
-            String sessionId = sp.getString("sessionId", "");
-            Map<String,Object> headMap = new HashMap<>();
-            headMap.put("userId",userId);
-            headMap.put("sessionId",sessionId);
-            Map<String, String> map = new HashMap<>();
-            map.put("image", filepath);
+        switch (requestCode){
+            case 111:
+                Toast.makeText(getActivity(),"滴滴滴",Toast.LENGTH_LONG).show();
+                Bitmap bitmap = data.getParcelableExtra("data");
+                ArrayList<Object> list = new ArrayList<>();
+                list.add(bitmap);
+                String s = bitmapToString(bitmap);
+                myIcon.setImageURI(UriUtil.parseUriOrNull("file://"+s));
+                Map<String,Object> headMap = new HashMap<>();
+                headMap.put("userId",userId);
+                headMap.put("sessionId",sessionId);
+                Map<String, String> map = new HashMap<>();
+                map.put("image", s);
+                Log.i("aa","filepath:"+s);
 //            doPostImageData(Apis.MESSAGE_INFO_HEAD, map, InfoHeadBean.class);
-            mPresenter.headIconPresenter(headMap,map);
+                mPresenter.headIconPresenter(headMap,map);
+                break;
+            case 222:
+                //路径
+                if (data!=null){
+                    Uri uri = data.getData();
+                    crop(uri);
+                }
+                break;
+            case CAIJIAN_FLAG:
+                if (data!=null) {
+                    Bitmap bitmap1 = data.getParcelableExtra("data");
+                    String s1 = bitmapToString(bitmap1);
+                    myIcon.setImageURI(UriUtil.parseUriOrNull("file://"+s1));
+                    Toast.makeText(getActivity(),s1,Toast.LENGTH_LONG).show();
+                    findInfoBean.getResult().setHeadPic("http://172.17.8.100/images/movie/stills/ws/ws1.jpg");
+                    Map<String,Object> headMap1 = new HashMap<>();
+                    headMap1.put("userId",userId);
+                    headMap1.put("sessionId",sessionId);
+                    Map<String, String> map1 = new HashMap<>();
+                    map1.put("image", s1);
+                    Log.i("aa","filepath:"+s1);
+//            doPostImageData(Apis.MESSAGE_INFO_HEAD, map, InfoHeadBean.class);
+                    mPresenter.headIconPresenter(headMap1,map1);
+                }
+                break;
+
         }
     }
+    public String bitmapToString(Bitmap bitmap){
+        //将bitmap转换为uri
+        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, null,null));
 
-    // 裁剪方法
-    private void crop(Uri data) {
-        Intent cIntent = new Intent("com.android.camera.action.CROP");
-        cIntent.setDataAndType(data, "file.png");
-        cIntent.putExtra("crop", true);
-        cIntent.putExtra("aspectX", 1);
-        cIntent.putExtra("aspectY", 1);
-        cIntent.putExtra("outputX", 249);
-        cIntent.putExtra("outputY", 249);
-        cIntent.putExtra("return-data", true);
-        startActivityForResult(cIntent, 200);
+        String[] proj = { MediaStore.Images.Media.DATA };
+
+        Cursor actualimagecursor =getActivity().managedQuery(uri,proj,null,null,null);
+
+        int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+
+        actualimagecursor.moveToFirst();
+
+        String img_path = actualimagecursor.getString(actual_image_column_index);
+        return img_path;
+    }
+
+    //剪裁图片
+    private void crop(Uri uri){
+        Intent intent=new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri,"image/*");
+        //支持裁剪
+        intent.putExtra("CROP",true);
+        //裁剪的比例
+        intent.putExtra("aspectX",1);
+        intent.putExtra("aspectY",1);
+        //裁剪后输出图片的尺寸大小
+        intent.putExtra("outputX",250);
+        intent.putExtra("outputY",250);
+        //将图片返回给data
+        intent.putExtra("return-data",true);
+        startActivityForResult(intent,CAIJIAN_FLAG);
+    }
+
+
+    public static MultipartBody filesMutipar(Map<String,String> map){
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+        for (Map.Entry<String,String> entry:map.entrySet()){
+            if (entry.getKey().equals("image")){
+                File file = new File(entry.getValue());
+                builder.addFormDataPart(entry.getKey(),"tp.png", RequestBody.create(MediaType.parse("multipart/form-data"),file));
+            }
+        }
+        builder.setType(MultipartBody.FORM);
+        MultipartBody multipartBody = builder.build();
+        return multipartBody;
     }
     //动态权限
     private void initPermission() {
