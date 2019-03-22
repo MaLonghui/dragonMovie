@@ -87,6 +87,13 @@ public interface ApiServer {
     //15.根据电影ID和影院ID查询电影排期列表
     @GET
     Observable<MovieIdAndFilmBean> movieandfilmid(@Url String url,@Query("movieId") String movieId,@Query("cinemasId")String cinemasId);
+    //8.查询影院用户评论列表
+    @GET
+    Observable<CinemaCommentBean> cinemacomment(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //10.影院评论点赞
+    @POST
+    @FormUrlEncoded
+    Observable<CinemaPraiseBean> cinemapraise(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
 
     //添加评论
     @POST
@@ -97,13 +104,7 @@ public interface ApiServer {
     Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@Query("movieId") String movieId);
 
 
-    //8.查询影院用户评论列表
-    @GET
-    Observable<CinemaCommentBean> cinemacomment(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
-    //10.影院评论点赞
-    @POST
-    @FormUrlEncoded
-    Observable<CinemaPraiseBean> cinemapraise(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
+   
     //关注电影
     @GET
     Observable<FlowllMovieBean> flowllMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("movieId") String movieId);
