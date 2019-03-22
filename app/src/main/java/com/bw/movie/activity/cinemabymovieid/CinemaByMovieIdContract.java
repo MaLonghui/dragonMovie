@@ -13,6 +13,7 @@ import com.bw.movie.mvp.BaseView;
 public class CinemaByMovieIdContract {
     interface View extends BaseView {
         void getViewData(Object object);
+
     }
 
     interface  Presenter extends BasePresenter<View> {

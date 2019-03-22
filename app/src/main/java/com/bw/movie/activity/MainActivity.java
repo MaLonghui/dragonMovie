@@ -1,8 +1,10 @@
 package com.bw.movie.activity;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -40,14 +42,16 @@ public class MainActivity extends AppCompatActivity {
                         if (preferences.getBoolean("flag",true)){
                             edit.putBoolean("flag",false);
                             edit.commit();
-                            startActivity(new Intent(MainActivity.this,GuideActivity.class));
+                            Looper.prepare();
+                            startActivity(new Intent(MainActivity.this,GuideActivity.class),ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+                            Looper.loop();
                             finish();
                         }else{
-                            startActivity(new Intent(MainActivity.this,ShowActivity.class));
+                            Looper.prepare();
+                            startActivity(new Intent(MainActivity.this,ShowActivity.class),ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+                            Looper.loop();
                             finish();
                         }
-
-
 
                     }
                 })

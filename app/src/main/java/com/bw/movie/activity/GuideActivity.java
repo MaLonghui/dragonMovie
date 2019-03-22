@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Explode;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -37,8 +38,10 @@ public class GuideActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_guide);
-        ButterKnife.bind(this);
 
+        ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(2000));
+        getWindow().setExitTransition(new Explode().setDuration(2000));
         initView();
         initData();
 

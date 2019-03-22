@@ -39,7 +39,7 @@ public class FilmDetailsBean implements Serializable {
         this.status = status;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable{
         /**
          * director : 刘阔
          * duration : 105分钟
@@ -174,7 +174,7 @@ public class FilmDetailsBean implements Serializable {
             this.shortFilmList = shortFilmList;
         }
 
-        public static class ShortFilmListBean {
+        public static class ShortFilmListBean implements Serializable{
             /**
              * imageUrl : http://172.17.8.100/images/movie/stills/fyz/fyz2.jpg
              * videoUrl : http://172.17.8.100/video/movie/fyz/fyz1.ts

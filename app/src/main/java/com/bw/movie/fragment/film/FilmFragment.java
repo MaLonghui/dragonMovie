@@ -21,6 +21,7 @@ import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.ShangFilmBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NoStudoInterent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -66,10 +67,11 @@ public class FilmFragment extends MVPBaseFragment<FilmContract.View, FilmPresent
         headMap.put("sessionId", sessionId);
         prams.put("page", 1);
         prams.put("count", 10);
-
-        mPresenter.getReMenPresenter(headMap, prams);
-        mPresenter.getZhengPresenter(headMap, prams);
-        mPresenter.getJiPresenter(headMap, prams);
+        if (NoStudoInterent.isNetworkAvailable(getActivity())) {
+            mPresenter.getReMenPresenter(headMap, prams);
+            mPresenter.getZhengPresenter(headMap, prams);
+            mPresenter.getJiPresenter(headMap, prams);
+        }
         //设置适配器
         filmAdapter = new FilmAdapter(getActivity());
         filmRecycler.setAdapter(filmAdapter);

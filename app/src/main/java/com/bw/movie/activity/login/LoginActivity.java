@@ -1,12 +1,14 @@
 package com.bw.movie.activity.login;
 
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +24,7 @@ import com.bw.movie.activity.regist.RegistActivity;
 import com.bw.movie.aes.EncryptUtil;
 import com.bw.movie.bean.LoginBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NoStudoInterent;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -58,12 +61,15 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     private String encrypt;
     private SharedPreferences sp;
     private LoginBean loginBean;
+    boolean netState;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         boolean flag = sp.getBoolean("flag", false);
         Log.i("aa", "flag" + flag);
@@ -75,30 +81,27 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
             String decrypt = EncryptUtil.decrypt(pwd);
             editPwd.setText(decrypt);
         }
-//        String phone = sp.getString("phone", "");
-//        String pwd = sp.getString("pwd", "");
-//        String decrypt = EncryptUtil.decrypt(pwd);
-//        editPhone.setText(phone);
-//        editPwd.setText(decrypt);
     }
 
-    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.login_wx,R.id.btn_eyePwd})
+    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.login_wx, R.id.btn_eyePwd})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.jump_regist:
-                startActivity(new Intent(LoginActivity.this, RegistActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegistActivity.class),ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 break;
             case R.id.btn_login:
-                phone = editPhone.getText().toString().trim();
-                String pwd = editPwd.getText().toString().trim();
-                encrypt = EncryptUtil.encrypt(pwd);
-                mPresenter.loginPresenter(phone, encrypt);
-                break;
+                if (NoStudoInterent.isNetworkAvailable(this)) {
+                    phone = editPhone.getText().toString().trim();
+                    String pwd = editPwd.getText().toString().trim();
+                    encrypt = EncryptUtil.encrypt(pwd);
+                    mPresenter.loginPresenter(phone, encrypt);
+                    break;
+                }
             case R.id.btn_eyePwd:
-                if (editPwd.getInputType()==InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD){
+                if (editPwd.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                     //密码可见,点击之后设置成不可见的
                     editPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                }else{
+                } else {
                     //不可见设置成可见
                     editPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }

@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.adapter.FlowAdapter;
 import com.bw.movie.adapter.MyCinemaCommmentAdapter;
 import com.bw.movie.adapter.MyMovieIdAndFilmAdapter;
@@ -36,6 +38,7 @@ import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -91,16 +94,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
     private String userId;
     private String sessionId;
     private TextView textErrorComment;
-    private Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            if (msg.what==0){
-                myCinemaCommmentAdapter.notifyDataSetChanged();
-                handler.sendEmptyMessageDelayed(0,1000);
-            }
-        }
-    };
     private MyCinemaCommmentAdapter myCinemaCommmentAdapter;
 
     @Override
@@ -108,22 +101,27 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
         Intent intent = getIntent();
         eid = intent.getStringExtra("eid");
 //        Log.i("aa", "eid:" + eid);
-        if (!userId.equals("") && !sessionId.equals("")) {
-            Map<String, Object> headMap = new HashMap<>();
-            headMap.put("userId", userId);
-            headMap.put("sessionId", sessionId);
-            mPresenter.recommendDetailsPresenter(headMap, eid);
-        } else {
-            Map<String, Object> headMap = new HashMap<>();
-            mPresenter.recommendDetailsPresenter(headMap, eid);
+        if (NoStudoInterent.isNetworkAvailable(RecommenddetailsActivity.this)) {
+            if (!userId.equals("") && !sessionId.equals("")) {
+                Map<String, Object> headMap = new HashMap<>();
+                headMap.put("userId", userId);
+                headMap.put("sessionId", sessionId);
+                mPresenter.recommendDetailsPresenter(headMap, eid);
+            } else {
+                Map<String, Object> headMap = new HashMap<>();
+                mPresenter.recommendDetailsPresenter(headMap, eid);
+            }
+            mPresenter.filmFromIdPresenter(eid);
         }
-        mPresenter.filmFromIdPresenter(eid);
+
         recyclerFlowRecommend.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
             @Override
             public void onItemSelected(int position) {
@@ -175,7 +173,10 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                     SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd");
                     String format = sd.format(date);
                     textDateDetails.setText(format);
-                    mPresenter.movieIdAndfilmIdPresenter(id, eid);
+                    if (NoStudoInterent.isNetworkAvailable(RecommenddetailsActivity.this)) {
+                        mPresenter.movieIdAndfilmIdPresenter(id, eid);
+                    }
+
                 }
                 MyRecyclerFlowRecommendeAdapter myRecyclerFlowRecommende = new MyRecyclerFlowRecommendeAdapter(RecommenddetailsActivity.this, filmFromIdBean);
                 recyclerFlowRecommend.setAdapter(myRecyclerFlowRecommende);
@@ -213,8 +214,10 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 textErrorComment.setVisibility(View.VISIBLE);
                 recyclerContent.setVisibility(View.GONE);
             }else{
-                myCinemaCommmentAdapter = new MyCinemaCommmentAdapter(RecommenddetailsActivity.this,cinemaCommentBean);
+                myCinemaCommmentAdapter = new MyCinemaCommmentAdapter(RecommenddetailsActivity.this);
                 recyclerContent.setAdapter(myCinemaCommmentAdapter);
+                myCinemaCommmentAdapter.setList(cinemaCommentBean);
+                myCinemaCommmentAdapter.setID(userId,sessionId);
                 myCinemaCommmentAdapter.setListener(new MyCinemaCommmentAdapter.BtnPriaseListener() {
                     @Override
                     public void praiseBtn(String commentId,String isGreate) {
@@ -249,6 +252,7 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
     public void onViewClicked() {
         View view = LayoutInflater.from(this).inflate(R.layout.popuprecommenddetails_layout, null);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
         popupWindow.setTouchable(true);
         popupWindow.setOutsideTouchable(false);
         popupWindow.setFocusable(true);
@@ -290,24 +294,25 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 viewcommentPop.setVisibility(View.VISIBLE);
                 linearLayout.setVisibility(View.GONE);
                 recyclerContent.setVisibility(View.VISIBLE);
-                if (!userId.equals("")&&!sessionId.equals("")){
-                    Map<String,Object> headMap = new HashMap<>();
-                    headMap.put("userId",userId);
-                    headMap.put("sessionId",sessionId);
-                    Map<String,Object> parms = new HashMap<>();
-                    parms.put("cinemaId",eid);
-                    parms.put("page",page);
-                    parms.put("count",count);
-                    mPresenter.cinemaCommentPresenter(headMap,parms);
-                }else{
-                    Map<String,Object> headMap = new HashMap<>();
-                    Map<String,Object> parms = new HashMap<>();
-                    parms.put("cinemaId",eid);
-                    parms.put("page",page);
-                    parms.put("count",count);
-                    mPresenter.cinemaCommentPresenter(headMap,parms);
+                if (NoStudoInterent.isNetworkAvailable(RecommenddetailsActivity.this)) {
+                    if (!userId.equals("")&&!sessionId.equals("")){
+                        Map<String,Object> headMap = new HashMap<>();
+                        headMap.put("userId",userId);
+                        headMap.put("sessionId",sessionId);
+                        Map<String,Object> parms = new HashMap<>();
+                        parms.put("cinemaId",eid);
+                        parms.put("page",page);
+                        parms.put("count",count);
+                        mPresenter.cinemaCommentPresenter(headMap,parms);
+                    }else{
+                        Map<String,Object> headMap = new HashMap<>();
+                        Map<String,Object> parms = new HashMap<>();
+                        parms.put("cinemaId",eid);
+                        parms.put("page",page);
+                        parms.put("count",count);
+                        mPresenter.cinemaCommentPresenter(headMap,parms);
+                    }
                 }
-
                 break;
             case R.id.img_down:
                 popupWindow.dismiss();

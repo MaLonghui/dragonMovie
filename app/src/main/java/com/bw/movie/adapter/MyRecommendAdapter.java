@@ -9,6 +9,7 @@ import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
@@ -16,19 +17,21 @@ import com.bw.movie.activity.recommenddetails.RecommenddetailsActivity;
 import com.bw.movie.bean.RecommendCinemasBean;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.io.Serializable;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyRecommendAdapter extends RecyclerView.Adapter<MyRecommendAdapter.ViewHolder> {
     Context context;
     RecommendCinemasBean recommendCinemasBean;
+    private AttentionClick attentionClick;
 
 
-    public MyRecommendAdapter(Context context, RecommendCinemasBean recommendCinemasBean) {
+    public MyRecommendAdapter(Context context) {
         this.context = context;
+    }
+    public void setList(RecommendCinemasBean recommendCinemasBean) {
         this.recommendCinemasBean = recommendCinemasBean;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -40,18 +43,39 @@ public class MyRecommendAdapter extends RecyclerView.Adapter<MyRecommendAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         Uri uri = Uri.parse(recommendCinemasBean.getResult().get(i).getLogo());
         viewHolder.simPleRecommend.setImageURI(uri);
         viewHolder.textNameRecommend.setText(recommendCinemasBean.getResult().get(i).getName());
         TextPaint paint = viewHolder.textNameRecommend.getPaint();
         paint.setFakeBoldText(true);
         viewHolder.textAddressRecommend.setText(recommendCinemasBean.getResult().get(i).getAddress());
-        viewHolder.textKmRecommend.setText(recommendCinemasBean.getResult().get(i).getDistance()+"km");
+        viewHolder.textKmRecommend.setText(recommendCinemasBean.getResult().get(i).getDistance() + "km");
+        final String followCinema = recommendCinemasBean.getResult().get(i).getFollowCinema();
+        if (followCinema.equals("1")){
+            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_selected);
+        }else{
+            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_default);
+        }
+        viewHolder.cinemaPrise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (attentionClick!=null){
+                    if (recommendCinemasBean.getResult().get(i).getFollowCinema().equals("1")){
+                        recommendCinemasBean.getResult().get(i).setFollowCinema("2");
+                    }else{
+                        recommendCinemasBean.getResult().get(i).setFollowCinema("1");
+                    }
+                    String followCinema1 = recommendCinemasBean.getResult().get(i).getFollowCinema();
+                    attentionClick.clickattention(recommendCinemasBean.getResult().get(i).getId(),followCinema1.equals("1"));
+                    notifyDataSetChanged();
+                }
+            }
+        });
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context,RecommenddetailsActivity.class);
+                Intent intent = new Intent(context, RecommenddetailsActivity.class);
                 intent.putExtra("eid", recommendCinemasBean.getResult().get(i).getId());
                 context.startActivity(intent);
             }
@@ -63,6 +87,8 @@ public class MyRecommendAdapter extends RecyclerView.Adapter<MyRecommendAdapter.
         return recommendCinemasBean.getResult().size();
     }
 
+
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.simPle_recommend)
         SimpleDraweeView simPleRecommend;
@@ -72,9 +98,18 @@ public class MyRecommendAdapter extends RecyclerView.Adapter<MyRecommendAdapter.
         TextView textAddressRecommend;
         @BindView(R.id.text_km_recommend)
         TextView textKmRecommend;
+        @BindView(R.id.cinema_prise)
+        ImageView cinemaPrise;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
+    }
+    public void setAttentionClick(AttentionClick attentionClick){
+        this.attentionClick = attentionClick;
+    }
+    public interface AttentionClick{
+        void clickattention(String cinemaId,boolean b);
     }
 }

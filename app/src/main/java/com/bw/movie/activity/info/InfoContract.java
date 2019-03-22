@@ -15,9 +15,11 @@ import java.util.Map;
 public class InfoContract {
     interface View extends BaseView {
         void userInfoView(Object obj);
+        void updateInfoView(Object obj);
     }
 
     interface  Presenter extends BasePresenter<View> {
         void userInfoPresenter(Map<String,Object> headMap);
+        void updateInfoPresenter(Map<String,Object> headMap,Map<String,Object> parms);
     }
 }

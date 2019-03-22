@@ -1,6 +1,7 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
@@ -10,6 +11,7 @@ import com.bw.movie.bean.CinemaCommentBean;
 import com.bw.movie.bean.CinemaPraiseBean;
 import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.FindInfoBean;
+import com.bw.movie.bean.FlowllMovieBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.LoginBean;
 import com.bw.movie.bean.MovieIdAndFilmBean;
@@ -19,6 +21,7 @@ import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.bean.RegistBean;
 import com.bw.movie.bean.ShangFilmBean;
+import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.bean.UserHeadIconBean;
 
 import java.util.HashMap;
@@ -101,13 +104,17 @@ public interface ApiServer {
     //根据电影ID查询当前排片该电影的影院列表
     @GET
     Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@Query("movieId") String movieId);
-
-
-    //8.查询影院用户评论列表
-    @GET
-    Observable<CinemaCommentBean> cinemacomment(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
-    //10.影院评论点赞
+    //4.修改用户信息
     @POST
     @FormUrlEncoded
-    Observable<CinemaPraiseBean> cinemapraise(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
+    Observable<UpdateInfoBean> updateinfo(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
+    //6.关注影院
+    @GET
+    Observable<CinemaAttentionBean> cinemaattention(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("cinemaId") String cinemaId);
+
+
+   
+    //关注电影
+    @GET
+    Observable<FlowllMovieBean> flowllMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("movieId") String movieId);
 }

@@ -8,10 +8,12 @@ import com.bw.movie.api.ApiServer;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
+import com.bw.movie.bean.FlowllMovieBean;
 import com.bw.movie.mvp.BasePresenterImpl;
 import com.bw.movie.utils.RetrofitManager;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -19,20 +21,21 @@ import io.reactivex.schedulers.Schedulers;
 
 /**
  * MVPPlugin
- *  邮箱 784787081@qq.com
+ * 邮箱 784787081@qq.com
  */
 
-public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.View> implements FilmDetailsContract.Presenter{
+public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.View> implements FilmDetailsContract.Presenter {
 
     /**
      * 电影详情
+     *
      * @param headMap
      * @param prams
      */
     @Override
     public void getPresenterData(HashMap<String, Object> headMap, HashMap<String, Object> prams) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.getDetailsData(Api.FILM_DETAILS,headMap,prams)
+        apiServer.getDetailsData(Api.FILM_DETAILS, headMap, prams)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FilmDetailsBean>() {
@@ -46,13 +49,14 @@ public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.
 
     /**
      * 影片评论
+     *
      * @param headMap
      * @param prams
      */
     @Override
     public void getReviewPresenterData(HashMap<String, Object> headMap, HashMap<String, Object> prams) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.getReviewData(Api.FILM_REVIEW,headMap,prams)
+        apiServer.getReviewData(Api.FILM_REVIEW, headMap, prams)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FilmReviewBean>() {
@@ -65,13 +69,14 @@ public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.
 
     /**
      * 添加评论
+     *
      * @param headMap
      * @param prams
      */
     @Override
     public void getFilmCommentPresenter(HashMap<String, Object> headMap, HashMap<String, Object> prams) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.filmComment(Api.FILM_COMMENT,headMap,prams)
+        apiServer.filmComment(Api.FILM_COMMENT, headMap, prams)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<FilmCommentBean>() {
@@ -80,5 +85,24 @@ public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.
                         mView.getFilmCommentData(filmCommentBean);
                     }
                 });
+    }
+
+    @Override
+    public void getFlowllMoviePresenter(Map<String, Object> headMap, String movieId) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.flowllMovie(Api.FOLLOW_MOVIE,headMap,movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<FlowllMovieBean>() {
+                    @Override
+                    public void accept(FlowllMovieBean flowllMovieBean) throws Exception {
+                        mView.getFlowllMovieData(flowllMovieBean);
+                    }
+                });
+    }
+
+    @Override
+    public void cancelFollowMoviePresenter() {
+
     }
 }

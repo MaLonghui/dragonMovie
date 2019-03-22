@@ -6,6 +6,7 @@ import com.bw.movie.mvp.BasePresenter;
 import com.bw.movie.mvp.BaseView;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * MVPPlugin
@@ -20,7 +21,10 @@ public class FilmDetailsContract {
         void getFilmReviewData(Object object);
         //添加评论
         void getFilmCommentData(Object object);
-
+        //关注电影
+        void getFlowllMovieData(Object object);
+        //取消关注
+        void cancelFollowMovieData(Object object);
 
     }
 
@@ -31,5 +35,9 @@ public class FilmDetailsContract {
         void getReviewPresenterData(HashMap<String,Object> headMap,HashMap<String,Object> prams);
         //添加评论
         void getFilmCommentPresenter(HashMap<String,Object> headMap,HashMap<String,Object> prams);
+        //关注电影
+        void getFlowllMoviePresenter(Map<String,Object> headMap,String movieId);
+        //取消关注
+        void cancelFollowMoviePresenter();
     }
 }

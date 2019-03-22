@@ -16,10 +16,12 @@ public class CinemaContract {
     interface View extends BaseView {
         void recommendView(Object obj);
         void nearbyView(Object obj);
+        void AttentionView(Object obj);
     }
 
     interface  Presenter extends BasePresenter<View> {
         void recommendPresenter(Map<String,Object> headMap,Map<String,Object> parms);
         void nearbyPresenter(Map<String,Object> headMap,Map<String,Object> parms);
+        void AttentionPresenter(Map<String,Object> headMap,String cinemaId);
     }
 }

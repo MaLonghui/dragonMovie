@@ -1,6 +1,7 @@
 package com.bw.movie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -25,12 +26,21 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
     Context context;
     CinemaCommentBean cinemaCommentBean;
     private BtnPriaseListener btnPriaseListener;
+    private String userId;
+    private String sessionId;
 
-    public MyCinemaCommmentAdapter(Context context, CinemaCommentBean cinemaCommentBean) {
+    public MyCinemaCommmentAdapter(Context context) {
         this.context = context;
-        this.cinemaCommentBean = cinemaCommentBean;
     }
 
+    public void setList(CinemaCommentBean cinemaCommentBean) {
+        this.cinemaCommentBean = cinemaCommentBean;
+        notifyDataSetChanged();
+    }
+    public void setID(String userId, String sessionId) {
+        this.userId = userId;
+        this.sessionId = sessionId;
+    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
@@ -50,6 +60,7 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
         String format = sd.format(date);
         viewHolder.textDateCinemaComment.setText(format);
         viewHolder.textPraiseNum.setText(cinemaCommentBean.getResult().get(i).getGreatNum());
+
         if (cinemaCommentBean.getResult().get(i).getIsGreat().equals("0")){
             viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
         }else{
@@ -58,11 +69,23 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
         viewHolder.btnPraiseCinema.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (btnPriaseListener!=null){
                     if (cinemaCommentBean.getResult().get(i).getIsGreat().equals("0")){
                         viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
                     }else{
                         viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
+                    }
+                    if (!userId.equals("")&&!sessionId.equals("")){
+                        viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
+                        if (cinemaCommentBean.getResult().get(i).getIsGreat().equals("0")){
+                            String greatNum = cinemaCommentBean.getResult().get(i).getGreatNum();
+                            int i1 = Integer.parseInt(greatNum);
+                            i1++;
+                            viewHolder.textPraiseNum.setText(String.valueOf(i1));
+                        }
+                    }else{
+                        viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
                     }
                     btnPriaseListener.praiseBtn(cinemaCommentBean.getResult().get(i).getCommentId(),cinemaCommentBean.getResult().get(i).getIsGreat());
                 }
@@ -74,6 +97,9 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
     public int getItemCount() {
         return cinemaCommentBean.getResult().size();
     }
+
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.simPle_cinema_comment)

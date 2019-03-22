@@ -1,11 +1,15 @@
 package com.bw.movie.mvp;
 
 import android.content.Context;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import java.lang.reflect.ParameterizedType;
+
+import static com.bw.movie.net.NoStudoInterent.connectionReceiver;
 
 /**
  * MVPPlugin
@@ -19,6 +23,10 @@ public abstract class MVPBaseFragment<V extends BaseView,T extends BasePresenter
         super.onCreate(savedInstanceState);
         mPresenter= getInstance(this,1);
         mPresenter.attachView((V) this);
+        connectionReceiver = connectionReceiver;
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        getContext().registerReceiver(connectionReceiver, intentFilter);
     }
 
     @Override
