@@ -1,12 +1,14 @@
 package com.bw.movie.activity.login;
 
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.InputType;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -64,6 +66,8 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         boolean flag = sp.getBoolean("flag", false);
         Log.i("aa", "flag" + flag);
@@ -86,7 +90,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.jump_regist:
-                startActivity(new Intent(LoginActivity.this, RegistActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegistActivity.class),ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 break;
             case R.id.btn_login:
                 phone = editPhone.getText().toString().trim();

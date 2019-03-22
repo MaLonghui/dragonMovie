@@ -10,6 +10,7 @@ import com.bw.movie.bean.CinemaCommentBean;
 import com.bw.movie.bean.CinemaPraiseBean;
 import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.FindInfoBean;
+import com.bw.movie.bean.FlowllMovieBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.LoginBean;
 import com.bw.movie.bean.MovieIdAndFilmBean;
@@ -103,4 +104,7 @@ public interface ApiServer {
     @POST
     @FormUrlEncoded
     Observable<CinemaPraiseBean> cinemapraise(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
+    //关注电影
+    @GET
+    Observable<FlowllMovieBean> flowllMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("movieId") String movieId);
 }

@@ -39,7 +39,7 @@ public class CinemaByIdBean implements Serializable {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable{
         /**
          * address : 北京海淀区海淀区清河中街68号五彩城购物中心东区7层
          * commentTotal : 0

@@ -10,8 +10,80 @@
     android:paddingLeft="@dimen/dp_24"
     android:paddingRight="@dimen/dp_24">
 
+
+    <RelativeLayout
+        android:id="@+id/cinema_relative"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/cinema_dingwei_icon"
+            android:src="@mipmap/cinema_detail_icon_location_default"
+            android:layout_marginRight="@dimen/dp_6"
+            android:layout_centerVertical="true"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24" />
+        <TextView
+            android:id="@+id/cinema_text_addr"
+            android:layout_toRightOf="@id/cinema_dingwei_icon"
+            android:layout_centerVertical="true"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_14"
+            android:text="北京"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <!--搜索框-->
+        <RelativeLayout
+            android:id="@+id/film_seach_relative"
+            android:layout_width="@dimen/dp_220"
+            android:layout_height="@dimen/dp_24"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_m_170"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/search_shape">
+
+            <ImageView
+                android:id="@+id/film_seach_ima"
+                android:layout_width="@dimen/dp_24"
+                android:layout_height="@dimen/dp_24"
+                android:layout_marginLeft="@dimen/dp_8"
+                android:src="@mipmap/com_icon_search_default"
+
+                />
+
+            <EditText
+                android:id="@+id/film_seach_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_toRightOf="@id/film_seach_ima"
+                android:background="@null"
+                android:hint="请输入关键字"
+                android:textColor="#f2f2f2"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/film_seach_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/dp_24"
+                android:background="@null"
+                android:text="搜索"
+                android:textColor="#ffff"
+                android:textSize="@dimen/sp_12"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
     <LinearLayout
         android:id="@+id/linear_layout"
+        android:layout_below="@id/cinema_relative"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"

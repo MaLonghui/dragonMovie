@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -54,6 +55,8 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         ButterKnife.bind(this);
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         String userId = sp.getString("userId", "");

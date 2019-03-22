@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff"
+    android:paddingLeft="@dimen/dp_24"
+    android:paddingRight="@dimen/dp_24">
+
+    <RelativeLayout
+        android:id="@+id/schedule_relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_30">
+
+        <TextView
+            android:id="@+id/schedule_ciname_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:text="asda"
+            android:textColor="#666666"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/schedule_address"
+            android:layout_width="wrap_content"
+            android:layout_toLeftOf="@+id/schedule_img"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/dp_5"
+            android:layout_below="@id/schedule_ciname_name"
+            android:layout_alignParentLeft="true"
+            android:text="dasfas"
+            android:textColor="#666666"
+            android:textSize="@dimen/sp_12" />
+
+        <ImageView
+            android:id="@+id/schedule_img"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_5"
+            android:src="@mipmap/com_icon_navigation_default" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_312"
+        android:background="@mipmap/search"
+        android:layout_below="@id/schedule_relative"
+        android:layout_height="@dimen/dp_142"
+android:id="@+id/schedule_rela"
+        android:layout_marginTop="@dimen/dp_10">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/schedule_simpleview"
+            android:layout_width="@dimen/dp_103"
+            android:layout_height="@dimen/dp_130"
+            android:layout_marginRight="@dimen/dp_20"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_6" />
+
+        <RelativeLayout
+            android:id="@+id/pop_relative"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/schedule_simpleview">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toLeftOf="@id/son_popwindow_down"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/schdule_movie_name"
+                    android:layout_width="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:textColor="#fff"
+                    android:text="dafasd"
+                    android:textSize="@dimen/dp_20"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/schedule_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:text="类型"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/schedule_director"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:text="导演"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/schedule_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginBottom="@dimen/dp_10"
+                    android:text="时长"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/sp_12" />
+
+                <TextView
+                    android:id="@+id/schedule_movie_address"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:text="产地"
+                    android:textColor="#fff"
+                    android:textSize="@dimen/sp_12" />
+
+            </LinearLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/schedule_recycler_view"
+        android:layout_below="@+id/schedule_rela"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:background="#75ffffff"
+        android:layout_height="@dimen/dp_100">
+        <ImageView
+            android:id="@+id/schedule_return"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/com_icon_return_default"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60" />
+    </RelativeLayout>
+
+</RelativeLayout>

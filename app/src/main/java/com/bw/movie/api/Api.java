@@ -33,7 +33,7 @@ public class Api {
     //14.根据影院ID查询该影院当前排期的电影列表
     public static final String FILMFROMID_URL = "movieApi/movie/v1/findMovieListByCinemaId";
     //15.根据电影ID和影院ID查询电影排期列表
-    public static final String MOVIEIDANDFILMID_URL = "movieApi/movie/v1/findMovieScheduleList?";
+    public static final String MOVIEIDANDFILMID_URL = "movieApi/movie/v1/findMovieScheduleList";
     //添加评论
     public static final String FILM_COMMENT = "movieApi/movie/v1/verify/movieComment";
     //根据电影ID查询当前排片该电影的影院列表
@@ -42,4 +42,7 @@ public class Api {
     public static final String CINEMACOMMENT_URL = "movieApi/cinema/v1/findAllCinemaComment";
     //10.影院评论点赞
     public static final String CINEMAPRAISE_URL = "movieApi/cinema/v1/verify/cinemaCommentGreat";
+    //关注电影
+    public static final String  FOLLOW_MOVIE = "movieApi/movie/v1/verify/followMovie";
+
 }
