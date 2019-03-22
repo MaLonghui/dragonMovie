@@ -38,6 +38,7 @@
         <activity android:name=".activity.filmdetails.FilmDetailsActivity"/>
         <activity android:name=".activity.info.InfoActivity"/>
         <activity android:name=".activity.seat.SeatActivity"/>
+        <activity android:name=".activity.attention.AttentionActivity"/>
         <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity"/>
     </application>
 

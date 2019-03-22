@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".MainActivity">
+
+        <RadioGroup
+            android:id="@+id/followgroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp_30"
+            >
+
+            <RadioButton
+                android:id="@+id/followmovie"
+                android:layout_width="@dimen/dp_85"
+                android:layout_height="@dimen/dp_25"
+                android:button="@null"
+                android:text="电影"
+                android:background="@drawable/top_btn_shape"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_20"
+                />
+            <RadioButton
+                android:id="@+id/followcamera"
+                android:layout_width="@dimen/dp_85"
+                android:layout_height="@dimen/dp_25"
+                android:button="@null"
+                android:layout_weight="1"
+                android:text="影院"
+
+                android:gravity="center"
+                android:layout_marginRight="@dimen/dp_20"
+                />
+
+
+        </RadioGroup>
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/followviewpager"
+            android:layout_below="@+id/followgroup"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+        <ImageView
+            android:id="@+id/flowimages"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:src="@mipmap/com_icon_return_default"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_20"
+            />
+    </RelativeLayout>
+</LinearLayout>

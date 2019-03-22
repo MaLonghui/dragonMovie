@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.attention.AttentionActivity;
 import com.bw.movie.activity.info.InfoActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.UserHeadIconBean;
@@ -169,6 +170,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                     startActivity(new Intent(getActivity(),InfoActivity.class));
                     break;
                 case R.id.my_attentions:
+                    startActivity(new Intent(getActivity(),AttentionActivity.class));
                     break;
                 case R.id.my_rccord:
                     break;
