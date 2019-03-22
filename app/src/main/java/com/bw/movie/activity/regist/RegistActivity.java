@@ -2,6 +2,7 @@ package com.bw.movie.activity.regist;
 
 
 import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +13,7 @@ import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.util.DisplayMetrics;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,6 +63,8 @@ public class RegistActivity extends MVPBaseActivity<RegistContract.View, RegistP
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         ButterKnife.bind(this);
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         mTm = (TelephonyManager) this.getSystemService(Context.TELEPHONY_SERVICE);
@@ -79,7 +83,7 @@ public class RegistActivity extends MVPBaseActivity<RegistContract.View, RegistP
         RegistBean registBean = (RegistBean) obj;
         if (registBean.getMessage().equals("注册成功")){
             Toast.makeText(RegistActivity.this,registBean.getMessage(),Toast.LENGTH_LONG).show();
-            startActivity(new Intent(RegistActivity.this,LoginActivity.class));
+            startActivity(new Intent(RegistActivity.this,LoginActivity.class),ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             finish();
         }else{
             Toast.makeText(RegistActivity.this,"注册失败",Toast.LENGTH_LONG).show();

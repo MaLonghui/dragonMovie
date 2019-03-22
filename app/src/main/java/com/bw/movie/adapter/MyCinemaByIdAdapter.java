@@ -24,6 +24,11 @@ public class MyCinemaByIdAdapter extends RecyclerView.Adapter<MyCinemaByIdAdapte
 
     private Context context;
     private List<CinemaByIdBean.ResultBean> beanResult;
+    private onClicklistener onClicklistener;
+
+    public void setOnClicklistener(MyCinemaByIdAdapter.onClicklistener onClicklistener) {
+        this.onClicklistener = onClicklistener;
+    }
 
     public MyCinemaByIdAdapter(Context context, List<CinemaByIdBean.ResultBean> beanResult) {
         this.context = context;
@@ -39,12 +44,18 @@ public class MyCinemaByIdAdapter extends RecyclerView.Adapter<MyCinemaByIdAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         Uri uri = Uri.parse(beanResult.get(i).getLogo());
         viewHolder.simPleRecommend.setImageURI(uri);
         viewHolder.textNameRecommend.setText(beanResult.get(i).getName());
         viewHolder.textAddressRecommend.setText(beanResult.get(i).getAddress());
         viewHolder.textKmRecommend.setText(beanResult.get(i).getFollowCinema()+"km");
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClicklistener.click(beanResult.get(i));
+            }
+        });
     }
 
     @Override
@@ -67,5 +78,8 @@ public class MyCinemaByIdAdapter extends RecyclerView.Adapter<MyCinemaByIdAdapte
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+    public interface onClicklistener{
+        void click(CinemaByIdBean.ResultBean id);
     }
 }

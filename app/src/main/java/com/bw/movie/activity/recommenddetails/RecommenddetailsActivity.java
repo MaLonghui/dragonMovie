@@ -13,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -100,6 +101,8 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
@@ -249,6 +252,7 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
     public void onViewClicked() {
         View view = LayoutInflater.from(this).inflate(R.layout.popuprecommenddetails_layout, null);
         popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
         popupWindow.setTouchable(true);
         popupWindow.setOutsideTouchable(false);
         popupWindow.setFocusable(true);

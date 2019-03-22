@@ -3,6 +3,7 @@ package com.bw.movie.fragment.cinema;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.animation.ObjectAnimator;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,11 +12,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.adapter.MyNearbyAdapter;
@@ -38,6 +45,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.view.View.VISIBLE;
+
 /**
  * MVPPlugin
  * 邮箱 784787081@qq.com
@@ -52,6 +61,9 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     @BindView(R.id.xrecycler_view)
     RecyclerView xrecyclerView;
     Unbinder unbinder;
+
+    private String userId;
+    private String sessionId;
     private int page = 1;
     private int count = 20;
     private String longitude = "116.30551391385724";
@@ -62,9 +74,10 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     private List<RecommendCinemasBean.ResultBean> result;
     private boolean flag = false;
     private SharedPreferences sp;
-    private String userId;
-    private String sessionId;
     private CinemaAttentionBean cinemaAttentionBean;
+    private Map<String, Object> headMap;
+    private Map<String, Object> parms;
+    private Map<String, Object> parms1;
 
     @Nullable
     @Override
@@ -96,6 +109,40 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         }
         btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
         btnRecommend.setTextColor(Color.WHITE);
+        if (!userId.equals("")&&!sessionId.equals("")){
+            headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            parms = new HashMap<>();
+            parms.put("page", page);
+            parms.put("count", count);
+            parms1 = new HashMap<>();
+            parms1.put("page", page);
+            parms1.put("count", count);
+            parms1.put("longitude", longitude);
+            parms1.put("latitude", latitude);
+            mPresenter.recommendPresenter(headMap, parms);
+            mPresenter.nearbyPresenter(headMap,parms1);
+        }
+
+        btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
+        btnRecommend.setTextColor(Color.WHITE);
+//        filmSeachIma.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                initfsi();
+//            }
+//        });
+
+//        filmSeachText.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                String s = filmSeachEdit.getText().toString();
+//                if (TextUtils.isEmpty(s)){
+//                    initfst();
+//                }
+//            }
+//        });
         return view;
     }
 
@@ -112,12 +159,54 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         unbinder.unbind();
     }
 
+    public static int dp2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    //点击图标拉伸搜索框
+    boolean mBoolean = true;
+
+//    private void initfsi() {
+//        if (mBoolean) {
+//            ObjectAnimator translationX = ObjectAnimator.ofFloat(filmSeachRelative, "translationX", 0, (dp2px(getActivity(), -170)));
+//            ObjectAnimator alpha = ObjectAnimator.ofFloat(filmSeachEdit, "alpha", 0.0f, 1.0f);
+//            ObjectAnimator alphaButton = ObjectAnimator.ofFloat(filmSeachText, "alpha", 0.0f, 1.0f);
+//            alphaButton.setDuration(1000);
+//            filmSeachText.setVisibility(VISIBLE);
+//            alphaButton.start();
+//            alpha.setDuration(1000);
+//            filmSeachEdit.setVisibility(VISIBLE);
+//            alpha.start();
+//            //动画时间
+//            translationX.setDuration(1000);
+//            translationX.start();
+//            mBoolean = !mBoolean;
+//        }
+//    }
+//
+//    //收缩搜索框
+//    private void initfst() {
+//        ObjectAnimator translationX = ObjectAnimator.ofFloat(filmSeachRelative, "translationX", (dp2px(getActivity(), -170)), 0);
+//        ObjectAnimator alpha = ObjectAnimator.ofFloat(filmSeachEdit, "alpha", 1.0f, 0.5f, 0.0f);
+//        ObjectAnimator alphaButton = ObjectAnimator.ofFloat(filmSeachText, "alpha", 1.0f, 0.5f, 0.0f);
+//        alphaButton.setDuration(1000);
+//        alphaButton.start();
+//        alpha.setDuration(1000);
+//        alpha.start();
+//        translationX.setDuration(1000);
+//        translationX.start();
+//        mBoolean = !mBoolean;
+//    }
+
+
+
     @Override
     public void recommendView(Object obj) {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         xrecyclerView.setLayoutManager(linearLayoutManager);
-        if (obj!=null){
+        if (obj != null) {
             recommendCinemasBean = (RecommendCinemasBean) obj;
             result = recommendCinemasBean.getResult();
 //            Log.i("aa","recommendCinemasBean:"+recommendCinemasBean.getMessage());
@@ -152,11 +241,11 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         xrecyclerView.setLayoutManager(linearLayoutManager);
-        if (obj!=null){
+        if (obj != null) {
             NearbyCinemasBean nearbyCinemasBean = (NearbyCinemasBean) obj;
 //            Log.i("aa","nearbyCinemasBean:"+nearbyCinemasBean.getMessage());
-            if (nearbyCinemasBean!=null){
-                MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(),nearbyCinemasBean);
+            if (nearbyCinemasBean != null) {
+                MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(), nearbyCinemasBean);
                 xrecyclerView.setAdapter(myNearbyAdapter);
             }
         }
@@ -199,6 +288,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                     mPresenter.recommendPresenter(headMap,parms);
                 }
 
+                mPresenter.recommendPresenter(headMap, parms);
                 btnRecommend.setBackgroundResource(R.drawable.button_ripple);
                 btnRecommend.setTextColor(Color.WHITE);
                 btnNearby.setTextColor(Color.BLACK);
@@ -224,6 +314,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                     parms1.put("latitude",latitude);
                     mPresenter.nearbyPresenter(headMap,parms1);
                 }
+                mPresenter.nearbyPresenter(headMap, parms1);
                 btnNearby.setBackgroundResource(R.drawable.button_ripple);
                 btnRecommend.setBackgroundResource(R.color.colorWhite);
                 btnNearby.setTextColor(Color.WHITE);

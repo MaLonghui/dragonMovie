@@ -39,7 +39,7 @@ public class FilmReviewBean implements Serializable {
         this.result = result;
     }
 
-    public static class ResultBean {
+    public static class ResultBean implements Serializable{
         /**
          * commentContent : 123456
          * commentHeadPic : http://172.17.8.100/images/movie/head_pic/bwjy.jpg
