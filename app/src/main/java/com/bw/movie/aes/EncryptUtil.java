@@ -59,7 +59,7 @@ public class EncryptUtil {
 
     public static void main(String [] args)throws Exception
     {
-        String a = encrypt("111");
+        String a = encrypt("929127");
         System.err.println("加密后: " + a);
         String b = decrypt(a);
         System.err.println("解密后: " + b);

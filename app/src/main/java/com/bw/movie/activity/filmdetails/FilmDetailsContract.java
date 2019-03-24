@@ -38,6 +38,6 @@ public class FilmDetailsContract {
         //关注电影
         void getFlowllMoviePresenter(Map<String,Object> headMap,String movieId);
         //取消关注
-        void cancelFollowMoviePresenter();
+        void cancelFollowMoviePresenter(HashMap<String,Object> headMap,HashMap<String,Object> prams);
     }
 }

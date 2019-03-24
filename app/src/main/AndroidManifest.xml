@@ -8,9 +8,10 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -29,7 +30,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.GuideActivity" />
-        <activity android:name=".activity.ShowActivity" />
+        <activity
+            android:name=".activity.ShowActivity"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.regist.RegistActivity" />
         <activity android:name=".activity.FilmSearchActivity" />
@@ -40,6 +43,10 @@
         <activity android:name=".activity.seat.SeatActivity"/>
         <activity android:name=".activity.attention.AttentionActivity"/>
         <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity"/>
+        <activity android:name=".activity.feedback.FeedbackActivity"/>
+        <activity android:name=".activity.updateinfo.UpdateInfoActivity"/>
+        <activity android:name=".activity.msg.MsgActivity"/>
+        <activity android:name=".activity.CinemaByNameActivity" />
     </application>
 
 </manifest>

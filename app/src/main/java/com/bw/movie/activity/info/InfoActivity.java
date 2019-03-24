@@ -2,6 +2,7 @@ package com.bw.movie.activity.info;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
+import com.bw.movie.activity.updateinfo.UpdateInfoActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.mvp.MVPBaseActivity;
@@ -73,7 +75,7 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
             parms.put("nickName","杜拉拉");
             parms.put("sex","1");
             parms.put("email","1971658757@qq.com");
-            mPresenter.updateInfoPresenter(headMap,parms);
+            mPresenter.userInfoPresenter(headMap);
         }
 
     }
@@ -104,15 +106,8 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
         }
     }
 
-    @Override
-    public void updateInfoView(Object obj) {
-        if (obj!=null){
-            UpdateInfoBean updateInfoBean = (UpdateInfoBean) obj;
-            Log.i("aa","updateInfoBean:"+updateInfoBean.getMessage());
-        }
-    }
 
-    @OnClick({R.id.info_sdv, R.id.info_reset_psw, R.id.info_request})
+    @OnClick({R.id.info_sdv, R.id.info_reset_psw, R.id.info_request,R.id.info_nick,R.id.info_sex,R.id.info_mail})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.info_sdv:
@@ -122,6 +117,19 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
             case R.id.info_request:
                 finish();
                 break;
+            case R.id.info_nick:
+                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
+                finish();
+                break;
+            case R.id.info_mail:
+                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
+                finish();
+                break;
+            case R.id.info_sex:
+                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
+                finish();
+                break;
+
         }
     }
 
