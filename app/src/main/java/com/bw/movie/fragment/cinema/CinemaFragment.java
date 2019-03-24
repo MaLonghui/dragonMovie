@@ -339,6 +339,9 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             cinemaAttentionBean = (CinemaAttentionBean) obj;
             Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
             if (cinemaAttentionBean.getStatus().equals("0000")) {
+                Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+                Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
+                if (cinemaAttentionBean.getStatus().equals("0000")) {
 //                Map<String,Object> headMap = new HashMap<>();
 //                headMap.put("userId", userId);
 //                headMap.put("sessionId", sessionId);
@@ -356,7 +359,15 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
     }
     @Override
-    public void getCinemaByNameViewData (Object object){
+    public void CancelAttentionView(Object obj) {
+        CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
+        if (cancelAttentionBean.getStatus().equals("0000")) {
+            Toast.makeText(getActivity(), cancelAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+
+        }
+    }
+    @Override
+        public void getCinemaByNameViewData(Object object) {
         if (object != null) {
             CinemaByNameBean cinemaByNameBean = (CinemaByNameBean) object;
             List<CinemaByNameBean.ResultBean> nameBeanResult = cinemaByNameBean.getResult();
@@ -386,7 +397,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             Toast.makeText(getActivity(),cancelAttentionBean.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
-
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})
     public void onViewClicked(View view) {
         switch (view.getId()) {
