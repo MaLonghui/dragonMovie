@@ -1,8 +1,10 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.CancelFollowMovieBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
+import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
@@ -117,4 +119,11 @@ public interface ApiServer {
     //关注电影
     @GET
     Observable<FlowllMovieBean> flowllMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("movieId") String movieId);
+    //根据电影名称模糊查询电影院
+    @GET
+    Observable<CinemaByNameBean> findAllCinemas(@Url String url,@QueryMap Map<String,Object> parms);
+    //取消关注电影
+    @GET
+    Observable<CancelFollowMovieBean> cancelFollowMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+
 }

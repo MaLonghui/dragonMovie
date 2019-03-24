@@ -17,11 +17,15 @@ public class CinemaContract {
         void recommendView(Object obj);
         void nearbyView(Object obj);
         void AttentionView(Object obj);
+        //查询影院
+        void getCinemaByNameViewData(Object object);
     }
 
     interface  Presenter extends BasePresenter<View> {
         void recommendPresenter(Map<String,Object> headMap,Map<String,Object> parms);
         void nearbyPresenter(Map<String,Object> headMap,Map<String,Object> parms);
         void AttentionPresenter(Map<String,Object> headMap,String cinemaId);
+        //查询影院
+        void getCinemaByNamePresenterData(Map<String,Object> parms);
     }
 }

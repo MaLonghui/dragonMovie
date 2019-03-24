@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
+import com.bw.movie.bean.CancelFollowMovieBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
@@ -102,7 +103,16 @@ public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.
     }
 
     @Override
-    public void cancelFollowMoviePresenter() {
-
+    public void cancelFollowMoviePresenter(HashMap<String,Object> headMap,HashMap<String,Object> prams) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.cancelFollowMovie(Api.CancelFollowMovie,headMap,prams)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CancelFollowMovieBean>() {
+                    @Override
+                    public void accept(CancelFollowMovieBean cancelFollowMovieBean) throws Exception {
+                        mView.cancelFollowMovieData(cancelFollowMovieBean);
+                    }
+                });
     }
 }

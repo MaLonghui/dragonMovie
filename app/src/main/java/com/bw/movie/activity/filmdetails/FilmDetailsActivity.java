@@ -31,6 +31,7 @@ import com.bw.movie.activity.cinemabymovieid.CinemaByMovieIdActivity;
 import com.bw.movie.adapter.FilmReviewAdapter;
 import com.bw.movie.adapter.MyJuZhaoAdapter;
 import com.bw.movie.adapter.MyPopwindowAdapter;
+import com.bw.movie.bean.CancelFollowMovieBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
@@ -57,6 +58,7 @@ import fm.jiecao.jcvideoplayer_lib.JCVideoPlayer;
 /**
  * MVPPlugin
  * 邮箱 784787081@qq.com
+
  */
 
 public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.View, FilmDetailsPresenter> implements FilmDetailsContract.View {
@@ -100,6 +102,31 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     private String userId;
     private String sessionId;
     private SharedPreferences preferences;
+    private HashMap<String, Object> followHeadMap;
+    private HashMap<String, Object> canclePrams;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        userId = preferences.getString("userId", "");
+        sessionId = preferences.getString("sessionId", "");
+        //参数集合
+        HashMap<String, Object> prams = new HashMap<>();
+        prams.put("movieId", movieId);
+        if (userId.equals("") || sessionId.equals("")) {
+            HashMap<String, Object> headMapNull = new HashMap<>();
+
+            mPresenter.getPresenterData(headMapNull, prams);
+
+        } else {
+            //电影详情请求头集合
+            HashMap<String, Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            mPresenter.getPresenterData(headMap, prams);
+        }
+    }
+
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -157,36 +184,36 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 bundle.putSerializable("resultBean", resultBean);
                 Intent intent = new Intent(FilmDetailsActivity.this, CinemaByMovieIdActivity.class);
                 intent.putExtras(bundle);
-                startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(FilmDetailsActivity.this).toBundle());
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(FilmDetailsActivity.this).toBundle());
             }
         });
-
+        followHeadMap = new HashMap<>();
+        canclePrams = new HashMap<>();
+        canclePrams.put("movieId", movieId);
+        followHeadMap.put("userId", userId);
+        followHeadMap.put("sessionId", sessionId);
         detailPrise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, Object> followHeadMap = new HashMap<>();
-                followHeadMap.put("userId", userId);
-                followHeadMap.put("sessionId", sessionId);
-                /*if (userId.equals("")||sessionId.equals("")){
-                    detailPrise.setImageResource(R.mipmap.com_icon_collection_default);
-                    mPresenter.getFlowllMoviePresenter(followHeadMap, movieId);
-                }else{
-                    detailPrise.setImageResource(R.mipmap.com_icon_collection_selected);*/
-                    mPresenter.getFlowllMoviePresenter(followHeadMap, movieId);
-                //}
-
+                if (!userId.equals("") || !sessionId.equals("")) {
+                    if (resultBean.getFollowMovie() == 1) {
+                        resultBean.setFollowMovie(2);
+                        detailPrise.setImageResource(R.mipmap.com_icon_collection_default);
+                        mPresenter.cancelFollowMoviePresenter(followHeadMap, canclePrams);
+                    } else if (resultBean.getFollowMovie() == 2) {
+                        resultBean.setFollowMovie(1);
+                        detailPrise.setImageResource(R.mipmap.com_icon_collection_selected);
+                        mPresenter.getFlowllMoviePresenter(followHeadMap, movieId);
+                    }
+                } else {
+                    AlertDialogUtils.AlertDialogLogin(FilmDetailsActivity.this);
+                }
             }
         });
 
 
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        userId = preferences.getString("userId", "");
-        sessionId = preferences.getString("sessionId", "");
-    }
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void onEventBus(String id) {
@@ -201,20 +228,21 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             detailName.setText(resultBean.getName());
             Uri uri = Uri.parse(resultBean.getImageUrl());
             detailsSimpleView.setImageURI(uri);
+            if (resultBean.getFollowMovie() == 1) {
+                detailPrise.setImageResource(R.mipmap.com_icon_collection_selected);
+            } else {
+                detailPrise.setImageResource(R.mipmap.com_icon_collection_default);
+            }
         }
     }
+
 
     @Override
     public void getFilmReviewData(Object o) {
         if (o != null) {
             FilmReviewBean filmReviewBean = (FilmReviewBean) o;
             reviewBeanResult = filmReviewBean.getResult();
-            //Toast.makeText(this, resultBean.getFollowMovie()+"", Toast.LENGTH_SHORT).show();
-            if (resultBean.getFollowMovie() == 1) {
-                detailPrise.setImageResource(R.mipmap.com_icon_collection_selected);
-            } else {
-                detailPrise.setImageResource(R.mipmap.com_icon_collection_default);
-            }
+
         }
     }
 
@@ -234,17 +262,25 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
 
     @Override
     public void getFlowllMovieData(Object object) {
-        FlowllMovieBean flowllMovieBean = (FlowllMovieBean) object;
-
-        if (flowllMovieBean.getStatus().equals("0000")) {
-            Toast.makeText(this, flowllMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
-        } else if (flowllMovieBean.getStatus().equals("9999")) {
-            AlertDialogUtils.AlertDialogLogin(this);
+        if (object != null) {
+            FlowllMovieBean flowllMovieBean = (FlowllMovieBean) object;
+            if (flowllMovieBean.getStatus().equals("0000")) {
+                Toast.makeText(this, flowllMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         }
+
     }
 
     @Override
     public void cancelFollowMovieData(Object object) {
+        if (object != null) {
+            CancelFollowMovieBean cancelFollowMovieBean = (CancelFollowMovieBean) object;
+            if (cancelFollowMovieBean.getStatus().equals("0000")) {
+                Toast.makeText(this, cancelFollowMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            //Toast.makeText(this, cancelFollowMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+
 
     }
 

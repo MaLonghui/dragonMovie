@@ -17,6 +17,7 @@ import static com.bw.movie.net.NoStudoInterent.connectionReceiver;
  */
 
 public abstract class MVPBaseFragment<V extends BaseView,T extends BasePresenterImpl<V>> extends Fragment implements BaseView{
+
     public T mPresenter;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

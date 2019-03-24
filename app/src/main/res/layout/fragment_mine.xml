@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.bw.movie.fragment.customer.PersonalCustom
 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="match_parent">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:fresco="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
 
         <RelativeLayout
             android:id="@+id/layout_my"
@@ -26,13 +27,13 @@
 
             <com.facebook.drawee.view.SimpleDraweeView
                 android:id="@+id/my_icon"
-                fresco:progressBarAutoRotateInterval="1000"
-                fresco:progressBarImage="@drawable/loading_"
                 android:layout_width="@dimen/dp_72"
                 android:layout_height="@dimen/dp_72"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_60"
                 fresco:placeholderImage="@mipmap/bitmap_title"
+                fresco:progressBarAutoRotateInterval="1000"
+                fresco:progressBarImage="@drawable/loading_"
                 fresco:roundAsCircle="true"
                 fresco:roundBottomLeft="false"
                 fresco:roundBottomRight="true"
@@ -50,8 +51,8 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_10"
                 android:hint="@string/my_name"
-                android:textColorHint="@color/colorWhite"
-                android:textColor="@color/colorWhite" />
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite" />
 
             <Button
                 android:id="@+id/my_sign_in"
@@ -110,6 +111,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_10"
             android:background="@drawable/recommended_shape_bg">
+
             <RelativeLayout
                 android:id="@+id/my_attentions"
                 android:layout_width="wrap_content"
@@ -222,13 +224,13 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/my_logout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/dp_50"
-                android:layout_toRightOf="@id/my_version">
+                android:layout_toRightOf="@id/my_version"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/logout"
