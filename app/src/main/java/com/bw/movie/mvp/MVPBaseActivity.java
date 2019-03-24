@@ -40,6 +40,8 @@ public abstract class MVPBaseActivity<V extends BaseView,T extends BasePresenter
         super.onDestroy();
         if (mPresenter!=null)
         mPresenter.detachView();
+        unregisterReceiver(connectionReceiver);
+
     }
 
 

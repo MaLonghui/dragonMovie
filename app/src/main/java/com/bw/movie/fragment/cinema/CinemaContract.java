@@ -17,7 +17,10 @@ public class CinemaContract {
         void recommendView(Object obj);
         void nearbyView(Object obj);
         void AttentionView(Object obj);
+
         void CancelAttentionView(Object obj);
+        //查询影院
+        void getCinemaByNameViewData(Object object);
     }
 
     interface  Presenter extends BasePresenter<View> {
@@ -25,5 +28,7 @@ public class CinemaContract {
         void nearbyPresenter(Map<String,Object> headMap,Map<String,Object> parms);
         void AttentionPresenter(Map<String,Object> headMap,String cinemaId);
         void CancelAttentionPresenter(Map<String,Object> headMap,String cinemaId);
+        //查询影院
+        void getCinemaByNamePresenterData(Map<String,Object> parms);
     }
 }

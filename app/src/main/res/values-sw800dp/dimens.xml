@@ -2,6 +2,7 @@
 <resources>
 	<dimen name="common_margin">@dimen/dp_15</dimen>
 	<dimen name="dp_m_60">-133.3333dp</dimen>
+	<dimen name="dp_m_170">-377.7778dp</dimen>
 	<dimen name="dp_m_30">-66.6667dp</dimen>
 	<dimen name="dp_m_20">-44.4444dp</dimen>
 	<dimen name="dp_m_12">-26.6667dp</dimen>

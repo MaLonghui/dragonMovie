@@ -7,6 +7,10 @@ import com.bw.movie.bean.MovieAttentionBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
 import com.bw.movie.bean.FilmAttentionBean;
+import com.bw.movie.bean.CancelFollowMovieBean;
+import com.bw.movie.bean.CinemaAttentionBean;
+import com.bw.movie.bean.CinemaByIdBean;
+import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
@@ -142,4 +146,11 @@ public interface ApiServer {
     //3.查询系统消息列表
     @GET
     Observable<SysMsgStatusBean> msgstatus(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("id") String id);
+    //根据电影名称模糊查询电影院
+    @GET
+    Observable<CinemaByNameBean> findAllCinemas(@Url String url,@QueryMap Map<String,Object> parms);
+    //取消关注电影
+    @GET
+    Observable<CancelFollowMovieBean> cancelFollowMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+
 }
