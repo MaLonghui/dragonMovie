@@ -36,17 +36,5 @@ public class InfoPresenter extends BasePresenterImpl<InfoContract.View> implemen
                 });
     }
 
-    @Override
-    public void updateInfoPresenter(Map<String, Object> headMap, Map<String, Object> parms) {
-        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.updateinfo(Api.UPDATEINFO_URL,headMap,parms)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<UpdateInfoBean>() {
-                    @Override
-                    public void accept(UpdateInfoBean updateInfoBean) throws Exception {
-                        mView.updateInfoView(updateInfoBean);
-                    }
-                });
-    }
+
 }

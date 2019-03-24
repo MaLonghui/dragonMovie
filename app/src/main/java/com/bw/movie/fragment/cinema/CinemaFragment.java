@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.adapter.MyNearbyAdapter;
 import com.bw.movie.adapter.MyRecommendAdapter;
+import com.bw.movie.bean.CancelAttentionBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.NearbyCinemasBean;
 import com.bw.movie.bean.RecommendCinemasBean;
@@ -75,9 +76,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     private boolean flag = false;
     private SharedPreferences sp;
     private CinemaAttentionBean cinemaAttentionBean;
-    private Map<String, Object> headMap;
-    private Map<String, Object> parms;
-    private Map<String, Object> parms1;
 
     @Nullable
     @Override
@@ -109,40 +107,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         }
         btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
         btnRecommend.setTextColor(Color.WHITE);
-        if (!userId.equals("")&&!sessionId.equals("")){
-            headMap = new HashMap<>();
-            headMap.put("userId", userId);
-            headMap.put("sessionId", sessionId);
-            parms = new HashMap<>();
-            parms.put("page", page);
-            parms.put("count", count);
-            parms1 = new HashMap<>();
-            parms1.put("page", page);
-            parms1.put("count", count);
-            parms1.put("longitude", longitude);
-            parms1.put("latitude", latitude);
-            mPresenter.recommendPresenter(headMap, parms);
-            mPresenter.nearbyPresenter(headMap,parms1);
-        }
-
-        btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
-        btnRecommend.setTextColor(Color.WHITE);
-//        filmSeachIma.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                initfsi();
-//            }
-//        });
-
-//        filmSeachText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                String s = filmSeachEdit.getText().toString();
-//                if (TextUtils.isEmpty(s)){
-//                    initfst();
-//                }
-//            }
-//        });
         return view;
     }
 
@@ -151,6 +115,21 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         super.onResume();
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
+        if (!userId.equals("")&&!sessionId.equals("")){
+            Map<String,Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            Map<String,Object> parms = new HashMap<>();
+            parms.put("page",page);
+            parms.put("count",count);
+            mPresenter.recommendPresenter(headMap, parms);
+        }else{
+            Map<String,Object> headMap = new HashMap<>();
+            Map<String,Object> parms = new HashMap<>();
+            parms.put("page",page);
+            parms.put("count",count);
+            mPresenter.recommendPresenter(headMap, parms);
+        }
     }
 
     @Override
@@ -158,48 +137,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    public static int dp2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
-
-    //点击图标拉伸搜索框
-    boolean mBoolean = true;
-
-//    private void initfsi() {
-//        if (mBoolean) {
-//            ObjectAnimator translationX = ObjectAnimator.ofFloat(filmSeachRelative, "translationX", 0, (dp2px(getActivity(), -170)));
-//            ObjectAnimator alpha = ObjectAnimator.ofFloat(filmSeachEdit, "alpha", 0.0f, 1.0f);
-//            ObjectAnimator alphaButton = ObjectAnimator.ofFloat(filmSeachText, "alpha", 0.0f, 1.0f);
-//            alphaButton.setDuration(1000);
-//            filmSeachText.setVisibility(VISIBLE);
-//            alphaButton.start();
-//            alpha.setDuration(1000);
-//            filmSeachEdit.setVisibility(VISIBLE);
-//            alpha.start();
-//            //动画时间
-//            translationX.setDuration(1000);
-//            translationX.start();
-//            mBoolean = !mBoolean;
-//        }
-//    }
-//
-//    //收缩搜索框
-//    private void initfst() {
-//        ObjectAnimator translationX = ObjectAnimator.ofFloat(filmSeachRelative, "translationX", (dp2px(getActivity(), -170)), 0);
-//        ObjectAnimator alpha = ObjectAnimator.ofFloat(filmSeachEdit, "alpha", 1.0f, 0.5f, 0.0f);
-//        ObjectAnimator alphaButton = ObjectAnimator.ofFloat(filmSeachText, "alpha", 1.0f, 0.5f, 0.0f);
-//        alphaButton.setDuration(1000);
-//        alphaButton.start();
-//        alpha.setDuration(1000);
-//        alpha.start();
-//        translationX.setDuration(1000);
-//        translationX.start();
-//        mBoolean = !mBoolean;
-//    }
-
-
 
     @Override
     public void recommendView(Object obj) {
@@ -218,7 +155,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                 public void clickattention(String cinemaId,boolean b) {
                     if (b){
                         if (!userId.equals("")&&!sessionId.equals("")){
-                            Toast.makeText(getActivity(),cinemaId,Toast.LENGTH_LONG).show();
                             Map<String,Object> headMap = new HashMap<>();
                             headMap.put("userId",userId);
                             headMap.put("sessionId",sessionId);
@@ -229,7 +165,15 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                         }
                         myRecommendAdapter.notifyDataSetChanged();
                     }else{
-
+                        if (!userId.equals("")&&!sessionId.equals("")){
+                            Map<String,Object> headMap = new HashMap<>();
+                            headMap.put("userId",userId);
+                            headMap.put("sessionId",sessionId);
+                            mPresenter.CancelAttentionPresenter(headMap,cinemaId);
+                            myRecommendAdapter.notifyDataSetChanged();
+                        }else{
+                            AlertDialogUtils.AlertDialogLogin(getActivity());
+                        }
                     }
                 }
             });
@@ -245,8 +189,35 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             NearbyCinemasBean nearbyCinemasBean = (NearbyCinemasBean) obj;
 //            Log.i("aa","nearbyCinemasBean:"+nearbyCinemasBean.getMessage());
             if (nearbyCinemasBean != null) {
-                MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(), nearbyCinemasBean);
+                final MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(), nearbyCinemasBean);
                 xrecyclerView.setAdapter(myNearbyAdapter);
+                myNearbyAdapter.setAttentionClick(new MyNearbyAdapter.AttentionClick() {
+                    @Override
+                    public void clickattention(String cinemaId,boolean b) {
+                        if (b){
+                            if (!userId.equals("")&&!sessionId.equals("")){
+                                Map<String,Object> headMap = new HashMap<>();
+                                headMap.put("userId",userId);
+                                headMap.put("sessionId",sessionId);
+                                mPresenter.AttentionPresenter(headMap,cinemaId);
+                                myNearbyAdapter.notifyDataSetChanged();
+                            }else{
+                                AlertDialogUtils.AlertDialogLogin(getActivity());
+                            }
+                            myNearbyAdapter.notifyDataSetChanged();
+                        }else{
+                            if (!userId.equals("")&&!sessionId.equals("")){
+                                Map<String,Object> headMap = new HashMap<>();
+                                headMap.put("userId",userId);
+                                headMap.put("sessionId",sessionId);
+                                mPresenter.CancelAttentionPresenter(headMap,cinemaId);
+                                myNearbyAdapter.notifyDataSetChanged();
+                            }else{
+                                AlertDialogUtils.AlertDialogLogin(getActivity());
+                            }
+                        }
+                    }
+                });
             }
         }
     }
@@ -257,14 +228,16 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             cinemaAttentionBean = (CinemaAttentionBean) obj;
             Log.i("aa","cinemaAttentionBean:"+ cinemaAttentionBean.getMessage());
             if (cinemaAttentionBean.getStatus().equals("0000")){
-//                Map<String,Object> headMap = new HashMap<>();
-//                headMap.put("userId", userId);
-//                headMap.put("sessionId", sessionId);
-//                Map<String,Object> parms = new HashMap<>();
-//                parms.put("page",page);
-//                parms.put("count",count);
-//                mPresenter.recommendPresenter(headMap, parms);
+                Toast.makeText(getActivity(),cinemaAttentionBean.getMessage(),Toast.LENGTH_LONG).show();
             }
+        }
+    }
+
+    @Override
+    public void CancelAttentionView(Object obj) {
+        CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
+        if (cancelAttentionBean.getStatus().equals("0000")){
+            Toast.makeText(getActivity(),cancelAttentionBean.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -287,8 +260,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                     parms.put("count",count);
                     mPresenter.recommendPresenter(headMap,parms);
                 }
-
-                mPresenter.recommendPresenter(headMap, parms);
                 btnRecommend.setBackgroundResource(R.drawable.button_ripple);
                 btnRecommend.setTextColor(Color.WHITE);
                 btnNearby.setTextColor(Color.BLACK);
@@ -314,7 +285,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                     parms1.put("latitude",latitude);
                     mPresenter.nearbyPresenter(headMap,parms1);
                 }
-                mPresenter.nearbyPresenter(headMap, parms1);
                 btnNearby.setBackgroundResource(R.drawable.button_ripple);
                 btnRecommend.setBackgroundResource(R.color.colorWhite);
                 btnNearby.setTextColor(Color.WHITE);

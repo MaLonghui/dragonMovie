@@ -49,5 +49,16 @@ public class Api {
     public static final String CINEMAPRAISE_URL = "movieApi/cinema/v1/verify/cinemaCommentGreat";
     //关注电影
     public static final String  FOLLOW_MOVIE = "movieApi/movie/v1/verify/followMovie";
-
+    //6.查询用户关注的影片列表
+    public static final String  FILMATTENTION_URL = "movieApi/movie/v1/verify/findMoviePageList";
+    //5.查询用户关注的影院信息
+    public static final String  MOVIEATTENTION_URL = "movieApi/cinema/v1/verify/findCinemaPageList";
+    //1.意见反馈
+    public static final String  FEEDBACK_URL = "movieApi/tool/v1/verify/recordFeedBack";
+    //7.取消关注
+    public static final String  CANCELATTENTION_URL = "movieApi/cinema/v1/verify/cancelFollowCinema";
+    //3.查询系统消息列表
+    public static final String  SYSMSG_URL = "movieApi/tool/v1/verify/findAllSysMsgList";
+    //4.系统消息读取状态修改
+    public static final String  SYSMSGSTATUS_URL = "movieApi/tool/v1/verify/changeSysMsgStatus";
 }

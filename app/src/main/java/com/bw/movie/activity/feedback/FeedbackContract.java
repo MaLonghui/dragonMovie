@@ -1,4 +1,4 @@
-package com.bw.movie.fragment.filmattention;
+package com.bw.movie.activity.feedback;
 
 import android.content.Context;
 
@@ -12,12 +12,12 @@ import java.util.Map;
  *  邮箱 784787081@qq.com
  */
 
-public class FilmattentionContract {
+public class FeedbackContract {
     interface View extends BaseView {
-        void FilmAttentionView(Object obj);
+        void FeekbackView(Object obj);
     }
 
     interface  Presenter extends BasePresenter<View> {
-        void FilmAttentionPresenter(Map<String,Object> headMap,Map<String,Object> parms);
+        void FeekbackPresenter(Map<String,Object> headMap,String content);
     }
 }

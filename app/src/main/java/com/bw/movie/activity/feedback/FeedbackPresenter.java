@@ -1,10 +1,10 @@
-package com.bw.movie.fragment.cinemaattention;
+package com.bw.movie.activity.feedback;
 
 import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
-import com.bw.movie.bean.MovieAttentionBean;
+import com.bw.movie.bean.FeedBackBean;
 import com.bw.movie.mvp.BasePresenterImpl;
 import com.bw.movie.utils.RetrofitManager;
 
@@ -19,18 +19,18 @@ import io.reactivex.schedulers.Schedulers;
  *  邮箱 784787081@qq.com
  */
 
-public class CinemaattentionPresenter extends BasePresenterImpl<CinemaattentionContract.View> implements CinemaattentionContract.Presenter{
+public class FeedbackPresenter extends BasePresenterImpl<FeedbackContract.View> implements FeedbackContract.Presenter{
 
     @Override
-    public void MovieAttentionPresenter(Map<String, Object> headMap, Map<String, Object> parms) {
+    public void FeekbackPresenter(Map<String, Object> headMap, String content) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.attentionlist(Api.MOVIEATTENTION_URL,headMap,parms)
+        apiServer.feedback(Api.FEEDBACK_URL,headMap,content)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieAttentionBean>() {
+                .subscribe(new Consumer<FeedBackBean>() {
                     @Override
-                    public void accept(MovieAttentionBean movieAttentionBean) throws Exception {
-                        mView.MovieAttentionView(movieAttentionBean);
+                    public void accept(FeedBackBean feedBackBean) throws Exception {
+                        mView.FeekbackView(feedBackBean);
                     }
                 });
     }

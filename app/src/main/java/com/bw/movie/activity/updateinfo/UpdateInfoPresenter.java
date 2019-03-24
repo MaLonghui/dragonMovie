@@ -1,10 +1,10 @@
-package com.bw.movie.fragment.cinemaattention;
+package com.bw.movie.activity.updateinfo;
 
 import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
-import com.bw.movie.bean.MovieAttentionBean;
+import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.mvp.BasePresenterImpl;
 import com.bw.movie.utils.RetrofitManager;
 
@@ -19,18 +19,17 @@ import io.reactivex.schedulers.Schedulers;
  *  邮箱 784787081@qq.com
  */
 
-public class CinemaattentionPresenter extends BasePresenterImpl<CinemaattentionContract.View> implements CinemaattentionContract.Presenter{
-
+public class UpdateInfoPresenter extends BasePresenterImpl<UpdateInfoContract.View> implements UpdateInfoContract.Presenter{
     @Override
-    public void MovieAttentionPresenter(Map<String, Object> headMap, Map<String, Object> parms) {
+    public void updateInfoPresenter(Map<String, Object> headMap, Map<String, Object> parms) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.attentionlist(Api.MOVIEATTENTION_URL,headMap,parms)
+        apiServer.updateinfo(Api.UPDATEINFO_URL,headMap,parms)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<MovieAttentionBean>() {
+                .subscribe(new Consumer<UpdateInfoBean>() {
                     @Override
-                    public void accept(MovieAttentionBean movieAttentionBean) throws Exception {
-                        mView.MovieAttentionView(movieAttentionBean);
+                    public void accept(UpdateInfoBean updateInfoBean) throws Exception {
+                        mView.updateInfoView(updateInfoBean);
                     }
                 });
     }

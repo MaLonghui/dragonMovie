@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
+    app:cardElevation="@dimen/dp_4"
+    android:layout_marginLeft="@dimen/dp_24"
+    android:layout_marginRight="@dimen/dp_24"
+    android:layout_marginBottom="@dimen/dp_20"
+    app:cardPreventCornerOverlap="true"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_312"
+        android:layout_height="@dimen/dp_148"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/dp_20">
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/simPle_title_film_attention"
+            android:layout_width="@dimen/dp_103"
+            android:layout_height="@dimen/dp_128"
+            android:layout_margin="@dimen/dp_10"
+            fresco:progressBarAutoRotateInterval="1000"
+            fresco:progressBarImage="@drawable/loading_"
+            fresco:placeholderImage="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/text_title_film_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_toRightOf="@id/simPle_title_film_attention"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/text_count_film_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text_title_film_attention"
+            android:layout_margin="@dimen/dp_10"
+            android:layout_toRightOf="@id/simPle_title_film_attention"
+            android:ellipsize="end"
+            android:lines="3"
+            android:textColor="#333333"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/text_time_film_attention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_toRightOf="@id/simPle_title_film_attention"
+            android:layout_below="@id/text_count_film_attention"
+            android:textColor="#999999"
+            android:textSize="@dimen/sp_12" />
+
+    </RelativeLayout>
+    </android.support.v7.widget.CardView>

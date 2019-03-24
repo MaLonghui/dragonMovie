@@ -1,8 +1,12 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.CancelAttentionBean;
+import com.bw.movie.bean.FeedBackBean;
+import com.bw.movie.bean.MovieAttentionBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
+import com.bw.movie.bean.FilmAttentionBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
@@ -21,6 +25,8 @@ import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.bean.RegistBean;
 import com.bw.movie.bean.ShangFilmBean;
+import com.bw.movie.bean.SysMsgBean;
+import com.bw.movie.bean.SysMsgStatusBean;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.bean.UserHeadIconBean;
 
@@ -117,4 +123,23 @@ public interface ApiServer {
     //关注电影
     @GET
     Observable<FlowllMovieBean> flowllMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("movieId") String movieId);
+    //6.查询用户关注的影片列表
+    @GET
+    Observable<FilmAttentionBean> filmattention(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //5.查询用户关注的影院信息
+    @GET
+    Observable<MovieAttentionBean> attentionlist(@Url String url, @HeaderMap Map<String,Object> headMap, @QueryMap Map<String,Object> parms);
+    //1.意见反馈
+    @POST
+    @FormUrlEncoded
+    Observable<FeedBackBean> feedback(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("content") String content);
+    //7.取消关注
+    @GET
+    Observable<CancelAttentionBean> cancelattention(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("cinemaId") String cinemaId);
+    //3.查询系统消息列表
+    @GET
+    Observable<SysMsgBean> sysmsg(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //3.查询系统消息列表
+    @GET
+    Observable<SysMsgStatusBean> msgstatus(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("id") String id);
 }

@@ -29,7 +29,9 @@ import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.attention.AttentionActivity;
+import com.bw.movie.activity.feedback.FeedbackActivity;
 import com.bw.movie.activity.info.InfoActivity;
+import com.bw.movie.activity.msg.MsgActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.UserHeadIconBean;
 import com.bw.movie.mvp.MVPBaseFragment;
@@ -157,6 +159,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         } else {
             switch (view.getId()) {
                 case R.id.my_message:
+                    startActivity(new Intent(getActivity(),MsgActivity.class));
                     break;
                 case R.id.my_icon:
 //                    Toast.makeText(getActivity(), "个人头像", Toast.LENGTH_LONG).show();
@@ -175,6 +178,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 case R.id.my_rccord:
                     break;
                 case R.id.my_feedbacks:
+                    startActivity(new Intent(getActivity(),FeedbackActivity.class));
                     break;
                 case R.id.my_version:
                     break;
