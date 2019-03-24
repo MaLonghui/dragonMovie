@@ -101,6 +101,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     private Map<String, Object> parms;
     private Map<String, Object> parms1;
     private String s;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -261,13 +262,14 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             myRecommendAdapter.setList(recommendCinemasBean);
             myRecommendAdapter.setAttentionClick(new MyRecommendAdapter.AttentionClick() {
                 @Override
-                public void clickattention(String cinemaId,boolean b) {
-                    if (b){
-                        if (!userId.equals("")&&!sessionId.equals("")){
-                            Map<String,Object> headMap = new HashMap<>();
-                            headMap.put("userId",userId);
-                            headMap.put("sessionId",sessionId);
-                            mPresenter.AttentionPresenter(headMap,cinemaId);
+                public void clickattention(String cinemaId, boolean b) {
+                    if (b) {
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            Toast.makeText(getActivity(), cinemaId, Toast.LENGTH_LONG).show();
+                            Map<String, Object> headMap = new HashMap<>();
+                            headMap.put("userId", userId);
+                            headMap.put("sessionId", sessionId);
+                            mPresenter.AttentionPresenter(headMap, cinemaId);
                             myRecommendAdapter.notifyDataSetChanged();
                         } else {
                             AlertDialogUtils.AlertDialogLogin(getActivity());
@@ -347,11 +349,15 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 //                parms.put("page",page);
 //                parms.put("count",count);
 //                mPresenter.recommendPresenter(headMap, parms);
+                Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
+                if (cinemaAttentionBean.getStatus().equals("0000")) {
+                    Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }
-    }
 
+
+    }
     @Override
     public void CancelAttentionView(Object obj) {
         CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
@@ -382,6 +388,13 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             } else {
                 Toast.makeText(getActivity(), "暂无数据", Toast.LENGTH_SHORT).show();
             }
+
+        }
+    }
+    public void CancelAttentionView(Object obj) {
+        CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
+        if (cancelAttentionBean.getStatus().equals("0000")){
+            Toast.makeText(getActivity(),cancelAttentionBean.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})

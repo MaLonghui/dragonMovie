@@ -49,6 +49,11 @@ public class Api {
     public static final String CINEMAPRAISE_URL = "movieApi/cinema/v1/verify/cinemaCommentGreat";
     //关注电影
     public static final String  FOLLOW_MOVIE = "movieApi/movie/v1/verify/followMovie";
+    //根据电影名称模糊查询电影院
+    public static final String FINDAllCinemas = "movieApi/cinema/v1/findAllCinemas";
+    //取消关注电影
+    public static final String CancelFollowMovie = "movieApi/movie/v1/verify/cancelFollowMovie";
+
     //6.查询用户关注的影片列表
     public static final String  FILMATTENTION_URL = "movieApi/movie/v1/verify/findMoviePageList";
     //5.查询用户关注的影院信息

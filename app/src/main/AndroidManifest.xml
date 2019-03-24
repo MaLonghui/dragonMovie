@@ -37,16 +37,16 @@
         <activity android:name=".activity.regist.RegistActivity" />
         <activity android:name=".activity.FilmSearchActivity" />
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" />
-        <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity"/>
-        <activity android:name=".activity.filmdetails.FilmDetailsActivity"/>
-        <activity android:name=".activity.info.InfoActivity"/>
-        <activity android:name=".activity.seat.SeatActivity"/>
-        <activity android:name=".activity.attention.AttentionActivity"/>
-        <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity"/>
+        <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity" />
+        <activity android:name=".activity.filmdetails.FilmDetailsActivity" />
+        <activity android:name=".activity.info.InfoActivity" />
+        <activity android:name=".activity.seat.SeatActivity" />
+        <activity android:name=".activity.attention.AttentionActivity" />
+        <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity" />
+        <activity android:name=".activity.CinemaByNameActivity" />
         <activity android:name=".activity.feedback.FeedbackActivity"/>
         <activity android:name=".activity.updateinfo.UpdateInfoActivity"/>
         <activity android:name=".activity.msg.MsgActivity"/>
-        <activity android:name=".activity.CinemaByNameActivity" />
     </application>
 
 </manifest>
