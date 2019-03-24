@@ -157,11 +157,5 @@ public interface ApiServer {
     //3.查询系统消息列表
     @GET
     Observable<SysMsgStatusBean> msgstatus(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("id") String id);
-    //根据电影名称模糊查询电影院
-    @GET
-    Observable<CinemaByNameBean> findAllCinemas(@Url String url,@QueryMap Map<String,Object> parms);
-    //取消关注电影
-    @GET
-    Observable<CancelFollowMovieBean> cancelFollowMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
-
+   
 }
