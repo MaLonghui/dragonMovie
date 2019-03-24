@@ -31,6 +31,7 @@ import com.bw.movie.R;
 import com.bw.movie.activity.CinemaByNameActivity;
 import com.bw.movie.adapter.MyNearbyAdapter;
 import com.bw.movie.adapter.MyRecommendAdapter;
+import com.bw.movie.bean.CancelAttentionBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.bean.NearbyCinemasBean;
@@ -183,6 +184,21 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         super.onResume();
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
+        if (!userId.equals("")&&!sessionId.equals("")){
+            Map<String,Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            Map<String,Object> parms = new HashMap<>();
+            parms.put("page",page);
+            parms.put("count",count);
+            mPresenter.recommendPresenter(headMap, parms);
+        }else{
+            Map<String,Object> headMap = new HashMap<>();
+            Map<String,Object> parms = new HashMap<>();
+            parms.put("page",page);
+            parms.put("count",count);
+            mPresenter.recommendPresenter(headMap, parms);
+        }
     }
 
     @Override
@@ -259,8 +275,16 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                             AlertDialogUtils.AlertDialogLogin(getActivity());
                         }
                         myRecommendAdapter.notifyDataSetChanged();
-                    } else {
-
+                    }else{
+                        if (!userId.equals("")&&!sessionId.equals("")){
+                            Map<String,Object> headMap = new HashMap<>();
+                            headMap.put("userId",userId);
+                            headMap.put("sessionId",sessionId);
+                            mPresenter.CancelAttentionPresenter(headMap,cinemaId);
+                            myRecommendAdapter.notifyDataSetChanged();
+                        }else{
+                            AlertDialogUtils.AlertDialogLogin(getActivity());
+                        }
                     }
                 }
             });
@@ -276,8 +300,35 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             NearbyCinemasBean nearbyCinemasBean = (NearbyCinemasBean) obj;
 //            Log.i("aa","nearbyCinemasBean:"+nearbyCinemasBean.getMessage());
             if (nearbyCinemasBean != null) {
-                MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(), nearbyCinemasBean);
+                final MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(), nearbyCinemasBean);
                 xrecyclerView.setAdapter(myNearbyAdapter);
+                myNearbyAdapter.setAttentionClick(new MyNearbyAdapter.AttentionClick() {
+                    @Override
+                    public void clickattention(String cinemaId,boolean b) {
+                        if (b){
+                            if (!userId.equals("")&&!sessionId.equals("")){
+                                Map<String,Object> headMap = new HashMap<>();
+                                headMap.put("userId",userId);
+                                headMap.put("sessionId",sessionId);
+                                mPresenter.AttentionPresenter(headMap,cinemaId);
+                                myNearbyAdapter.notifyDataSetChanged();
+                            }else{
+                                AlertDialogUtils.AlertDialogLogin(getActivity());
+                            }
+                            myNearbyAdapter.notifyDataSetChanged();
+                        }else{
+                            if (!userId.equals("")&&!sessionId.equals("")){
+                                Map<String,Object> headMap = new HashMap<>();
+                                headMap.put("userId",userId);
+                                headMap.put("sessionId",sessionId);
+                                mPresenter.CancelAttentionPresenter(headMap,cinemaId);
+                                myNearbyAdapter.notifyDataSetChanged();
+                            }else{
+                                AlertDialogUtils.AlertDialogLogin(getActivity());
+                            }
+                        }
+                    }
+                });
             }
         }
     }
@@ -295,12 +346,17 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 //                parms.put("page",page);
 //                parms.put("count",count);
 //                mPresenter.recommendPresenter(headMap, parms);
+                Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
+                if (cinemaAttentionBean.getStatus().equals("0000")) {
+                    Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         }
-    }
 
+
+    }
     @Override
-    public void getCinemaByNameViewData(Object object) {
+    public void getCinemaByNameViewData (Object object){
         if (object != null) {
             CinemaByNameBean cinemaByNameBean = (CinemaByNameBean) object;
             List<CinemaByNameBean.ResultBean> nameBeanResult = cinemaByNameBean.getResult();
@@ -316,13 +372,18 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                     public void run() {
                         initfst();
                     }
-                },1000);
+                }, 1000);
 
             } else {
                 Toast.makeText(getActivity(), "暂无数据", Toast.LENGTH_SHORT).show();
             }
 
-
+        }
+    }
+    public void CancelAttentionView(Object obj) {
+        CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
+        if (cancelAttentionBean.getStatus().equals("0000")){
+            Toast.makeText(getActivity(),cancelAttentionBean.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -345,7 +406,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                     parms.put("count", count);
                     mPresenter.recommendPresenter(headMap, parms);
                 }
-
                 btnRecommend.setBackgroundResource(R.drawable.button_ripple);
                 btnRecommend.setTextColor(Color.WHITE);
                 btnNearby.setTextColor(Color.BLACK);

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
+import com.bw.movie.bean.CancelAttentionBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.bean.NearbyCinemasBean;
@@ -69,7 +70,7 @@ public class CinemaPresenter extends BasePresenterImpl<CinemaContract.View> impl
     @Override
     public void getCinemaByNamePresenterData(Map<String, Object> parms) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.findAllCinemas(Api.FINDAllCinemas,parms)
+        apiServer.findAllCinemas(Api.FINDAllCinemas, parms)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<CinemaByNameBean>() {
@@ -78,6 +79,18 @@ public class CinemaPresenter extends BasePresenterImpl<CinemaContract.View> impl
                         mView.getCinemaByNameViewData(cinemaByNameBean);
                     }
                 });
+    }
 
+    public void CancelAttentionPresenter(Map<String, Object> headMap, String cinemaId) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.cancelattention(Api.CANCELATTENTION_URL,headMap,cinemaId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CancelAttentionBean>() {
+                    @Override
+                    public void accept(CancelAttentionBean cancelAttentionBean) throws Exception {
+                        mView.CancelAttentionView(cancelAttentionBean);
+                    }
+                });
     }
 }

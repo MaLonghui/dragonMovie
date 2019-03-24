@@ -1,4 +1,4 @@
-package com.bw.movie.fragment.filmattention;
+package com.bw.movie.activity.updateinfo;
 
 import android.content.Context;
 
@@ -12,12 +12,12 @@ import java.util.Map;
  *  邮箱 784787081@qq.com
  */
 
-public class FilmattentionContract {
+public class UpdateInfoContract {
     interface View extends BaseView {
-        void FilmAttentionView(Object obj);
+        void updateInfoView(Object obj);
     }
 
     interface  Presenter extends BasePresenter<View> {
-        void FilmAttentionPresenter(Map<String,Object> headMap,Map<String,Object> parms);
+        void updateInfoPresenter(Map<String,Object> headMap, Map<String,Object> parms);
     }
 }

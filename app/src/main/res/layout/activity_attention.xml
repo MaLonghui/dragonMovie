@@ -20,11 +20,11 @@
 
             <RadioButton
                 android:id="@+id/followmovie"
-                android:layout_width="@dimen/dp_85"
-                android:layout_height="@dimen/dp_25"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_32"
                 android:button="@null"
+                android:background="@drawable/shape_btn"
                 android:text="电影"
-                android:background="@drawable/top_btn_shape"
                 android:textColor="#fff"
                 android:gravity="center"
                 android:layout_weight="1"
@@ -33,12 +33,12 @@
                 />
             <RadioButton
                 android:id="@+id/followcamera"
-                android:layout_width="@dimen/dp_85"
-                android:layout_height="@dimen/dp_25"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_32"
                 android:button="@null"
                 android:layout_weight="1"
                 android:text="影院"
-
+                android:background="@drawable/shape_btn_yuan"
                 android:gravity="center"
                 android:layout_marginRight="@dimen/dp_20"
                 />
