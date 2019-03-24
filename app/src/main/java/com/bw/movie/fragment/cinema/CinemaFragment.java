@@ -358,6 +358,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
 
     }
+    }
     @Override
     public void CancelAttentionView(Object obj) {
         CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
@@ -391,12 +392,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
         }
     }
-    public void CancelAttentionView(Object obj) {
-        CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
-        if (cancelAttentionBean.getStatus().equals("0000")){
-            Toast.makeText(getActivity(),cancelAttentionBean.getMessage(),Toast.LENGTH_LONG).show();
-        }
-    }
+   
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})
     public void onViewClicked(View view) {
         switch (view.getId()) {
