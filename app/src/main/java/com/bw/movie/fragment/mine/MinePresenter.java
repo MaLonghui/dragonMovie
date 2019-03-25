@@ -5,6 +5,7 @@ import android.util.Log;
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
 import com.bw.movie.bean.FindInfoBean;
+import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.UserHeadIconBean;
 import com.bw.movie.mvp.BasePresenterImpl;
 import com.bw.movie.utils.RetrofitManager;
@@ -18,6 +19,7 @@ import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 
 /**
  * MVPPlugin
@@ -41,10 +43,11 @@ public class MinePresenter extends BasePresenterImpl<MineContract.View> implemen
     }
 
     @Override
-    public void headIconPresenter(Map<String, Object> headMap, Map<String, String> parms) {
+    public void headIconPresenter(Map<String, Object> headMap,File file) {
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
+        MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        MultipartBody multipartBody = filesMutipar(parms);
-        apiServer.headicon(Api.HEADICON_URL,headMap,multipartBody)
+        apiServer.headicon(Api.HEADICON_URL,headMap,body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<UserHeadIconBean>() {
@@ -55,6 +58,25 @@ public class MinePresenter extends BasePresenterImpl<MineContract.View> implemen
                     }
                 });
     }
+
+    /**
+     * 签到
+     * @param headMap
+     */
+    @Override
+    public void SignInPresenter(Map<String, Object> headMap) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.signin(Api.SIGNIN_URL,headMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<SignInBean>() {
+                    @Override
+                    public void accept(SignInBean signInBean) throws Exception {
+                        mView.SignInView(signInBean);
+                    }
+                });
+    }
+
     /**
      * 10.图片传入
      *  创建MultipartBody.Builder，类型为Form

@@ -33,11 +33,13 @@ import com.bw.movie.activity.feedback.FeedbackActivity;
 import com.bw.movie.activity.info.InfoActivity;
 import com.bw.movie.activity.msg.MsgActivity;
 import com.bw.movie.bean.FindInfoBean;
+import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.UserHeadIconBean;
 import com.bw.movie.mvp.MVPBaseFragment;
 import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.bw.movie.utils.FileImageUntils;
+import com.bw.movie.utils.ImageUtil;
 import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -107,14 +109,21 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     @Override
     public void onResume() {
         super.onResume();
-        String userId = sp.getString("userId", "");
-        String sessionId = sp.getString("sessionId", "");
+        userId = sp.getString("userId", "");
+        sessionId = sp.getString("sessionId", "");
 //        Log.i("aa",userId+"++++"+sessionId);
         Map<String, Object> headMap = new HashMap<>();
         headMap.put("userId", userId);
         headMap.put("sessionId", sessionId);
         if (NoStudoInterent.isNetworkAvailable(getActivity())) {
             mPresenter.userInfoPresenter(headMap);
+        }
+
+        if (!userId.equals("")&&!sessionId.equals("")){
+            Map<String,Object> headMap1 = new HashMap<>();
+            headMap1.put("userId",userId);
+            headMap1.put("sessionId",sessionId);
+            mPresenter.SignInPresenter(headMap1);
         }
 
     }
@@ -145,9 +154,23 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         if (object!=null){
             UserHeadIconBean userHeadIconBean = (UserHeadIconBean) object;
             if (userHeadIconBean.getStatus().equals("0000")) {
+                myIcon.setImageURI(Uri.parse(userHeadIconBean.getHeadPath()));
                Toast.makeText(getActivity(),userHeadIconBean.getMessage(),Toast.LENGTH_LONG).show();
                 //重新请求数据实现即时更新头像图片
 
+            }
+        }
+    }
+
+    @Override
+    public void SignInView(Object obj) {
+        if (obj!=null){
+            SignInBean signInBean = (SignInBean) obj;
+            Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
+            if (signInBean.getStatus().equals("0000")){
+                mySignIn.setBackgroundResource(R.drawable.shape_bg_button);
+            }else{
+                mySignIn.setBackgroundResource(R.drawable.shape_signin);
             }
         }
     }
@@ -168,6 +191,10 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 case R.id.my_name:
                     break;
                 case R.id.my_sign_in:
+                    Map<String,Object> headMap1 = new HashMap<>();
+                    headMap1.put("userId",userId);
+                    headMap1.put("sessionId",sessionId);
+                    mPresenter.SignInPresenter(headMap1);
                     break;
                 case R.id.my_info:
                     startActivity(new Intent(getActivity(),InfoActivity.class));
@@ -220,7 +247,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 //意图
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //带值跳转
-                startActivityForResult(intent,111);
+                startActivityForResult(intent,1);
                 popupWindow.dismiss();
                 break;
             case R.id.btn_album:
@@ -229,7 +256,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 //类型
                 intent1.setType("image/*");
                 //带值跳转
-                startActivityForResult(intent1,222);
+                startActivityForResult(intent1,2);
                 popupWindow.dismiss();
                 break;
             case R.id.btn_qu:
@@ -238,110 +265,52 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
 
         }
     }
-    /**
-     * 吊起相机
-     * @param requestCode
-     * @param resultCode
-     * @param data
-     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case 111:
-                Toast.makeText(getActivity(),"滴滴滴",Toast.LENGTH_LONG).show();
+        switch (requestCode) {
+            case 1:
                 Bitmap bitmap = data.getParcelableExtra("data");
-                ArrayList<Object> list = new ArrayList<>();
-                list.add(bitmap);
-                String s = bitmapToString(bitmap);
-                myIcon.setImageURI(UriUtil.parseUriOrNull("file://"+s));
-                Map<String,Object> headMap = new HashMap<>();
-                headMap.put("userId",userId);
-                headMap.put("sessionId",sessionId);
-                Map<String, String> map = new HashMap<>();
-                map.put("image", s);
-                Log.i("aa","filepath:"+s);
-//            doPostImageData(Apis.MESSAGE_INFO_HEAD, map, InfoHeadBean.class);
-                mPresenter.headIconPresenter(headMap,map);
-                break;
-            case 222:
-                //路径
-                if (data!=null){
-                    Uri uri = data.getData();
-                    crop(uri);
+                Uri uri1 = Uri.parse(MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, null, null));
+                if (uri1 != null) {
+                    //调用工具类将uri图片转为path
+                    String path = ImageUtil.getPath(getActivity(), uri1);
+                    if (path != null) {
+                        //将图片转为file
+                        File file = new File(path);
+                        //调用P层
+                        userId = sp.getString("userId", "");
+                        sessionId = sp.getString("sessionId", "");
+                        Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", userId);
+                        headMap.put("sessionId", sessionId);
+                        mPresenter.headIconPresenter(headMap, file);
+//                        animationUtils.hideDialog();
+                    }
                 }
                 break;
-            case CAIJIAN_FLAG:
-                if (data!=null) {
-                    Bitmap bitmap1 = data.getParcelableExtra("data");
-                    String s1 = bitmapToString(bitmap1);
-                    myIcon.setImageURI(UriUtil.parseUriOrNull("file://"+s1));
-                    Toast.makeText(getActivity(),s1,Toast.LENGTH_LONG).show();
-                    findInfoBean.getResult().setHeadPic("http://172.17.8.100/images/movie/stills/ws/ws1.jpg");
-                    Map<String,Object> headMap1 = new HashMap<>();
-                    headMap1.put("userId",userId);
-                    headMap1.put("sessionId",sessionId);
-                    Map<String, String> map1 = new HashMap<>();
-                    map1.put("image", s1);
-                    Log.i("aa","filepath:"+s1);
-//            doPostImageData(Apis.MESSAGE_INFO_HEAD, map, InfoHeadBean.class);
-                    mPresenter.headIconPresenter(headMap1,map1);
+            case 2:
+                Uri uri = data.getData();
+                if (uri != null) {
+                    //调用工具类将uri图片转为path
+                    String path = ImageUtil.getPath(getActivity(), uri);
+                    if (path != null) {
+                        //将图片转为file
+                        File file = new File(path);
+                        //调用P层
+                        userId = sp.getString("userId", "");
+                        sessionId = sp.getString("sessionId", "");
+                        Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", userId);
+                        headMap.put("sessionId", sessionId);
+                        mPresenter.headIconPresenter(headMap, file);
+//                        animationUtils.hideDialog();
+                    }
                 }
                 break;
 
-        }
-    }
-    public String bitmapToString(Bitmap bitmap){
-        //将bitmap转换为uri
-        Uri uri = Uri.parse(MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, null,null));
-
-        String[] proj = { MediaStore.Images.Media.DATA };
-
-        Cursor actualimagecursor =getActivity().managedQuery(uri,proj,null,null,null);
-
-        int actual_image_column_index = actualimagecursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-
-        actualimagecursor.moveToFirst();
-
-        String img_path = actualimagecursor.getString(actual_image_column_index);
-        return img_path;
-    }
-
-    //剪裁图片
-    private void crop(Uri uri){
-        Intent intent=new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri,"image/*");
-        //支持裁剪
-        intent.putExtra("CROP",true);
-        //裁剪的比例
-        intent.putExtra("aspectX",1);
-        intent.putExtra("aspectY",1);
-        //裁剪后输出图片的尺寸大小
-        intent.putExtra("outputX",250);
-        intent.putExtra("outputY",250);
-        //将图片返回给data
-        intent.putExtra("return-data",true);
-        startActivityForResult(intent,CAIJIAN_FLAG);
-    }
-
-
-    public static MultipartBody filesMutipar(Map<String,String> map){
-        MultipartBody.Builder builder = new MultipartBody.Builder();
-        for (Map.Entry<String,String> entry:map.entrySet()){
-            if (entry.getKey().equals("image")){
-                File file = new File(entry.getValue());
-                builder.addFormDataPart(entry.getKey(),"tp.png", RequestBody.create(MediaType.parse("multipart/form-data"),file));
-            }
-        }
-        builder.setType(MultipartBody.FORM);
-        MultipartBody multipartBody = builder.build();
-        return multipartBody;
-    }
-    //动态权限
-    private void initPermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            String[] mPermissionList = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.CALL_PHONE, Manifest.permission.READ_LOGS, Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.SET_DEBUG_APP, Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.GET_ACCOUNTS, Manifest.permission.WRITE_APN_SETTINGS};
-            ActivityCompat.requestPermissions(getActivity(), mPermissionList, 123);
+            default:
+                break;
         }
     }
 }

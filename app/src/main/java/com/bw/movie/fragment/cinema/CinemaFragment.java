@@ -2,6 +2,7 @@ package com.bw.movie.fragment.cinema;
 
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,6 +40,7 @@ import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.mvp.MVPBaseFragment;
 import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
+import com.zaaach.citypicker.CityPickerActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,6 +53,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.VISIBLE;
 
 /**
@@ -101,7 +104,9 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     private Map<String, Object> parms;
     private Map<String, Object> parms1;
     private String s;
+    private static final int REQUEST_CODE_PICK_CITY = 0;
 
+    @SuppressLint("NewApi")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -113,6 +118,14 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
 
+        //定位
+        cinemaDingwei.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
+            }
+        });
 
 
         if (NoStudoInterent.isNetworkAvailable(getActivity())) {
@@ -265,7 +278,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                 public void clickattention(String cinemaId, boolean b) {
                     if (b) {
                         if (!userId.equals("") && !sessionId.equals("")) {
-                            Toast.makeText(getActivity(), cinemaId, Toast.LENGTH_LONG).show();
                             Map<String, Object> headMap = new HashMap<>();
                             headMap.put("userId", userId);
                             headMap.put("sessionId", sessionId);
@@ -357,6 +369,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         }
 
 
+        }
     }
     }
     @Override
@@ -443,5 +456,16 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                 btnRecommend.setTextColor(Color.BLACK);
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
+            if (data != null){
+                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+                cinemaDwAddr.setText(city);
+            }
+        }
+
     }
 }

@@ -290,9 +290,9 @@ public class SeatTable extends View {
         overview_checked = typedArray.getColor(R.styleable.SeatTableView_overview_checked, Color.parseColor("#5A9E64"));
         overview_sold = typedArray.getColor(R.styleable.SeatTableView_overview_sold, Color.RED);
         txt_color=typedArray.getColor(R.styleable.SeatTableView_txt_color,Color.WHITE);
-        seatCheckedResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_checked, R.drawable.seat_green);
-        seatSoldResID = typedArray.getResourceId(R.styleable.SeatTableView_overview_sold, R.drawable.seat_sold);
-        seatAvailableResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_available, R.drawable.seat_gray);
+        seatCheckedResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_checked, R.mipmap.seat_green);
+        seatSoldResID = typedArray.getResourceId(R.styleable.SeatTableView_overview_sold, R.mipmap.seat_sold);
+        seatAvailableResID = typedArray.getResourceId(R.styleable.SeatTableView_seat_available, R.mipmap.seat_gray);
         typedArray.recycle();
     }
 
@@ -1124,15 +1124,19 @@ public class SeatTable extends View {
 
     private void addChooseSeat(int row, int column) {
         int id = getID(row, column);
+
         for (int i = 0; i < selects.size(); i++) {
             int item = selects.get(i);
             if (id < item) {
                 selects.add(i, id);
                 return;
             }
+
         }
 
+
         selects.add(id);
+
     }
 
     public interface SeatChecker {

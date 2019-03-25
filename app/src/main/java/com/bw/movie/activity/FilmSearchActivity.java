@@ -1,6 +1,7 @@
 package com.bw.movie.activity;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.adapter.MyJiAdapter;
@@ -18,8 +20,11 @@ import com.bw.movie.adapter.MyZhengAdapter;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.ShangFilmBean;
+import com.bw.movie.utils.AlertDialogUtils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,11 +48,27 @@ public class FilmSearchActivity extends Activity {
     private List<ReFilmBean.ResultBean> reBeanList;
     private List<ShangFilmBean.ResultBean> shangBeanList;
     private List<JiFilmBean.ResultBean> jiBeanList;
+    private SharedPreferences preferences;
+    private String userId;
+    private String sessionId;
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        userId = preferences.getString("userId", "");
+        sessionId = preferences.getString("sessionId", "");
+        reBeanList = (List<ReFilmBean.ResultBean>) getIntent().getSerializableExtra("reBeanList");
+        shangBeanList = (List<ShangFilmBean.ResultBean>) getIntent().getSerializableExtra("shangBeanList");
+        jiBeanList = (List<JiFilmBean.ResultBean>) getIntent().getSerializableExtra("jiBeanList");
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_search);
+        preferences = getSharedPreferences("config", MODE_PRIVATE);
+        userId = preferences.getString("userId", "");
+        sessionId = preferences.getString("sessionId", "");
         ButterKnife.bind(this);
         //接收intent的值
         reBeanList = (List<ReFilmBean.ResultBean>) getIntent().getSerializableExtra("reBeanList");
@@ -60,6 +81,9 @@ public class FilmSearchActivity extends Activity {
         searchRecyclerView.setLayoutManager(linearLayoutManager);
         MyReMenAdapter reMenAdapter = new MyReMenAdapter(this, reBeanList);
         searchRecyclerView.setAdapter(reMenAdapter);
+
+
+
         int type = getIntent().getIntExtra("type", 0);
         if (type == 0) {
             setReAdapter();
@@ -99,8 +123,35 @@ public class FilmSearchActivity extends Activity {
         btnRe.setBackgroundColor(Color.parseColor("#ffffff"));
         btnZheng.setTextColor(Color.BLACK);
         btnZheng.setBackgroundColor(Color.parseColor("#ffffff"));
-        MyJiAdapter jiAdapter = new MyJiAdapter(this, jiBeanList);
+        final MyJiAdapter jiAdapter = new MyJiAdapter(this, jiBeanList);
         searchRecyclerView.setAdapter(jiAdapter);
+        jiAdapter.setAttentionClick(new MyReMenAdapter.AttentionClick() {
+            @Override
+            public void clickattention(String cinemaId, boolean b) {
+                if (b) {
+                    if (!userId.equals("") && !sessionId.equals("")) {
+                        Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
+                       /* Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", userId);
+                        headMap.put("sessionId", sessionId);*/
+                        jiAdapter.notifyDataSetChanged();
+                    } else {
+                        AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
+                    }
+                    jiAdapter.notifyDataSetChanged();
+                }else{
+                    if (!userId.equals("")&&!sessionId.equals("")){
+                       /* Map<String,Object> headMap = new HashMap<>();
+                        headMap.put("userId",userId);
+                        headMap.put("sessionId",sessionId);
+                        mPresenter.CancelAttentionPresenter(headMap,cinemaId);*/
+                        jiAdapter.notifyDataSetChanged();
+                    }else{
+                        AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
+                    }
+                }
+            }
+        });
     }
 
     private void setZhengAdapter() {
@@ -110,8 +161,36 @@ public class FilmSearchActivity extends Activity {
         btnRe.setBackgroundColor(Color.parseColor("#ffffff"));
         btnJijiang.setTextColor(Color.BLACK);
         btnJijiang.setBackgroundColor(Color.parseColor("#ffffff"));
-        MyZhengAdapter zhengAdapter = new MyZhengAdapter(this, shangBeanList);
+        final MyZhengAdapter zhengAdapter = new MyZhengAdapter(this, shangBeanList);
         searchRecyclerView.setAdapter(zhengAdapter);
+        zhengAdapter.setAttentionClick(new MyReMenAdapter.AttentionClick() {
+            @Override
+            public void clickattention(String cinemaId, boolean b) {
+                if (b) {
+                    if (!userId.equals("") && !sessionId.equals("")) {
+                        Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
+                       /* Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", userId);
+                        headMap.put("sessionId", sessionId);*/
+                        zhengAdapter.notifyDataSetChanged();
+                    } else {
+                        AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
+                    }
+                    zhengAdapter.notifyDataSetChanged();
+                }else{
+                    if (!userId.equals("")&&!sessionId.equals("")){
+                       /* Map<String,Object> headMap = new HashMap<>();
+                        headMap.put("userId",userId);
+                        headMap.put("sessionId",sessionId);
+                        mPresenter.CancelAttentionPresenter(headMap,cinemaId);*/
+                        zhengAdapter.notifyDataSetChanged();
+                    }else{
+                        AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
+                    }
+                }
+            }
+        });
+
     }
 
     private void setReAdapter() {
@@ -121,7 +200,34 @@ public class FilmSearchActivity extends Activity {
         btnJijiang.setBackgroundColor(Color.parseColor("#ffffff"));
         btnZheng.setTextColor(Color.BLACK);
         btnZheng.setBackgroundColor(Color.parseColor("#ffffff"));
-        MyReMenAdapter reMenAdapter = new MyReMenAdapter(this, reBeanList);
+        final MyReMenAdapter reMenAdapter = new MyReMenAdapter(this, reBeanList);
         searchRecyclerView.setAdapter(reMenAdapter);
+        reMenAdapter.setAttentionClick(new MyReMenAdapter.AttentionClick() {
+            @Override
+            public void clickattention(String cinemaId, boolean b) {
+                if (b) {
+                    if (!userId.equals("") && !sessionId.equals("")) {
+                        Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
+                       /* Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", userId);
+                        headMap.put("sessionId", sessionId);*/
+                        reMenAdapter.notifyDataSetChanged();
+                    } else {
+                        AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
+                    }
+                    reMenAdapter.notifyDataSetChanged();
+                }else{
+                    if (!userId.equals("")&&!sessionId.equals("")){
+                       /* Map<String,Object> headMap = new HashMap<>();
+                        headMap.put("userId",userId);
+                        headMap.put("sessionId",sessionId);
+                        mPresenter.CancelAttentionPresenter(headMap,cinemaId);*/
+                        reMenAdapter.notifyDataSetChanged();
+                    }else{
+                        AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
+                    }
+                }
+            }
+        });
     }
 }

@@ -44,11 +44,12 @@ public class ShowActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_show);
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        if (NoStudoInterent.isNetworkAvailable(ShowActivity.this)) {
+        if (savedInstanceState==null){
             //获取fragment事务
             fragmentManager = getSupportFragmentManager();
             list = new ArrayList<>();
@@ -69,7 +70,8 @@ public class ShowActivity extends AppCompatActivity {
             //添加动画
             ObjectAnimator.ofFloat(rbFilm, "scaleX", 1f, 1.16f).start();
             ObjectAnimator.ofFloat(rbFilm, "scaleY", 1f, 1.16f).start();
-
+        }
+        if (NoStudoInterent.isNetworkAvailable(ShowActivity.this)) {
 
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
@@ -178,5 +180,8 @@ public class ShowActivity extends AppCompatActivity {
 
 
         }
+
     }
+
+
 }

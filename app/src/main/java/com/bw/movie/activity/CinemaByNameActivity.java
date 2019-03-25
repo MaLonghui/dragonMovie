@@ -64,7 +64,7 @@ public class CinemaByNameActivity extends AppCompatActivity {
         seachCinemaReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
 
