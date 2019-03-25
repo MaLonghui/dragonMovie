@@ -170,9 +170,6 @@ public interface ApiServer {
     //取消关注电影
     @GET
     Observable<CancelFollowMovieBean> cancelFollowMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
-
-
-
     @POST
     @FormUrlEncoded
     Observable<UpdatePwdBean> updatepwd(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);

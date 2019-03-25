@@ -272,6 +272,8 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 textLine.setText(recommendDetailsBean.getResult().getVehicleRoute());
                 break;
             case R.id.img_recommend_details:
+              /*  Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
+                startActivity(intent);*/
 //                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
 //                startActivity(intent);
                 break;
