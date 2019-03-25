@@ -6,10 +6,12 @@ import android.content.Context;
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
 import com.bw.movie.bean.CancelFollowMovieBean;
+import com.bw.movie.bean.CinemaPraiseBean;
 import com.bw.movie.bean.FilmCommentBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.bean.FilmReviewBean;
 import com.bw.movie.bean.FlowllMovieBean;
+import com.bw.movie.bean.MovieCommentReply;
 import com.bw.movie.mvp.BasePresenterImpl;
 import com.bw.movie.utils.RetrofitManager;
 
@@ -87,6 +89,35 @@ public class FilmDetailsPresenter extends BasePresenterImpl<FilmDetailsContract.
                     }
                 });
     }
+    public void getMovieCommentPresenter(Map<String,Object> headMap,String commentId){
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.movieCommentGreat(Api.MovieCommentGreat,headMap,commentId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<CinemaPraiseBean>() {
+                    @Override
+                    public void accept(CinemaPraiseBean cinemaPraiseBean) throws Exception {
+                        mView.getmovieCommentData(cinemaPraiseBean);
+                    }
+                });
+
+
+    }
+
+    @Override
+    public void getcommentReplyPresenter(Map<String, Object> headMap, Map<String, Object> prams) {
+        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
+        apiServer.commentReply(Api.CommentReply,headMap,prams)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<MovieCommentReply>() {
+                    @Override
+                    public void accept(MovieCommentReply movieCommentReply) throws Exception {
+                        mView.getcommentReplyData(movieCommentReply);
+                    }
+                });
+    }
+
 
     @Override
     public void getFlowllMoviePresenter(Map<String, Object> headMap, String movieId) {

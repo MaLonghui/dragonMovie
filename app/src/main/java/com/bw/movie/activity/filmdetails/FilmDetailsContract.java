@@ -21,6 +21,10 @@ public class FilmDetailsContract {
         void getFilmReviewData(Object object);
         //添加评论
         void getFilmCommentData(Object object);
+        //评论点赞
+        void getmovieCommentData(Object object);
+        //评论回复
+        void getcommentReplyData(Object object);
         //关注电影
         void getFlowllMovieData(Object object);
         //取消关注
@@ -35,9 +39,15 @@ public class FilmDetailsContract {
         void getReviewPresenterData(HashMap<String,Object> headMap,HashMap<String,Object> prams);
         //添加评论
         void getFilmCommentPresenter(HashMap<String,Object> headMap,HashMap<String,Object> prams);
+        //评论点赞
+        void getMovieCommentPresenter(Map<String,Object> headMap,String commentId);
+        //回复评论
+        void getcommentReplyPresenter(Map<String,Object> headMap,Map<String,Object> prams);
         //关注电影
         void getFlowllMoviePresenter(Map<String,Object> headMap,String movieId);
         //取消关注
         void cancelFollowMoviePresenter(HashMap<String,Object> headMap,HashMap<String,Object> prams);
+
+
     }
 }

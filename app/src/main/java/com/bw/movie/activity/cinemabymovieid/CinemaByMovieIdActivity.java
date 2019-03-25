@@ -57,15 +57,17 @@ public class CinemaByMovieIdActivity extends MVPBaseActivity<CinemaByMovieIdCont
         Intent intent = getIntent();
         resultBean = (FilmDetailsBean.ResultBean) intent.getSerializableExtra("resultBean");
         String mId = resultBean.getId()+"";
+        String id = resultBean.getId()+"";
         if (NoStudoInterent.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
-            mPresenter.getPresenterData(mId);
+            mPresenter.getPresenterData(id);
         }
         movieName.setText(resultBean.getName());
         mPresenter.getPresenterData(resultBean.getId()+"");
         movieReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
+
             }
         });
 

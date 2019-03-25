@@ -1,6 +1,10 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.CancelFollowMovieBean;
+import com.bw.movie.bean.CinemaAttentionBean;
+import com.bw.movie.bean.CinemaByIdBean;
+import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.bean.CancelAttentionBean;
 import com.bw.movie.bean.FeedBackBean;
 import com.bw.movie.bean.MovieAttentionBean;
@@ -22,6 +26,7 @@ import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.FlowllMovieBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.LoginBean;
+import com.bw.movie.bean.MovieCommentReply;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.NearbyCinemasBean;
 import com.bw.movie.bean.ReFilmBean;
@@ -116,6 +121,14 @@ public interface ApiServer {
     @POST
     @FormUrlEncoded
     Observable<FilmCommentBean> filmComment(@Url String url, @HeaderMap HashMap<String,Object> headMap, @FieldMap HashMap<String,Object> parms);
+    //评论点赞
+    @POST
+    @FormUrlEncoded
+    Observable<CinemaPraiseBean> movieCommentGreat(@Url String url,@HeaderMap Map<String,Object> headMap,@Field("commentId")String commentId);
+    //回复评论
+    @POST
+    @FormUrlEncoded
+    Observable<MovieCommentReply> commentReply(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String, Object> prams);
     //根据电影ID查询当前排片该电影的影院列表
     @GET
     Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@Query("movieId") String movieId);

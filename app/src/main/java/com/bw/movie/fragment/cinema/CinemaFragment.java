@@ -39,6 +39,7 @@ import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.mvp.MVPBaseFragment;
 import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
+import com.zaaach.citypicker.CityPickerActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -51,6 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
+import static android.app.Activity.RESULT_OK;
 import static android.view.View.VISIBLE;
 
 /**
@@ -101,6 +103,8 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     private Map<String, Object> parms;
     private Map<String, Object> parms1;
     private String s;
+    private static final int REQUEST_CODE_PICK_CITY = 0;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -112,6 +116,14 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
 
+        //定位
+        cinemaDingwei.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
+                        REQUEST_CODE_PICK_CITY);
+            }
+        });
 
 
         if (NoStudoInterent.isNetworkAvailable(getActivity())) {
@@ -261,13 +273,13 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             myRecommendAdapter.setList(recommendCinemasBean);
             myRecommendAdapter.setAttentionClick(new MyRecommendAdapter.AttentionClick() {
                 @Override
-                public void clickattention(String cinemaId,boolean b) {
-                    if (b){
-                        if (!userId.equals("")&&!sessionId.equals("")){
-                            Map<String,Object> headMap = new HashMap<>();
-                            headMap.put("userId",userId);
-                            headMap.put("sessionId",sessionId);
-                            mPresenter.AttentionPresenter(headMap,cinemaId);
+                public void clickattention(String cinemaId, boolean b) {
+                    if (b) {
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            Map<String, Object> headMap = new HashMap<>();
+                            headMap.put("userId", userId);
+                            headMap.put("sessionId", sessionId);
+                            mPresenter.AttentionPresenter(headMap, cinemaId);
                             myRecommendAdapter.notifyDataSetChanged();
                         } else {
                             AlertDialogUtils.AlertDialogLogin(getActivity());
@@ -347,11 +359,16 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 //                parms.put("page",page);
 //                parms.put("count",count);
 //                mPresenter.recommendPresenter(headMap, parms);
+                Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
+                if (cinemaAttentionBean.getStatus().equals("0000")) {
+                    Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }
-    }
 
+
+        }
+    }
     @Override
     public void CancelAttentionView(Object obj) {
         CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
@@ -382,8 +399,10 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
             } else {
                 Toast.makeText(getActivity(), "暂无数据", Toast.LENGTH_SHORT).show();
             }
+
         }
     }
+   
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -434,5 +453,16 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                 btnRecommend.setTextColor(Color.BLACK);
                 break;
         }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
+            if (data != null){
+                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+                cinemaDwAddr.setText(city);
+            }
+        }
+
     }
 }

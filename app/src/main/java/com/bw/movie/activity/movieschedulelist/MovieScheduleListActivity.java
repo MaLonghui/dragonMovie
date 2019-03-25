@@ -82,7 +82,7 @@ public class MovieScheduleListActivity extends MVPBaseActivity<MovieScheduleList
         scheduleReturn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

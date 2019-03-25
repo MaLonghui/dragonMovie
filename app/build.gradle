@@ -57,12 +57,7 @@ dependencies {
     implementation 'com.wang.avi:library:1.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
     //定位
-    implementation 'com.zaaach:citypicker:2.0.3'
-    //必选
-    implementation files('libs/AMap_Location_V4.5.0_20190121.jar')
-    implementation files('libs/AMap_Search_V6.5.0_20180930.jar')
-    implementation files('libs/Android_Map3D_SDK_V6.7.0_20190213.jar')
-    implementation files('libs/Volley.jar')
+    implementation 'com.zaaach:citypicker:1.1'
 }
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->

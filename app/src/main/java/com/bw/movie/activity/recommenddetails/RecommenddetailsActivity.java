@@ -6,10 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -22,13 +19,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.AMapActivity;
-import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.adapter.FlowAdapter;
 import com.bw.movie.adapter.MyCinemaCommmentAdapter;
 import com.bw.movie.adapter.MyMovieIdAndFilmAdapter;
@@ -40,16 +34,13 @@ import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.net.NoStudoInterent;
-import com.bw.movie.recommenddetails.RecommendDetailsActivity;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -281,8 +272,8 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 textLine.setText(recommendDetailsBean.getResult().getVehicleRoute());
                 break;
             case R.id.img_recommend_details:
-                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
+//                startActivity(intent);
                 break;
         }
 

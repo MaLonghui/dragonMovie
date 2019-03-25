@@ -44,6 +44,7 @@ public class ReRecylerAdapter extends RecyclerView.Adapter<ReRecylerAdapter.View
     public void onBindViewHolder(ViewHolder holder, final int position) {
         holder.filmName.getBackground().setAlpha(200);
         holder.filmName.setText(reFilmBeanResult.get(position).getName());
+
         Uri uri = Uri.parse(reFilmBeanResult.get(position).getImageUrl());
         holder.filmSimpleView.setImageURI(uri);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
