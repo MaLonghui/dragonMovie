@@ -71,6 +71,8 @@ public class Api {
     public static final String  SYSMSG_URL = "movieApi/tool/v1/verify/findAllSysMsgList";
     //4.系统消息读取状态修改
     public static final String  SYSMSGSTATUS_URL = "movieApi/tool/v1/verify/changeSysMsgStatus";
+
+
     //修改密码
     public static final String UPDATEPWD_URL = "movieApi/user/v1/verify/modifyUserPwd";
     //用户签到

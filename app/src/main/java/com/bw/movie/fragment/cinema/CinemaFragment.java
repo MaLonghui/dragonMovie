@@ -2,6 +2,7 @@ package com.bw.movie.fragment.cinema;
 
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -105,6 +106,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     private String s;
     private static final int REQUEST_CODE_PICK_CITY = 0;
 
+    @SuppressLint("NewApi")
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
