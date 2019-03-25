@@ -37,6 +37,10 @@ public class Api {
 
     //添加评论
     public static final String FILM_COMMENT = "movieApi/movie/v1/verify/movieComment";
+    //评论点赞
+    public static final String MovieCommentGreat = "movieApi/movie/v1/verify/movieCommentGreat";
+    //回复评论
+    public static final String CommentReply = "movieApi/movie/v1/verify/commentReply";
     //根据电影ID查询当前排片该电影的影院列表
     public static final String CinemasListByMovieId = "movieApi/movie/v1/findCinemasListByMovieId";
     //4.修改用户信息
@@ -53,6 +57,7 @@ public class Api {
     public static final String FINDAllCinemas = "movieApi/cinema/v1/findAllCinemas";
     //取消关注电影
     public static final String CancelFollowMovie = "movieApi/movie/v1/verify/cancelFollowMovie";
+
 
     //6.查询用户关注的影片列表
     public static final String  FILMATTENTION_URL = "movieApi/movie/v1/verify/findMoviePageList";

@@ -44,6 +44,29 @@ public class MyJiAdapter extends RecyclerView.Adapter<MyJiAdapter.ViewHolder> {
         holder.searchSimpleView.setImageURI(uri);
         holder.searchFilmName.setText(jiBeanList.get(position).getName());
         holder.searchSummary.setText("简介："+jiBeanList.get(position).getSummary());
+        String followMovie = jiBeanList.get(position).getFollowMovie();
+        if (followMovie.equals("1")){
+            holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_selected);
+        }else{
+            holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_default);
+        }
+
+        holder.searchCollection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (attentionClick!=null){
+                    if (jiBeanList.get(position).getFollowMovie().equals("1")){
+                        jiBeanList.get(position).setFollowMovie("2");
+                    }else{
+                        jiBeanList.get(position).setFollowMovie("1");
+                    }
+                    String followMovie = jiBeanList.get(position).getFollowMovie();
+                    attentionClick.clickattention(jiBeanList.get(position).getId(),followMovie.equals("1"));
+                    notifyDataSetChanged();
+                }
+            }
+        });
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,5 +96,14 @@ public class MyJiAdapter extends RecyclerView.Adapter<MyJiAdapter.ViewHolder> {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+    public MyReMenAdapter.AttentionClick attentionClick;
+
+    public void setAttentionClick(MyReMenAdapter.AttentionClick attentionClick) {
+        this.attentionClick = attentionClick;
+    }
+
+    public interface AttentionClick{
+        void clickattention(String cinemaId,boolean b);
     }
 }

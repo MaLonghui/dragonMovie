@@ -1,14 +1,17 @@
 package com.bw.movie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.seat.SeatActivity;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 
 import java.util.List;
@@ -17,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.ViewHolder> {
+
 
     private Context context;
     private List<MovieIdAndFilmBean.ResultBean> resultBeans;
@@ -35,13 +39,21 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         viewHolder.textNameMovieandfilm.setText(resultBeans.get(i).getScreeningHall());
         viewHolder.textTimeMovieandfilm.setText(resultBeans.get(i).getBeginTime());
         viewHolder.textTime1Movieandfilm.setText(resultBeans.get(i).getEndTime());
         String[] split = resultBeans.get(i).getPrice().split("\\.");
-        viewHolder.textPriceMovieandfilm.setText(split[0]+".");
+        viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
         viewHolder.textPrice1Movieandfilm.setText(split[1]);
+        viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String price = resultBeans.get(i).getPrice();
+
+                context.startActivity(new Intent(context,SeatActivity.class));
+            }
+        });
     }
 
     @Override
@@ -62,9 +74,12 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
         TextView textPriceMovieandfilm;
         @BindView(R.id.text_price1_movieandfilm)
         TextView textPrice1Movieandfilm;
+        @BindView(R.id.img_icon_sit)
+        ImageView imgIconSit;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }

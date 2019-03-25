@@ -54,7 +54,7 @@
                android:layout_width="@dimen/dp_24"
                android:layout_height="@dimen/dp_24"
                android:layout_alignParentRight="true"
-               android:background="@mipmap/com_icon_collection_default" />
+              />
        </RelativeLayout>
        <TextView
            android:id="@+id/search_summary"

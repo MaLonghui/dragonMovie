@@ -20,6 +20,8 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_seat);
+
+
         seatTableView = (SeatTable) findViewById(R.id.seatView);
         seatTableView.setScreenName("8号厅荧幕");//设置屏幕名称
         seatTableView.setMaxSelected(3);//设置最多选中
