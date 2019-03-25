@@ -67,6 +67,9 @@
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
+
+
+
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -103,6 +106,7 @@
         <activity android:name=".activity.updateinfo.UpdateInfoActivity" />
         <activity android:name=".activity.msg.MsgActivity" />
 
+        <activity android:name=".activity.updatepwd.UpdatePwdActivity" />
         <activity
             android:name="com.zaaach.citypicker.CityPickerActivity"
             android:screenOrientation="portrait"
@@ -110,7 +114,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
 
-        <activity android:name=".activity.updatepwd.UpdatePwdActivity" />
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
