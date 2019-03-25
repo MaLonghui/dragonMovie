@@ -57,6 +57,7 @@ public class CinemaByMovieIdActivity extends MVPBaseActivity<CinemaByMovieIdCont
         Intent intent = getIntent();
         resultBean = (FilmDetailsBean.ResultBean) intent.getSerializableExtra("resultBean");
         String id = resultBean.getId()+"";
+        String mId = resultBean.getId()+"";
         if (NoStudoInterent.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
             mPresenter.getPresenterData(id);
         }

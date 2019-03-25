@@ -6,10 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
@@ -22,12 +19,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.adapter.FlowAdapter;
 import com.bw.movie.adapter.MyCinemaCommmentAdapter;
 import com.bw.movie.adapter.MyMovieIdAndFilmAdapter;
@@ -44,10 +39,8 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -248,34 +241,41 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         }
     }
 
-    @OnClick(R.id.img_recommend_details)
-    public void onViewClicked() {
-        View view = LayoutInflater.from(this).inflate(R.layout.popuprecommenddetails_layout, null);
-        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        popupWindow.setAnimationStyle(R.style.popwin_anim_style);
-        popupWindow.setTouchable(true);
-        popupWindow.setOutsideTouchable(false);
-        popupWindow.setFocusable(true);
-        View inflate = LayoutInflater.from(this).inflate(R.layout.activity_recommend, null);
-        popupWindow.showAtLocation(inflate,Gravity.BOTTOM,0,0);
-        TextView textdetailsPop = view.findViewById(R.id.text_details_pop);
-        TextView textcommentPop = view.findViewById(R.id.text_comment_pop);
-        viewdetailsPop = view.findViewById(R.id.view_details_pop);
-        viewcommentPop = view.findViewById(R.id.view_comment_pop);
-        ImageView imgDown = view.findViewById(R.id.img_down);
-        linearLayout = view.findViewById(R.id.linear_layout);
-        recyclerContent = (XRecyclerView)view.findViewById(R.id.recyclerView_content);
-        TextView textAddress = view.findViewById(R.id.text_address_details);
-        TextView textIphone = view.findViewById(R.id.text_iphone_details);
-        TextView textLine = view.findViewById(R.id.text_line_details);
-        textErrorComment = view.findViewById(R.id.text_error_comment);
-        textdetailsPop.setOnClickListener(this);
-        textcommentPop.setOnClickListener(this);
-        imgDown.setOnClickListener(this);
-        textAddress.setText(recommendDetailsBean.getResult().getAddress());
-        textIphone.setText(recommendDetailsBean.getResult().getPhone());
-        textLine.setText(recommendDetailsBean.getResult().getVehicleRoute());
-
+    @OnClick({R.id.simPle_recommend_details,R.id.img_recommend_details})
+    public void onViewClicked(View view2) {
+        switch (view2.getId()){
+            case R.id.simPle_recommend_details:
+                View view = LayoutInflater.from(this).inflate(R.layout.popuprecommenddetails_layout, null);
+                popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                popupWindow.setAnimationStyle(R.style.popwin_anim_style);
+                popupWindow.setTouchable(true);
+                popupWindow.setOutsideTouchable(false);
+                popupWindow.setFocusable(true);
+                View inflate = LayoutInflater.from(this).inflate(R.layout.activity_recommend, null);
+                popupWindow.showAtLocation(inflate,Gravity.BOTTOM,0,0);
+                TextView textdetailsPop = view.findViewById(R.id.text_details_pop);
+                TextView textcommentPop = view.findViewById(R.id.text_comment_pop);
+                viewdetailsPop = view.findViewById(R.id.view_details_pop);
+                viewcommentPop = view.findViewById(R.id.view_comment_pop);
+                ImageView imgDown = view.findViewById(R.id.img_down);
+                linearLayout = view.findViewById(R.id.linear_layout);
+                recyclerContent = (XRecyclerView)view.findViewById(R.id.recyclerView_content);
+                TextView textAddress = view.findViewById(R.id.text_address_details);
+                TextView textIphone = view.findViewById(R.id.text_iphone_details);
+                TextView textLine = view.findViewById(R.id.text_line_details);
+                textErrorComment = view.findViewById(R.id.text_error_comment);
+                textdetailsPop.setOnClickListener(this);
+                textcommentPop.setOnClickListener(this);
+                imgDown.setOnClickListener(this);
+                textAddress.setText(recommendDetailsBean.getResult().getAddress());
+                textIphone.setText(recommendDetailsBean.getResult().getPhone());
+                textLine.setText(recommendDetailsBean.getResult().getVehicleRoute());
+                break;
+            case R.id.img_recommend_details:
+              /*  Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
+                startActivity(intent);*/
+                break;
+        }
 
     }
 

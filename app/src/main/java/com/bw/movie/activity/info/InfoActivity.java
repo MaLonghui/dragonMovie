@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.activity.updateinfo.UpdateInfoActivity;
+import com.bw.movie.activity.updatepwd.UpdatePwdActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.mvp.MVPBaseActivity;
@@ -113,6 +114,8 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
             case R.id.info_sdv:
                 break;
             case R.id.info_reset_psw:
+                startActivity(new Intent(InfoActivity.this,UpdatePwdActivity.class));
+                finish();
                 break;
             case R.id.info_request:
                 finish();

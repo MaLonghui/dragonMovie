@@ -34,9 +34,11 @@ import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.bean.RegistBean;
 import com.bw.movie.bean.ShangFilmBean;
+import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.SysMsgBean;
 import com.bw.movie.bean.SysMsgStatusBean;
 import com.bw.movie.bean.UpdateInfoBean;
+import com.bw.movie.bean.UpdatePwdBean;
 import com.bw.movie.bean.UserHeadIconBean;
 
 import java.util.HashMap;
@@ -50,7 +52,9 @@ import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.HeaderMap;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 import retrofit2.http.Url;
@@ -94,7 +98,8 @@ public interface ApiServer {
 
     //上传用户头像
     @POST
-    Observable<UserHeadIconBean> headicon(@Url String url, @HeaderMap Map<String,Object> headMap, @Body MultipartBody multipartBody);
+    @Multipart
+    Observable<UserHeadIconBean> headicon(@Url String url, @HeaderMap Map<String,Object> headMap,@Part MultipartBody.Part image);
     //查询电影信息明细
     @GET
     Observable<RecommendDetailsBean> details(@Url String url, @HeaderMap Map<String,Object> headMap,@Query("cinemaId") String cinemaId);
@@ -166,6 +171,13 @@ public interface ApiServer {
     //3.查询系统消息列表
     @GET
     Observable<SysMsgStatusBean> msgstatus(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("id") String id);
-    
 
+
+
+    @POST
+    @FormUrlEncoded
+    Observable<UpdatePwdBean> updatepwd(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
+    //用户签到
+    @GET
+    Observable<SignInBean> signin(@Url String url,@HeaderMap Map<String,Object> headMap);
 }
