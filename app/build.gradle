@@ -62,7 +62,6 @@ dependencies {
     //定位
     implementation 'com.zaaach:citypicker:1.1'
 
-    //必选
 
 }
 configurations.all {
