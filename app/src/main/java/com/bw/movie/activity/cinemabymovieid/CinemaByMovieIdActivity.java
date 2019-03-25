@@ -45,8 +45,6 @@ public class CinemaByMovieIdActivity extends MVPBaseActivity<CinemaByMovieIdCont
     @BindView(R.id.movie_return)
     ImageView movieReturn;
     public static final String TAG = "CinemaByMovieIdActivity";
-    private String mId;
-    private String mName;
     private FilmDetailsBean.ResultBean resultBean;
 
     @Override
@@ -57,13 +55,11 @@ public class CinemaByMovieIdActivity extends MVPBaseActivity<CinemaByMovieIdCont
         getWindow().setEnterTransition(new Explode().setDuration(800));
         getWindow().setExitTransition(new Explode().setDuration(800));
         Intent intent = getIntent();
-        String mName = intent.getStringExtra("movieName");
-        String mId = intent.getStringExtra("movieId");
-        movieName.setText(mName);
+        resultBean = (FilmDetailsBean.ResultBean) intent.getSerializableExtra("resultBean");
+        String mId = resultBean.getId()+"";
         if (NoStudoInterent.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
             mPresenter.getPresenterData(mId);
         }
-        resultBean = (FilmDetailsBean.ResultBean) intent.getSerializableExtra("resultBean");
         movieName.setText(resultBean.getName());
         mPresenter.getPresenterData(resultBean.getId()+"");
         movieReturn.setOnClickListener(new View.OnClickListener() {

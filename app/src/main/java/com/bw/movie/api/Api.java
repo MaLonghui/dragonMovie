@@ -65,4 +65,8 @@ public class Api {
     public static final String FINDAllCinemas = "movieApi/cinema/v1/findAllCinemas";
     //取消关注电影
     public static final String CancelFollowMovie = "movieApi/movie/v1/verify/cancelFollowMovie";
+    //修改密码
+    public static final String UPDATEPWD_URL = "movieApi/user/v1/verify/modifyUserPwd";
+    //用户签到
+    public static final String SIGNIN_URL = "movieApi/user/v1/verify/userSignIn";
 }
