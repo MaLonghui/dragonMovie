@@ -37,9 +37,11 @@ import com.bw.movie.bean.ShangFilmBean;
 import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.SysMsgBean;
 import com.bw.movie.bean.SysMsgStatusBean;
+import com.bw.movie.bean.TicketBean;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.bean.UpdatePwdBean;
 import com.bw.movie.bean.UserHeadIconBean;
+import com.bw.movie.bean.WxLoginBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -170,13 +172,17 @@ public interface ApiServer {
     //取消关注电影
     @GET
     Observable<CancelFollowMovieBean> cancelFollowMovie(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
-
-
-
     @POST
     @FormUrlEncoded
     Observable<UpdatePwdBean> updatepwd(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
     //用户签到
     @GET
     Observable<SignInBean> signin(@Url String url,@HeaderMap Map<String,Object> headMap);
+    //微信登录
+    @POST
+    @FormUrlEncoded
+    Observable<WxLoginBean> wxLogin(@Url String url,@Field("code") String code);
+    //9.用户购票记录查询列表
+    @GET
+    Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
 }

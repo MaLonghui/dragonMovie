@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:fitsSystemWindows="true"
+    android:tag="cinemaFragment"
     android:orientation="vertical"
     android:paddingLeft="@dimen/dp_24"
     android:paddingRight="@dimen/dp_24">

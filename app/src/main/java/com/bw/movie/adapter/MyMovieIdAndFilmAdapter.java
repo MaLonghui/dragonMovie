@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.seat.SeatActivity;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 
 import butterknife.BindView;
@@ -38,13 +39,31 @@ public class MyMovieIdAndFilmAdapter extends RecyclerView.Adapter<MyMovieIdAndFi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         viewHolder.textNameMovieandfilm.setText(movieIdAndFilmBean.getResult().get(i).getScreeningHall());
         viewHolder.textTimeMovieandfilm.setText(movieIdAndFilmBean.getResult().get(i).getBeginTime());
         viewHolder.textTime1Movieandfilm.setText(movieIdAndFilmBean.getResult().get(i).getEndTime());
         String[] split = movieIdAndFilmBean.getResult().get(i).getPrice().split("\\.");
         viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
         viewHolder.textPrice1Movieandfilm.setText(split[1]);
+        viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(context,"好使",Toast.LENGTH_LONG).show();
+                double price = Double.parseDouble(movieIdAndFilmBean.getResult().get(i).getPrice());
+                String beginTime = movieIdAndFilmBean.getResult().get(i).getBeginTime();
+                String endTime = movieIdAndFilmBean.getResult().get(i).getEndTime();
+                String seatsUseCount = movieIdAndFilmBean.getResult().get(i).getSeatsUseCount();
+                String screeningHall = movieIdAndFilmBean.getResult().get(i).getScreeningHall();
+                Intent intent = new Intent(context, SeatActivity.class);
+                intent.putExtra("price",price);
+                intent.putExtra("beginTime",beginTime);
+                intent.putExtra("endTime",endTime);
+                intent.putExtra("seatsUseCount",seatsUseCount);
+                intent.putExtra("screeningHall",screeningHall);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

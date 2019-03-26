@@ -10,6 +10,16 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    //微信获取code值
+    signingConfigs {
+        debug {
+            storeFile file('movie.keystore')
+            keyAlias "bw_movie"
+            storePassword "123456"
+            keyPassword "123456"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -60,8 +70,12 @@ dependencies {
     //网络监听
     implementation 'com.wang.avi:library:1.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
-    //定位
 //    implementation 'com.zaaach:citypicker:1.1'
+
+    //必选
+    //微信登录
+    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
+
 
 }
 configurations.all {
