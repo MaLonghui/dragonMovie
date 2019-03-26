@@ -70,6 +70,7 @@
 
 
 
+
     <application
         android:name=".app.MyApp"
         android:allowBackup="true"
@@ -112,6 +113,13 @@
             android:screenOrientation="portrait"
             android:theme="@style/CityPicker.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <!--微信-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
 
 
 

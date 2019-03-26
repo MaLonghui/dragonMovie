@@ -49,9 +49,18 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
         viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String price = resultBeans.get(i).getPrice();
-
-                context.startActivity(new Intent(context,SeatActivity.class));
+                double price = Double.parseDouble(resultBeans.get(i).getPrice());
+                String beginTime = resultBeans.get(i).getBeginTime();
+                String endTime = resultBeans.get(i).getEndTime();
+                String seatsUseCount = resultBeans.get(i).getSeatsUseCount();
+                String screeningHall = resultBeans.get(i).getScreeningHall();
+                Intent intent = new Intent(context, SeatActivity.class);
+                intent.putExtra("price",price);
+                intent.putExtra("beginTime",beginTime);
+                intent.putExtra("endTime",endTime);
+                intent.putExtra("seatsUseCount",seatsUseCount);
+                intent.putExtra("screeningHall",screeningHall);
+                context.startActivity(intent);
             }
         });
     }

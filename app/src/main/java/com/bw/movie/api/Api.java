@@ -75,4 +75,6 @@ public class Api {
     public static final String UPDATEPWD_URL = "movieApi/user/v1/verify/modifyUserPwd";
     //用户签到
     public static final String SIGNIN_URL = "movieApi/user/v1/verify/userSignIn";
+    //微信登录
+    public static final String WX_LOGIN = "movieApi/user/v1/weChatBindingLogin";
 }

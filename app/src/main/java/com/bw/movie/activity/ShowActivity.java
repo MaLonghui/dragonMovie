@@ -1,14 +1,17 @@
 package com.bw.movie.activity;
 
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.transition.Explode;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.fragment.cinema.CinemaFragment;
@@ -43,15 +46,26 @@ public class ShowActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        fragmentManager = getSupportFragmentManager();
+        if (savedInstanceState!=null){
+            cinemaFragment = (CinemaFragment) fragmentManager.findFragmentByTag("cinemaFragment");
+            filmFragment = (FilmFragment) fragmentManager.findFragmentByTag("filmFragment");
+            mineFragment = (MineFragment) fragmentManager.findFragmentByTag("mineFragment");
+        }
         super.onCreate(savedInstanceState);
 
+
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_show);
         ButterKnife.bind(this);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        if (savedInstanceState==null){
+
+        if (NoStudoInterent.isNetworkAvailable(ShowActivity.this)) {
+
             //获取fragment事务
-            fragmentManager = getSupportFragmentManager();
+
             list = new ArrayList<>();
             filmFragment = new FilmFragment();
             cinemaFragment = new CinemaFragment();
@@ -61,18 +75,15 @@ public class ShowActivity extends AppCompatActivity {
             list.add(mineFragment);
 
             fragmentManager.beginTransaction()
-                    .add(R.id.fram_layout, filmFragment)
-                    .add(R.id.fram_layout, cinemaFragment)
-                    .add(R.id.fram_layout, mineFragment)
+                    .add(R.id.fram_layout, filmFragment,"filmFragment")
+                    .add(R.id.fram_layout, cinemaFragment,"cinemaFragment")
+                    .add(R.id.fram_layout, mineFragment,"mineFragment")
                     .hide(cinemaFragment)
                     .hide(mineFragment)
                     .commit();
             //添加动画
             ObjectAnimator.ofFloat(rbFilm, "scaleX", 1f, 1.16f).start();
             ObjectAnimator.ofFloat(rbFilm, "scaleY", 1f, 1.16f).start();
-        }
-        if (NoStudoInterent.isNetworkAvailable(ShowActivity.this)) {
-
             radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
 
                 private ObjectAnimator myScaleY;
@@ -184,4 +195,11 @@ public class ShowActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //Toast.makeText(this, "", Toast.LENGTH_SHORT).show();
+
+    }
 }
