@@ -55,12 +55,14 @@ public class MyMovieIdAndFilmAdapter extends RecyclerView.Adapter<MyMovieIdAndFi
                 String endTime = movieIdAndFilmBean.getResult().get(i).getEndTime();
                 String seatsUseCount = movieIdAndFilmBean.getResult().get(i).getSeatsUseCount();
                 String screeningHall = movieIdAndFilmBean.getResult().get(i).getScreeningHall();
+                String id = movieIdAndFilmBean.getResult().get(i).getId();
                 Intent intent = new Intent(context, SeatActivity.class);
                 intent.putExtra("price",price);
                 intent.putExtra("beginTime",beginTime);
                 intent.putExtra("endTime",endTime);
                 intent.putExtra("seatsUseCount",seatsUseCount);
                 intent.putExtra("screeningHall",screeningHall);
+                intent.putExtra("scheduleId",id);
                 context.startActivity(intent);
             }
         });

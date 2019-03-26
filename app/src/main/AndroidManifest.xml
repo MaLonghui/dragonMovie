@@ -110,6 +110,8 @@
         <activity android:name=".activity.AMapActivity" />
         <activity android:name=".activity.reccord.ReccordActivity" />
 
+
+
         <!--<activity-->
             <!--android:name="com.zaaach.citypicker.CityPickerActivity"-->
             <!--android:screenOrientation="portrait"-->

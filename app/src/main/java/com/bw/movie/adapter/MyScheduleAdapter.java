@@ -46,7 +46,6 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
         String[] split = resultBeans.get(i).getPrice().split("\\.");
         viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
         viewHolder.textPrice1Movieandfilm.setText(split[1]);
-
         viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,15 +54,18 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
                 String endTime = resultBeans.get(i).getEndTime();
                 String seatsUseCount = resultBeans.get(i).getSeatsUseCount();
                 String screeningHall = resultBeans.get(i).getScreeningHall();
+                String id = resultBeans.get(i).getId();
                 Intent intent = new Intent(context, SeatActivity.class);
                 intent.putExtra("price",price);
                 intent.putExtra("beginTime",beginTime);
                 intent.putExtra("endTime",endTime);
                 intent.putExtra("seatsUseCount",seatsUseCount);
                 intent.putExtra("screeningHall",screeningHall);
+                intent.putExtra("scheduleId",id);
                 context.startActivity(intent);
             }
         });
+
     }
 
     @Override

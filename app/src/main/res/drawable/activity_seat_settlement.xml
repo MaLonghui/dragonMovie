@@ -3,6 +3,8 @@
     <corners android:topLeftRadius="@dimen/dp_20" android:topRightRadius="@dimen/dp_20"/>
     <solid android:color="#fff"/>
     <solid android:color="#ffffff"/>
+    <solid android:color="#ffffff"/>
+    <solid android:color="#fff"/>
     <padding  android:top="@dimen/dp_2"/>
     <stroke android:color="#33440a33" android:width="@dimen/dp_4"/>
 </shape>

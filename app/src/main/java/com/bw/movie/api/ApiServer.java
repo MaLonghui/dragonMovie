@@ -1,6 +1,7 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.CancelFollowMovieBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
@@ -185,4 +186,9 @@ public interface ApiServer {
     //9.用户购票记录查询列表
     @GET
     Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //购票下单
+    @POST
+    @FormUrlEncoded
+    Observable<BuyTicketBean> buyTicket(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
+
 }
