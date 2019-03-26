@@ -166,11 +166,13 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     public void SignInView(Object obj) {
         if (obj!=null){
             SignInBean signInBean = (SignInBean) obj;
-            Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
+
             if (signInBean.getStatus().equals("0000")){
                 mySignIn.setBackgroundResource(R.drawable.shape_bg_button);
+//                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
             }else{
                 mySignIn.setBackgroundResource(R.drawable.shape_signin);
+//                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
     }

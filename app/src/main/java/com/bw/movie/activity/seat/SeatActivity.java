@@ -21,15 +21,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
+import com.bw.movie.utils.MD5Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +75,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
     private SharedPreferences preferences;
     private String userId;
     private String sessionId;
+    private String scheduleId;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,6 +94,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
         //Toast.makeText(this, mMPrice +"", Toast.LENGTH_SHORT).show();
         String beginTime = intent.getStringExtra("beginTime");
         String endTime = intent.getStringExtra("endTime");
+        scheduleId = intent.getStringExtra("scheduleId");
         String screeningHall = intent.getStringExtra("screeningHall");
         seatBegingtime.setText(beginTime+" - ");
         seatEndtime.setText(endTime);
@@ -104,7 +109,12 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 if (userId.equals("")||sessionId.equals("")){
                     AlertDialogUtils.AlertDialogLogin(SeatActivity.this);
                 }else{
-                    initpopup();
+                    if (mNum>=0){
+                        initpopup();
+                    }else{
+                        Toast.makeText(SeatActivity.this, "请选择", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
 
             }
@@ -158,27 +168,27 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 popup_wei.setChecked(false);
             }
         });
-       /* //下单的点击事件
+       //下单的点击事件
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //下单成功跳转到购票记录
                 //得到排期表，数量，sign
+                Map<String,Object> headMap = new HashMap<>();
+                Map<String,Object> prams = new HashMap<>();
 
-                HashMap<String, String> map = new HashMap<>();
-                map.put("scheduleId", mScheduleId + "");
-                map.put("amount", mNum + "");
-                String sign = "" + UserId + mScheduleId + mNum + "movie";
-                Log.i("TAG", "sign===" + sign);
-                map.put("scheduleId", mScheduleId + "");
-                map.put("amount", mNum + "");
-                //String sign = "" + UserId + mScheduleId + mNum + "movie";
-                String convertMD5 = MD5Utils.string2MD5(sign);
-                map.put("sign", convertMD5);
-                Log.i("TAG", "接口入参：" + map);
-                doPost(Apis.MOVE_TICKET, map, MoveTicketBean.class);
+                headMap.put("userId",userId);
+                headMap.put("sessionId",sessionId);
+                prams.put("scheduleId",scheduleId);
+                prams.put("amount",mNum+"");
+                String signMD5 = userId+scheduleId+mNum+"movie";
+                String sign = MD5Utils.string2MD5(signMD5);
+                prams.put("sign",sign);
+                mPresenter.getTicketPresenterData(headMap,prams);
+
+
             }
-        });*/
+        });
     }
 
     @Subscribe(sticky = true)
@@ -218,4 +228,16 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
         return spannableString;
     }
 
+    @Override
+    public void getTicketViewData(Object object) {
+        if (object!=null){
+            BuyTicketBean buyTicketBean = (BuyTicketBean) object;
+            Toast.makeText(this, buyTicketBean.getMessage(), Toast.LENGTH_SHORT).show();
+            if (mPopupWindow.isShowing()){
+                if (buyTicketBean.getStatus().equals("0000")){
+                    mPopupWindow.dismiss();
+                }
+            }
+        }
+    }
 }

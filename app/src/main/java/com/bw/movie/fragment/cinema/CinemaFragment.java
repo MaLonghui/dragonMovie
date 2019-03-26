@@ -40,7 +40,7 @@ import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.mvp.MVPBaseFragment;
 import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
-import com.zaaach.citypicker.CityPickerActivity;
+//import com.zaaach.citypicker.CityPickerActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -122,8 +122,8 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         cinemaDingwei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
-                        REQUEST_CODE_PICK_CITY);
+//                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
+//                        REQUEST_CODE_PICK_CITY);
             }
         });
 
@@ -462,8 +462,8 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
             if (data != null){
-                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-                cinemaDwAddr.setText(city);
+//                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+//                cinemaDwAddr.setText(city);
             }
         }
 

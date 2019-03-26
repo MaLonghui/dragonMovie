@@ -94,5 +94,4 @@ public class MinePresenter extends BasePresenterImpl<MineContract.View> implemen
     }
 
 
-
 }

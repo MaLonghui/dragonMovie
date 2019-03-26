@@ -1,6 +1,7 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.CancelFollowMovieBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
@@ -181,4 +182,9 @@ public interface ApiServer {
     @POST
     @FormUrlEncoded
     Observable<WxLoginBean> wxLogin(@Url String url,@Field("code") String code);
+    //购票下单
+    @POST
+    @FormUrlEncoded
+    Observable<BuyTicketBean> buyTicket(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
+
 }
