@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.seat.SeatActivity;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 
 import java.util.List;
@@ -46,14 +45,7 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
         String[] split = resultBeans.get(i).getPrice().split("\\.");
         viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
         viewHolder.textPrice1Movieandfilm.setText(split[1]);
-        viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String price = resultBeans.get(i).getPrice();
 
-                context.startActivity(new Intent(context,SeatActivity.class));
-            }
-        });
     }
 
     @Override

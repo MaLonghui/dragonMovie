@@ -4,7 +4,7 @@ public class Api {
     //base
     public static final String BASE_URL = "http://mobile.bwstudent.com/";
     //注册
-    public static final String REGIST_URL = "movieApi / user / v1 / registerUser";
+    public static final String REGIST_URL = "movieApi/user/v1/registerUser";
     //登录
     public static final String LOGIN_URL = "movieApi/user/v1/login";
     //查询推荐影院

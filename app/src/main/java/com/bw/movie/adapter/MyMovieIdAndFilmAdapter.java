@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.seat.SeatActivity;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 
 import butterknife.BindView;
@@ -46,13 +45,6 @@ public class MyMovieIdAndFilmAdapter extends RecyclerView.Adapter<MyMovieIdAndFi
         String[] split = movieIdAndFilmBean.getResult().get(i).getPrice().split("\\.");
         viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
         viewHolder.textPrice1Movieandfilm.setText(split[1]);
-        viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(context,"好使",Toast.LENGTH_LONG).show();
-                context.startActivity(new Intent(context,SeatActivity.class));
-            }
-        });
     }
 
     @Override
