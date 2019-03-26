@@ -81,4 +81,7 @@ public class Api {
     public static final String WX_LOGIN = "movieApi/user/v1/weChatBindingLogin";
     //购票下单
     public static final String BUY_TICKET = "movieApi/movie/v1/verify/buyMovieTicket";
+    //9.用户购票记录查询列表
+    public static final String SELECTTICKET_URL = "movieApi/user/v1/verify/findUserBuyTicketRecordList";
+
 }

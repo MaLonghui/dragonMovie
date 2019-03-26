@@ -38,6 +38,7 @@ import com.bw.movie.bean.ShangFilmBean;
 import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.SysMsgBean;
 import com.bw.movie.bean.SysMsgStatusBean;
+import com.bw.movie.bean.TicketBean;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.bean.UpdatePwdBean;
 import com.bw.movie.bean.UserHeadIconBean;
@@ -187,4 +188,7 @@ public interface ApiServer {
     @FormUrlEncoded
     Observable<BuyTicketBean> buyTicket(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
 
+    //9.用户购票记录查询列表
+    @GET
+    Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
 }

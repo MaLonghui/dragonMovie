@@ -1,5 +1,6 @@
 package com.bw.movie.activity.seat;
 
+
 import com.bw.movie.mvp.BasePresenter;
 import com.bw.movie.mvp.BaseView;
 
@@ -13,4 +14,6 @@ public class SeatContract {
     interface  Presenter extends BasePresenter<View> {
         void getTicketPresenterData(Map<String,Object> headMap,Map<String,Object> parms);
     }
+
+
 }

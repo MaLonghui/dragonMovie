@@ -99,7 +99,6 @@
         <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity" />
         <activity android:name=".activity.filmdetails.FilmDetailsActivity" />
         <activity android:name=".activity.info.InfoActivity" />
-        <activity android:name=".activity.seat.SeatActivity" />
         <activity android:name=".activity.attention.AttentionActivity" />
         <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity" />
         <activity android:name=".activity.CinemaByNameActivity" />
@@ -109,6 +108,9 @@
 
         <activity android:name=".activity.updatepwd.UpdatePwdActivity" />
 
+        <activity android:name=".activity.AMapActivity" />
+        <activity android:name=".activity.reccord.ReccordActivity" />
+        <activity android:name=".activity.seat.SeatActivity"/>
 
         <!--<activity-->
             <!--android:name="com.zaaach.citypicker.CityPickerActivity"-->

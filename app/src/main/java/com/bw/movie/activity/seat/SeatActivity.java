@@ -26,6 +26,9 @@ import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.bw.movie.utils.MD5Utils;
+import com.bw.movie.bean.MoveSeatAmount;
+import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.utils.AlertDialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -109,16 +112,23 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 if (userId.equals("")||sessionId.equals("")){
                     AlertDialogUtils.AlertDialogLogin(SeatActivity.this);
                 }else{
-                    if (mNum>=0){
-                        initpopup();
-                    }else{
-                        Toast.makeText(SeatActivity.this, "请选择", Toast.LENGTH_SHORT).show();
-                    }
+                    initpopup();
 
                 }
 
             }
         });
+        seatNo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+                finish();
+            }
+        });
+
+
+
+
         seatNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,12 +178,12 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 popup_wei.setChecked(false);
             }
         });
-       //下单的点击事件
+
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //下单成功跳转到购票记录
-                //得到排期表，数量，sign
+
                 Map<String,Object> headMap = new HashMap<>();
                 Map<String,Object> prams = new HashMap<>();
 
@@ -185,10 +195,9 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 String sign = MD5Utils.string2MD5(signMD5);
                 prams.put("sign",sign);
                 mPresenter.getTicketPresenterData(headMap,prams);
-
-
             }
         });
+
     }
 
     @Subscribe(sticky = true)
@@ -239,5 +248,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 }
             }
         }
+
     }
+
 }

@@ -28,3 +28,4 @@ public class SeatPresenter extends BasePresenterImpl<SeatContract.View> implemen
                 });
     }
 }
+
