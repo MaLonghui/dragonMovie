@@ -371,6 +371,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
         }
     }
+
     @Override
     public void CancelAttentionView(Object obj) {
         CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
