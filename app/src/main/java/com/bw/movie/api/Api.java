@@ -79,10 +79,10 @@ public class Api {
     public static final String SIGNIN_URL = "movieApi/user/v1/verify/userSignIn";
     //微信登录
     public static final String WX_LOGIN = "movieApi/user/v1/weChatBindingLogin";
-    //9.用户购票记录查询列表
-    public static final String SELECTTICKET_URL = "movieApi/user/v1/verify/findUserBuyTicketRecordList";
     //购票下单
     public static final String BUY_TICKET = "movieApi/movie/v1/verify/buyMovieTicket";
+    //9.用户购票记录查询列表
+    public static final String SELECTTICKET_URL = "movieApi/user/v1/verify/findUserBuyTicketRecordList";
     //支付
     public static final String WZ_PAY = "movieApi/movie/v1/verify/pay";
 

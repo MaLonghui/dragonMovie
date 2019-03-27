@@ -70,11 +70,11 @@ dependencies {
     //网络监听
     implementation 'com.wang.avi:library:1.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
+    /*//定位
+        implementation 'com.zaaach:citypicker:1.1'*/
  //implementation 'com.zaaach:citypicker:1.1'
 //定位
 
-    /*//定位
-        implementation 'com.zaaach:citypicker:1.1'*/
     //必选
     //微信登录
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
@@ -92,4 +92,3 @@ configurations.all {
         }
     }
 }
-
