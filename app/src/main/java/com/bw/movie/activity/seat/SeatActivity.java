@@ -33,6 +33,10 @@ import com.bw.movie.utils.MD5Utils;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
+import com.bw.movie.utils.MD5Utils;
+import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
+import com.bw.movie.activity.reccord.ReccordActivity;
+import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
@@ -40,7 +44,6 @@ import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
-import com.bw.movie.utils.MD5Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -191,8 +194,6 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 popup_wei.setChecked(false);
             }
         });
-
-
        //下单的点击事件
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -101,9 +101,7 @@
         <activity android:name=".activity.feedback.FeedbackActivity" />
         <activity android:name=".activity.updateinfo.UpdateInfoActivity" />
         <activity android:name=".activity.msg.MsgActivity" />
-
         <activity android:name=".activity.updatepwd.UpdatePwdActivity" />
-
         <activity android:name=".activity.AMapActivity" />
         <activity android:name=".activity.reccord.ReccordActivity" />
         <activity android:name=".activity.seat.SeatActivity"/>
@@ -117,9 +115,6 @@
                 <data android:scheme="wxb3852e6a6b7d9516"/>
             </intent-filter>
         </activity>
-
-
-
         <!--<activity-->
             <!--android:name="com.zaaach.citypicker.CityPickerActivity"-->
             <!--android:screenOrientation="portrait"-->
