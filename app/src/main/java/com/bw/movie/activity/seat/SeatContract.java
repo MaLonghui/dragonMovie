@@ -1,5 +1,6 @@
 package com.bw.movie.activity.seat;
 
+
 import com.bw.movie.mvp.BasePresenter;
 import com.bw.movie.mvp.BaseView;
 

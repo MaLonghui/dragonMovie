@@ -83,4 +83,8 @@ public class Api {
     public static final String SELECTTICKET_URL = "movieApi/user/v1/verify/findUserBuyTicketRecordList";
     //购票下单
     public static final String BUY_TICKET = "movieApi/movie/v1/verify/buyMovieTicket";
+    //支付
+    public static final String WZ_PAY = "movieApi/movie/v1/verify/pay";
+
+
 }

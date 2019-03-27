@@ -65,7 +65,6 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
                 context.startActivity(intent);
             }
         });
-
     }
 
     @Override

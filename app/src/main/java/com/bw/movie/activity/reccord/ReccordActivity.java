@@ -7,13 +7,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.RelativeSizeSpan;
+import android.transition.Explode;
+import android.view.Gravity;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.bean.PayBean;
 import com.bw.movie.fragment.alreadymoney.AlreadyMoneyFragment;
 import com.bw.movie.fragment.cinemaattention.CinemaattentionFragment;
 import com.bw.movie.fragment.filmattention.FilmattentionFragment;
@@ -21,6 +31,7 @@ import com.bw.movie.fragment.willmoney.WillMoneyFragment;
 import com.bw.movie.mvp.MVPBaseActivity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import butterknife.BindView;
@@ -45,10 +56,13 @@ public class ReccordActivity extends MVPBaseActivity<ReccordContract.View, Recco
     @BindView(R.id.images_back_Money)
     ImageView imagesBackMoney;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reccord);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         ButterKnife.bind(this);
         final List<Fragment> list = new ArrayList<>();
         list.add(new WillMoneyFragment());
@@ -83,7 +97,7 @@ public class ReccordActivity extends MVPBaseActivity<ReccordContract.View, Recco
         radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId){
+                switch (checkedId) {
                     case R.id.WillMoney:
                         ViewPageMoney.setCurrentItem(0);
                         WillMoney.setBackgroundResource(R.drawable.shape_btn);
@@ -108,4 +122,6 @@ public class ReccordActivity extends MVPBaseActivity<ReccordContract.View, Recco
             }
         });
     }
+
+
 }

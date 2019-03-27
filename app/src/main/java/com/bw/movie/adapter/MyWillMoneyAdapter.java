@@ -52,22 +52,22 @@ public class MyWillMoneyAdapter extends RecyclerView.Adapter<MyWillMoneyAdapter.
         Date date = new Date(ticketBean.getResult().get(i).getCreateTime());
         SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd hh:mm");
         String format = sd.format(date);
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm");
-//        try {
-//            date1 = simpleDateFormat.parse(ticketBean.getResult().get(i).getBegintime());
-//            date2 = simpleDateFormat.parse(ticketBean.getResult().get(i).getEndTime());
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-
-
 
         viewHolder.willTime.setText("时间："+format);
         viewHolder.willAmount.setText("数量："+ticketBean.getResult().get(i).getAmount());
-        double price = ticketBean.getResult().get(i).getPrice();
+        final double price = ticketBean.getResult().get(i).getPrice();
         int amoung = Integer.parseInt(ticketBean.getResult().get(i).getAmount());
         viewHolder.willPrice.setText("金额："+price*amoung);
+        viewHolder.willButt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mWaitCallBack!=null){
+                    mWaitCallBack.waitcallback(price,i);
+                }
+            }
+        });
+
+
     }
 
     @Override
@@ -96,5 +96,15 @@ public class MyWillMoneyAdapter extends RecyclerView.Adapter<MyWillMoneyAdapter.
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+
+
+    public interface WaitCallBack{
+        void waitcallback(double price,int position);
+    }
+    public WaitCallBack mWaitCallBack;
+
+    public void setWaitCallBack(WaitCallBack waitCallBack) {
+        mWaitCallBack = waitCallBack;
     }
 }

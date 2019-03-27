@@ -1,9 +1,11 @@
 package com.bw.movie.activity.seat;
 
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -29,6 +31,16 @@ import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.bw.movie.utils.MD5Utils;
+import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
+import com.bw.movie.activity.reccord.ReccordActivity;
+import com.bw.movie.bean.BuyTicketBean;
+import com.bw.movie.bean.MoveSeatAmount;
+import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.utils.AlertDialogUtils;
+import com.bw.movie.utils.MD5Utils;
+import com.bw.movie.bean.MoveSeatAmount;
+import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.utils.AlertDialogUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -67,6 +79,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
     ImageView seatOk;
     @BindView(R.id.seat_no)
     ImageView seatNo;
+    private Handler handler = new Handler();
     private int mNum;
     private SpannableString mSpannableString;
     private double mMPrice;
@@ -113,6 +126,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                     AlertDialogUtils.AlertDialogLogin(SeatActivity.this);
                 }else{
                     initpopup();
+
                 }
 
             }
@@ -124,6 +138,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 finish();
             }
         });
+
         seatNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -173,11 +188,11 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 popup_wei.setChecked(false);
             }
         });
-
        //下单的点击事件
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //下单成功跳转到购票记录
                 Map<String,Object> headMap = new HashMap<>();
                 Map<String,Object> prams = new HashMap<>();
 
@@ -238,9 +253,17 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
             if (mPopupWindow.isShowing()){
                 if (buyTicketBean.getStatus().equals("0000")){
                     mPopupWindow.dismiss();
+                   handler.postDelayed(new Runnable() {
+                       @Override
+                       public void run() {
+                           startActivity(new Intent(SeatActivity.this,ReccordActivity.class),ActivityOptions.makeSceneTransitionAnimation(SeatActivity.this).toBundle());
+                           finish();
+                       }
+                   },1000);
                 }
             }
         }
+
     }
 
 }
