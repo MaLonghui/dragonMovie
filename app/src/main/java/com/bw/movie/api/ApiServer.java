@@ -30,6 +30,7 @@ import com.bw.movie.bean.LoginBean;
 import com.bw.movie.bean.MovieCommentReply;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.NearbyCinemasBean;
+import com.bw.movie.bean.PayBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.bean.RecommendDetailsBean;
@@ -191,4 +192,8 @@ public interface ApiServer {
     //9.用户购票记录查询列表
     @GET
     Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //支付
+    @POST
+    @FormUrlEncoded
+    Observable<PayBean> wzPay(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
 }

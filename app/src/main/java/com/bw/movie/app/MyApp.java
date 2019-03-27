@@ -15,12 +15,16 @@ import android.widget.Toast;
 import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.imagepipeline.core.ImagePipelineConfig;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
+import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
 public class MyApp extends Application {
 
 
     private static Context context;
     private SharedPreferences sp;
+    public static String APP_ID="wxb3852e6a6b7d9516";
+    public static IWXAPI api;
 
     @Override
     public void onCreate() {
@@ -40,7 +44,9 @@ public class MyApp extends Application {
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         boolean a = sp.getBoolean("自动登录", false);
         SharedPreferences.Editor edit = sp.edit();
-
+        context = getApplicationContext();
+        api = WXAPIFactory.createWXAPI(this, APP_ID, true);
+        api.registerApp(APP_ID);
         if (!a){
             edit.putString("userId","");
             edit.putString("sessionId","");
@@ -49,4 +55,8 @@ public class MyApp extends Application {
     }
 
 
+    //拦截器
+    public static Context getmContext() {
+        return context;
+    }
 }
