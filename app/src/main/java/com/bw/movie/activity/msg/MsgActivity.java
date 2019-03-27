@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ import butterknife.ButterKnife;
 public class MsgActivity extends MVPBaseActivity<MsgContract.View, MsgPresenter> implements MsgContract.View {
 
     @BindView(R.id.xRecycler_msg)
-    XRecyclerView xRecyclerMsg;
+    RecyclerView xRecyclerMsg;
     @BindView(R.id.text_msg)
     TextView textMsg;
     private SharedPreferences sp;
@@ -59,33 +60,6 @@ public class MsgActivity extends MVPBaseActivity<MsgContract.View, MsgPresenter>
         parms.put("page", page);
         parms.put("count", count);
         mPresenter.SysMsgPresenter(headMap, parms);
-        xRecyclerMsg.setLoadingListener(new XRecyclerView.LoadingListener() {
-            @Override
-            public void onRefresh() {
-                page = 1;
-                Map<String, Object> headMap = new HashMap<>();
-                headMap.put("userId", userId);
-                headMap.put("sessionId", sessionId);
-                Map<String, Object> parms = new HashMap<>();
-                parms.put("page", page);
-                parms.put("count", count);
-                mPresenter.SysMsgPresenter(headMap, parms);
-                xRecyclerMsg.refreshComplete();
-            }
-
-            @Override
-            public void onLoadMore() {
-                page++;
-                Map<String, Object> headMap = new HashMap<>();
-                headMap.put("userId", userId);
-                headMap.put("sessionId", sessionId);
-                Map<String, Object> parms = new HashMap<>();
-                parms.put("page", page);
-                parms.put("count", count);
-                mPresenter.SysMsgPresenter(headMap, parms);
-                xRecyclerMsg.loadMoreComplete();
-            }
-        });
     }
 
 

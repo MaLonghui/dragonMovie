@@ -39,7 +39,7 @@ public class MyMovieIdAndFilmAdapter extends RecyclerView.Adapter<MyMovieIdAndFi
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         viewHolder.textNameMovieandfilm.setText(movieIdAndFilmBean.getResult().get(i).getScreeningHall());
         viewHolder.textTimeMovieandfilm.setText(movieIdAndFilmBean.getResult().get(i).getBeginTime());
         viewHolder.textTime1Movieandfilm.setText(movieIdAndFilmBean.getResult().get(i).getEndTime());
@@ -50,7 +50,20 @@ public class MyMovieIdAndFilmAdapter extends RecyclerView.Adapter<MyMovieIdAndFi
             @Override
             public void onClick(View v) {
 //                Toast.makeText(context,"好使",Toast.LENGTH_LONG).show();
-                context.startActivity(new Intent(context,SeatActivity.class));
+                double price = Double.parseDouble(movieIdAndFilmBean.getResult().get(i).getPrice());
+                String beginTime = movieIdAndFilmBean.getResult().get(i).getBeginTime();
+                String endTime = movieIdAndFilmBean.getResult().get(i).getEndTime();
+                String seatsUseCount = movieIdAndFilmBean.getResult().get(i).getSeatsUseCount();
+                String screeningHall = movieIdAndFilmBean.getResult().get(i).getScreeningHall();
+                String id = movieIdAndFilmBean.getResult().get(i).getId();
+                Intent intent = new Intent(context, SeatActivity.class);
+                intent.putExtra("price",price);
+                intent.putExtra("beginTime",beginTime);
+                intent.putExtra("endTime",endTime);
+                intent.putExtra("seatsUseCount",seatsUseCount);
+                intent.putExtra("screeningHall",screeningHall);
+                intent.putExtra("scheduleId",id);
+                context.startActivity(intent);
             }
         });
     }

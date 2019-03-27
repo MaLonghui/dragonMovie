@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RadioGroup
+            android:id="@+id/radiogroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/dp_30"
+            >
+
+            <RadioButton
+                android:id="@+id/WillMoney"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_32"
+                android:button="@null"
+                android:background="@drawable/shape_btn"
+                android:text="待付款"
+                android:textColor="#fff"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:layout_marginLeft="@dimen/dp_25"
+                android:layout_marginRight="@dimen/dp_20"
+                />
+            <RadioButton
+                android:id="@+id/AlreadyMoney"
+                android:layout_width="@dimen/dp_50"
+                android:layout_height="@dimen/dp_32"
+                android:button="@null"
+                android:layout_weight="1"
+                android:text="已付款"
+                android:background="@drawable/shape_btn_yuan"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/dp_20"
+                />
+        </RadioGroup>
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/ViewPageMoney"
+            android:layout_below="@+id/radiogroup"
+            android:layout_marginTop="@dimen/dp_30"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v4.view.ViewPager>
+        <ImageView
+            android:id="@+id/images_back_Money"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_60"
+            android:src="@mipmap/com_icon_return_default"
+            android:layout_marginLeft="@dimen/dp_24"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dp_20"
+            />
+    </RelativeLayout>
+</LinearLayout>

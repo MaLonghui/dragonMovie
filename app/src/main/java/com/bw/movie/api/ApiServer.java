@@ -1,6 +1,7 @@
 package com.bw.movie.api;
 
 
+import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.CancelFollowMovieBean;
 import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
@@ -29,6 +30,7 @@ import com.bw.movie.bean.LoginBean;
 import com.bw.movie.bean.MovieCommentReply;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.NearbyCinemasBean;
+import com.bw.movie.bean.PayBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.bean.RecommendDetailsBean;
@@ -37,9 +39,11 @@ import com.bw.movie.bean.ShangFilmBean;
 import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.SysMsgBean;
 import com.bw.movie.bean.SysMsgStatusBean;
+import com.bw.movie.bean.TicketBean;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.bean.UpdatePwdBean;
 import com.bw.movie.bean.UserHeadIconBean;
+import com.bw.movie.bean.WxLoginBean;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -176,4 +180,20 @@ public interface ApiServer {
     //用户签到
     @GET
     Observable<SignInBean> signin(@Url String url,@HeaderMap Map<String,Object> headMap);
+    //微信登录
+    @POST
+    @FormUrlEncoded
+    Observable<WxLoginBean> wxLogin(@Url String url,@Field("code") String code);
+    //9.用户购票记录查询列表
+    @GET
+    Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+    //购票下单
+    @POST
+    @FormUrlEncoded
+    Observable<BuyTicketBean> buyTicket(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
+
+    //支付
+    @POST
+    @FormUrlEncoded
+    Observable<PayBean> wzPay(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
 }

@@ -32,6 +32,7 @@ import com.bw.movie.activity.attention.AttentionActivity;
 import com.bw.movie.activity.feedback.FeedbackActivity;
 import com.bw.movie.activity.info.InfoActivity;
 import com.bw.movie.activity.msg.MsgActivity;
+import com.bw.movie.activity.reccord.ReccordActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.UserHeadIconBean;
@@ -166,11 +167,13 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     public void SignInView(Object obj) {
         if (obj!=null){
             SignInBean signInBean = (SignInBean) obj;
-            Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
+
             if (signInBean.getStatus().equals("0000")){
                 mySignIn.setBackgroundResource(R.drawable.shape_bg_button);
+//                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
             }else{
                 mySignIn.setBackgroundResource(R.drawable.shape_signin);
+//                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -203,6 +206,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                     startActivity(new Intent(getActivity(),AttentionActivity.class));
                     break;
                 case R.id.my_rccord:
+                    startActivity(new Intent(getActivity(),ReccordActivity.class));
                     break;
                 case R.id.my_feedbacks:
                     startActivity(new Intent(getActivity(),FeedbackActivity.class));

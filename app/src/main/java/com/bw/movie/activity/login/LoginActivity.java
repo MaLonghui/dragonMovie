@@ -25,6 +25,8 @@ import com.bw.movie.aes.EncryptUtil;
 import com.bw.movie.bean.LoginBean;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.net.NoStudoInterent;
+import com.bw.movie.utils.WeiXinUtil;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -107,6 +109,16 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 }
                 break;
             case R.id.login_wx:
+                if (!WeiXinUtil.success(this)) {
+                    Toast.makeText(this, "请先安装应用", Toast.LENGTH_SHORT).show();
+                } else {
+                    //  验证
+                    SendAuth.Req req = new SendAuth.Req();
+                    req.scope = "snsapi_userinfo";
+                    req.state = "wechat_sdk_demo_test_neng";
+                    WeiXinUtil.reg(LoginActivity.this).sendReq(req);
+                }
+
                 break;
         }
     }

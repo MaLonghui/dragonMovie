@@ -4,7 +4,7 @@ public class Api {
     //base
     public static final String BASE_URL = "http://mobile.bwstudent.com/";
     //注册
-    public static final String REGIST_URL = "movieApi / user / v1 / registerUser";
+    public static final String REGIST_URL = "movieApi/user/v1/registerUser";
     //登录
     public static final String LOGIN_URL = "movieApi/user/v1/login";
     //查询推荐影院
@@ -77,4 +77,14 @@ public class Api {
     public static final String UPDATEPWD_URL = "movieApi/user/v1/verify/modifyUserPwd";
     //用户签到
     public static final String SIGNIN_URL = "movieApi/user/v1/verify/userSignIn";
+    //微信登录
+    public static final String WX_LOGIN = "movieApi/user/v1/weChatBindingLogin";
+    //9.用户购票记录查询列表
+    public static final String SELECTTICKET_URL = "movieApi/user/v1/verify/findUserBuyTicketRecordList";
+    //购票下单
+    public static final String BUY_TICKET = "movieApi/movie/v1/verify/buyMovieTicket";
+    //支付
+    public static final String WZ_PAY = "movieApi/movie/v1/verify/pay";
+
+
 }

@@ -23,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.AMapActivity;
 import com.bw.movie.adapter.FlowAdapter;
 import com.bw.movie.adapter.MyCinemaCommmentAdapter;
 import com.bw.movie.adapter.MyMovieIdAndFilmAdapter;
@@ -272,10 +273,9 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 textLine.setText(recommendDetailsBean.getResult().getVehicleRoute());
                 break;
             case R.id.img_recommend_details:
-              /*  Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
-                startActivity(intent);*/
-//                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
-//                startActivity(intent);
+
+                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
+                startActivity(intent);
                 break;
         }
 

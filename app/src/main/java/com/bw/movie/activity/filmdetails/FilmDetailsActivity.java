@@ -14,6 +14,7 @@ import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.TextUtils;
+import android.transition.Explode;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -134,6 +135,8 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_film_details);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         preferences = getSharedPreferences("config", MODE_PRIVATE);
