@@ -1,5 +1,6 @@
 package com.bw.movie.activity.seat;
 
+import com.bw.movie.activity.regist.RegistContract;
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
 import com.bw.movie.bean.BuyTicketBean;
@@ -11,6 +12,7 @@ import java.util.Map;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+
 
 public class SeatPresenter extends BasePresenterImpl<SeatContract.View> implements SeatContract.Presenter {
 

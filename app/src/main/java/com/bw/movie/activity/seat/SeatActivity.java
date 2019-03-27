@@ -33,6 +33,14 @@ import com.bw.movie.utils.MD5Utils;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
+import com.bw.movie.bean.MoveSeatAmount;
+import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.utils.AlertDialogUtils;
+import com.bw.movie.bean.BuyTicketBean;
+import com.bw.movie.bean.MoveSeatAmount;
+import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.utils.AlertDialogUtils;
+import com.bw.movie.utils.MD5Utils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -184,11 +192,11 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
             }
         });
 
+
+       //下单的点击事件
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //下单成功跳转到购票记录
-
                 Map<String,Object> headMap = new HashMap<>();
                 Map<String,Object> prams = new HashMap<>();
 
@@ -202,7 +210,6 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 mPresenter.getTicketPresenterData(headMap,prams);
             }
         });
-
     }
 
     @Subscribe(sticky = true)
@@ -260,7 +267,6 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 }
             }
         }
-
     }
 
 }

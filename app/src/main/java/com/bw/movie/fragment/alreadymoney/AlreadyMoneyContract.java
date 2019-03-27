@@ -14,10 +14,12 @@ import java.util.Map;
 
 public class AlreadyMoneyContract {
     interface View extends BaseView {
-
+        void AlreadyTicketView(Object obj);
     }
 
-    interface  Presenter extends BasePresenter<View> {
 
+
+    interface  Presenter extends BasePresenter<View> {
+        void AlreadyTicketPresenter(Map<String,Object> headMap, Map<String,Object> parms);
     }
 }

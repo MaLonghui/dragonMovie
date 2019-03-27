@@ -117,6 +117,9 @@
                 <data android:scheme="wxb3852e6a6b7d9516"/>
             </intent-filter>
         </activity>
+
+
+
         <!--<activity-->
             <!--android:name="com.zaaach.citypicker.CityPickerActivity"-->
             <!--android:screenOrientation="portrait"-->
