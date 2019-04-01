@@ -38,7 +38,6 @@ import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.bean.NearbyCinemasBean;
 import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.mvp.MVPBaseFragment;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 //import com.zaaach.citypicker.CityPickerActivity;
 
@@ -105,28 +104,26 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
 
-      /*  //定位
-        */
+        /*  //定位
+         */
 
 
-        if (NoStudoInterent.isNetworkAvailable(getActivity())) {
-            if (!userId.equals("") && !sessionId.equals("")) {
-                Map<String, Object> headMap = new HashMap<>();
-                headMap.put("userId", userId);
-                headMap.put("sessionId", sessionId);
-                Map<String, Object> parms = new HashMap<>();
-                parms.put("page", page);
-                parms.put("count", count);
-                mPresenter.recommendPresenter(headMap, parms);
-            } else {
-                Map<String, Object> headMap = new HashMap<>();
-                Map<String, Object> parms = new HashMap<>();
-                parms.put("page", page);
-                parms.put("count", count);
-                mPresenter.recommendPresenter(headMap, parms);
-            }
-
+        if (!userId.equals("") && !sessionId.equals("")) {
+            Map<String, Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            Map<String, Object> parms = new HashMap<>();
+            parms.put("page", page);
+            parms.put("count", count);
+            mPresenter.recommendPresenter(headMap, parms);
+        } else {
+            Map<String, Object> headMap = new HashMap<>();
+            Map<String, Object> parms = new HashMap<>();
+            parms.put("page", page);
+            parms.put("count", count);
+            mPresenter.recommendPresenter(headMap, parms);
         }
+
         btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
         btnRecommend.setTextColor(Color.WHITE);
         if (!userId.equals("") && !sessionId.equals("")) {
@@ -155,19 +152,19 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         super.onResume();
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
-        if (!userId.equals("")&&!sessionId.equals("")){
-            Map<String,Object> headMap = new HashMap<>();
+        if (!userId.equals("") && !sessionId.equals("")) {
+            Map<String, Object> headMap = new HashMap<>();
             headMap.put("userId", userId);
             headMap.put("sessionId", sessionId);
-            Map<String,Object> parms = new HashMap<>();
-            parms.put("page",page);
-            parms.put("count",count);
+            Map<String, Object> parms = new HashMap<>();
+            parms.put("page", page);
+            parms.put("count", count);
             mPresenter.recommendPresenter(headMap, parms);
-        }else{
-            Map<String,Object> headMap = new HashMap<>();
-            Map<String,Object> parms = new HashMap<>();
-            parms.put("page",page);
-            parms.put("count",count);
+        } else {
+            Map<String, Object> headMap = new HashMap<>();
+            Map<String, Object> parms = new HashMap<>();
+            parms.put("page", page);
+            parms.put("count", count);
             mPresenter.recommendPresenter(headMap, parms);
         }
     }
@@ -177,7 +174,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
 
     @Override
@@ -206,14 +202,14 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                             AlertDialogUtils.AlertDialogLogin(getActivity());
                         }
                         myRecommendAdapter.notifyDataSetChanged();
-                    }else{
-                        if (!userId.equals("")&&!sessionId.equals("")){
-                            Map<String,Object> headMap = new HashMap<>();
-                            headMap.put("userId",userId);
-                            headMap.put("sessionId",sessionId);
-                            mPresenter.CancelAttentionPresenter(headMap,cinemaId);
+                    } else {
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            Map<String, Object> headMap = new HashMap<>();
+                            headMap.put("userId", userId);
+                            headMap.put("sessionId", sessionId);
+                            mPresenter.CancelAttentionPresenter(headMap, cinemaId);
                             myRecommendAdapter.notifyDataSetChanged();
-                        }else{
+                        } else {
                             AlertDialogUtils.AlertDialogLogin(getActivity());
                         }
                     }
@@ -235,26 +231,26 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                 xrecyclerView.setAdapter(myNearbyAdapter);
                 myNearbyAdapter.setAttentionClick(new MyNearbyAdapter.AttentionClick() {
                     @Override
-                    public void clickattention(String cinemaId,boolean b) {
-                        if (b){
-                            if (!userId.equals("")&&!sessionId.equals("")){
-                                Map<String,Object> headMap = new HashMap<>();
-                                headMap.put("userId",userId);
-                                headMap.put("sessionId",sessionId);
-                                mPresenter.AttentionPresenter(headMap,cinemaId);
+                    public void clickattention(String cinemaId, boolean b) {
+                        if (b) {
+                            if (!userId.equals("") && !sessionId.equals("")) {
+                                Map<String, Object> headMap = new HashMap<>();
+                                headMap.put("userId", userId);
+                                headMap.put("sessionId", sessionId);
+                                mPresenter.AttentionPresenter(headMap, cinemaId);
                                 myNearbyAdapter.notifyDataSetChanged();
-                            }else{
+                            } else {
                                 AlertDialogUtils.AlertDialogLogin(getActivity());
                             }
                             myNearbyAdapter.notifyDataSetChanged();
-                        }else{
-                            if (!userId.equals("")&&!sessionId.equals("")){
-                                Map<String,Object> headMap = new HashMap<>();
-                                headMap.put("userId",userId);
-                                headMap.put("sessionId",sessionId);
-                                mPresenter.CancelAttentionPresenter(headMap,cinemaId);
+                        } else {
+                            if (!userId.equals("") && !sessionId.equals("")) {
+                                Map<String, Object> headMap = new HashMap<>();
+                                headMap.put("userId", userId);
+                                headMap.put("sessionId", sessionId);
+                                mPresenter.CancelAttentionPresenter(headMap, cinemaId);
                                 myNearbyAdapter.notifyDataSetChanged();
-                            }else{
+                            } else {
                                 AlertDialogUtils.AlertDialogLogin(getActivity());
                             }
                         }
@@ -268,26 +264,9 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     public void AttentionView(Object obj) {
         if (obj != null) {
             cinemaAttentionBean = (CinemaAttentionBean) obj;
-            Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
             if (cinemaAttentionBean.getStatus().equals("0000")) {
                 Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
-                Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
-                if (cinemaAttentionBean.getStatus().equals("0000")) {
-//                Map<String,Object> headMap = new HashMap<>();
-//                headMap.put("userId", userId);
-//                headMap.put("sessionId", sessionId);
-//                Map<String,Object> parms = new HashMap<>();
-//                parms.put("page",page);
-//                parms.put("count",count);
-//                mPresenter.recommendPresenter(headMap, parms);
-                Log.i("aa", "cinemaAttentionBean:" + cinemaAttentionBean.getMessage());
-                if (cinemaAttentionBean.getStatus().equals("0000")) {
-                    Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
-                }
             }
-        }
-
-
         }
     }
 
@@ -300,7 +279,10 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         }
     }
 
-   
+
+
+
+
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -355,8 +337,8 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
-            if (data != null){
+        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
+            if (data != null) {
 //                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
 //                cinemaDwAddr.setText(city);
             }

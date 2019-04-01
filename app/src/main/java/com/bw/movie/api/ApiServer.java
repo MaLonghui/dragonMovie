@@ -43,6 +43,7 @@ import com.bw.movie.bean.TicketBean;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.bean.UpdatePwdBean;
 import com.bw.movie.bean.UserHeadIconBean;
+import com.bw.movie.bean.VisionBean;
 import com.bw.movie.bean.WxLoginBean;
 
 import java.util.HashMap;
@@ -135,7 +136,7 @@ public interface ApiServer {
     Observable<MovieCommentReply> commentReply(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String, Object> prams);
     //根据电影ID查询当前排片该电影的影院列表
     @GET
-    Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@Query("movieId") String movieId);
+    Observable<CinemaByIdBean> CinemasListByMovieId(@Url String url,@HeaderMap Map<String,Object> headMap,@Query("movieId") String movieId);
     //4.修改用户信息
     @POST
     @FormUrlEncoded
@@ -192,11 +193,12 @@ public interface ApiServer {
     @FormUrlEncoded
     Observable<BuyTicketBean> buyTicket(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
 
-    //9.用户购票记录查询列表
-    @GET
-    Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+
     //支付
     @POST
     @FormUrlEncoded
     Observable<PayBean> wzPay(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
+    //版本更新
+    @GET
+    Observable<VisionBean> vision(@Url String url,@HeaderMap Map<String,Object> headMap);
 }

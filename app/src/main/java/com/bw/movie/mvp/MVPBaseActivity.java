@@ -1,10 +1,13 @@
 package com.bw.movie.mvp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 
@@ -65,4 +68,7 @@ public abstract class MVPBaseActivity<V extends BaseView,T extends BasePresenter
         }
         return null;
     }
+
+
+
 }

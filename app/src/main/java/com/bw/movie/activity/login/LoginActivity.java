@@ -26,11 +26,15 @@ import com.bw.movie.bean.LoginBean;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.WeiXinUtil;
+import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 
 /**
@@ -83,22 +87,21 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
             String decrypt = EncryptUtil.decrypt(pwd);
             editPwd.setText(decrypt);
         }
+        login_Wx();
     }
 
-    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.login_wx, R.id.btn_eyePwd})
+    @OnClick({R.id.jump_regist, R.id.btn_login, R.id.btn_eyePwd})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.jump_regist:
-                startActivity(new Intent(LoginActivity.this, RegistActivity.class),ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                startActivity(new Intent(LoginActivity.this, RegistActivity.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 break;
             case R.id.btn_login:
-                if (NoStudoInterent.isNetworkAvailable(this)) {
-                    phone = editPhone.getText().toString().trim();
-                    String pwd = editPwd.getText().toString().trim();
-                    encrypt = EncryptUtil.encrypt(pwd);
-                    mPresenter.loginPresenter(phone, encrypt);
-                    break;
-                }
+                phone = editPhone.getText().toString().trim();
+                String pwd = editPwd.getText().toString().trim();
+                encrypt = EncryptUtil.encrypt(pwd);
+                mPresenter.loginPresenter(phone, encrypt);
+                break;
             case R.id.btn_eyePwd:
                 if (editPwd.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                     //密码可见,点击之后设置成不可见的
@@ -123,6 +126,27 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 break;
         }
     }
+
+    public void login_Wx(){
+        RxView.clicks(loginWx)
+                .throttleFirst(2, TimeUnit.SECONDS)
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(Object object) throws Exception {
+                        if (!WeiXinUtil.success(LoginActivity.this)) {
+                            Toast.makeText(LoginActivity.this, "请先安装应用", Toast.LENGTH_SHORT).show();
+                        } else {
+                            //  验证
+                            SendAuth.Req req = new SendAuth.Req();
+                            req.scope = "snsapi_userinfo";
+                            req.state = "wechat_sdk_demo_test_neng";
+                            WeiXinUtil.reg(LoginActivity.this).sendReq(req);
+                            finish();
+                        }
+                    }
+                });
+    }
+
 
     @Override
     public void loginView(Object object) {

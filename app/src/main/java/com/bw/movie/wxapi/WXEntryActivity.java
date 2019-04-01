@@ -54,7 +54,6 @@ public class WXEntryActivity extends MVPBaseActivity<WXEntryContract.View, WXEnt
 
                 //startActivity(new Intent(WXEntryActivity.this,ShowActivity.class),ActivityOptions.makeSceneTransitionAnimation(WXEntryActivity.this).toBundle());
                 finish();
-                //overridePendingTransition(R.anim.ac_in, R.anim.ac_out);
             }
         }
     }

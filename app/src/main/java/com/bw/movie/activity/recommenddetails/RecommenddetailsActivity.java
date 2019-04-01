@@ -103,7 +103,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         Intent intent = getIntent();
         eid = intent.getStringExtra("eid");
 //        Log.i("aa", "eid:" + eid);
-        if (NoStudoInterent.isNetworkAvailable(RecommenddetailsActivity.this)) {
             if (!userId.equals("") && !sessionId.equals("")) {
                 Map<String, Object> headMap = new HashMap<>();
                 headMap.put("userId", userId);
@@ -114,7 +113,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 mPresenter.recommendDetailsPresenter(headMap, eid);
             }
             mPresenter.filmFromIdPresenter(eid);
-        }
 
         recyclerFlowRecommend.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
             @Override
@@ -167,9 +165,8 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                     SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd");
                     String format = sd.format(date);
                     textDateDetails.setText(format);
-                    if (NoStudoInterent.isNetworkAvailable(RecommenddetailsActivity.this)) {
                         mPresenter.movieIdAndfilmIdPresenter(id, eid);
-                    }
+
 
                 }
                 MyRecyclerFlowRecommendeAdapter myRecyclerFlowRecommende = new MyRecyclerFlowRecommendeAdapter(RecommenddetailsActivity.this, filmFromIdBean);
@@ -296,7 +293,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 viewcommentPop.setVisibility(View.VISIBLE);
                 linearLayout.setVisibility(View.GONE);
                 recyclerContent.setVisibility(View.VISIBLE);
-                if (NoStudoInterent.isNetworkAvailable(RecommenddetailsActivity.this)) {
                     if (!userId.equals("")&&!sessionId.equals("")){
                         Map<String,Object> headMap = new HashMap<>();
                         headMap.put("userId",userId);
@@ -314,7 +310,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                         parms.put("count",count);
                         mPresenter.cinemaCommentPresenter(headMap,parms);
                     }
-                }
                 break;
             case R.id.img_down:
                 popupWindow.dismiss();

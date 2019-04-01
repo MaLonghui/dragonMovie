@@ -152,18 +152,15 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         prams.put("movieId", movieId);
         if (userId.equals("") || sessionId.equals("")) {
             HashMap<String, Object> headMapNull = new HashMap<>();
-            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
                 mPresenter.getPresenterData(headMapNull, prams);
-            }
 
         } else {
             //电影详情请求头集合
             HashMap<String, Object> headMap = new HashMap<>();
             headMap.put("userId", userId);
             headMap.put("sessionId", sessionId);
-            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
-                mPresenter.getPresenterData(headMap, prams);
-            }
+            mPresenter.getPresenterData(headMap, prams);
+
         }
 
         //参数集合
@@ -173,17 +170,13 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         reviewPrams.put("count", count);
         if (userId.equals("") || sessionId.equals("")) {
             HashMap<String, Object> headMapNull = new HashMap<>();
-            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
                 mPresenter.getReviewPresenterData(headMapNull, reviewPrams);
-            }
         } else {
             //影片评论
             HashMap<String, Object> reviewHeadMap = new HashMap<>();
             reviewHeadMap.put("userId", userId);
             reviewHeadMap.put("sessionId", sessionId);
-            if (NoStudoInterent.isNetworkAvailable(FilmDetailsActivity.this)) {
                 mPresenter.getReviewPresenterData(reviewHeadMap, reviewPrams);
-            }
         }
         buyTicket.setOnClickListener(new View.OnClickListener() {
             @Override
