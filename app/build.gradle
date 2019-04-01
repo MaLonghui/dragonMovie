@@ -81,6 +81,14 @@ dependencies {
     //依赖，name里的内容和导入libs下的包一样,集成支付宝支付
     implementation(name: 'alipaySdk-15.5.9-20181123210657-noUtdid', ext: 'aar')
     implementation 'me.imid.swipebacklayout.lib:library:1.0.0'
+
+    implementation 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
+
+    //日期选择器
+    implementation 'com.contrarywind:Android-PickerView:3.2.6'
+
+    //版本更新
+    implementation 'com.ansen.http:okhttpencapsulation:1.0.1'
 }
 configurations.all {
     resolutionStrategy.eachDependency { DependencyResolveDetails details ->

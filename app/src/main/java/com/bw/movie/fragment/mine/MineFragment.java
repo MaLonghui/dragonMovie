@@ -33,6 +33,7 @@ import com.bw.movie.activity.feedback.FeedbackActivity;
 import com.bw.movie.activity.info.InfoActivity;
 import com.bw.movie.activity.msg.MsgActivity;
 import com.bw.movie.activity.reccord.ReccordActivity;
+import com.bw.movie.activity.vision.VisionActivity;
 import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.UserHeadIconBean;
@@ -116,9 +117,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         Map<String, Object> headMap = new HashMap<>();
         headMap.put("userId", userId);
         headMap.put("sessionId", sessionId);
-        if (NoStudoInterent.isNetworkAvailable(getActivity())) {
             mPresenter.userInfoPresenter(headMap);
-        }
 
         if (!userId.equals("")&&!sessionId.equals("")){
             Map<String,Object> headMap1 = new HashMap<>();
@@ -212,6 +211,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                     startActivity(new Intent(getActivity(),FeedbackActivity.class));
                     break;
                 case R.id.my_version:
+                    startActivity(new Intent(getActivity(),VisionActivity.class));
                     break;
                 case R.id.my_logout:
                     Toast.makeText(getActivity(), "用户退出登录", Toast.LENGTH_LONG).show();

@@ -87,7 +87,8 @@
         <activity android:name=".activity.GuideActivity" />
         <activity
             android:name=".activity.ShowActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:launchMode="singleTop"/>
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.regist.RegistActivity" />
         <activity android:name=".activity.FilmSearchActivity" />
@@ -101,10 +102,11 @@
         <activity android:name=".activity.feedback.FeedbackActivity" />
         <activity android:name=".activity.updateinfo.UpdateInfoActivity" />
         <activity android:name=".activity.msg.MsgActivity" />
-        <activity android:name=".activity.updatepwd.UpdatePwdActivity" />
+        <activity android:name=".activity.updatepwd.UpdatePwdActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.AMapActivity" />
         <activity android:name=".activity.reccord.ReccordActivity" />
         <activity android:name=".activity.seat.SeatActivity"/>
+        <activity android:name=".activity.vision.VisionActivity"/>
         <!--支付-->
         <activity android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -126,6 +128,7 @@
             android:name=".wxapi.WXEntryActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
 

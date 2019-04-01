@@ -86,5 +86,7 @@ public class Api {
     //支付
     public static final String WZ_PAY = "movieApi/movie/v1/verify/pay";
 
+    //版本更新
+    public static final String VISION_UPDATE = "movieApi/tool/v1/findNewVersion";
 
 }

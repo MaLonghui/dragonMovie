@@ -25,6 +25,7 @@ public class MyCinemaByIdAdapter extends RecyclerView.Adapter<MyCinemaByIdAdapte
     private Context context;
     private List<CinemaByIdBean.ResultBean> beanResult;
     private onClicklistener onClicklistener;
+    private CinemaAttentionClick attentionClick;
 
     public void setOnClicklistener(MyCinemaByIdAdapter.onClicklistener onClicklistener) {
         this.onClicklistener = onClicklistener;
@@ -49,7 +50,28 @@ public class MyCinemaByIdAdapter extends RecyclerView.Adapter<MyCinemaByIdAdapte
         viewHolder.simPleRecommend.setImageURI(uri);
         viewHolder.textNameRecommend.setText(beanResult.get(i).getName());
         viewHolder.textAddressRecommend.setText(beanResult.get(i).getAddress());
-        viewHolder.textKmRecommend.setText(beanResult.get(i).getFollowCinema()+"km");
+        viewHolder.textKmRecommend.setText(beanResult.get(i).getDistance()+"km");
+        String followCinema = beanResult.get(i).getFollowCinema();
+        if (followCinema.equals("1")){
+            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_selected);
+        }else{
+            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_default);
+        }
+        viewHolder.cinemaPrise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (attentionClick!=null){
+                    if (beanResult.get(i).getFollowCinema().equals("1")){
+                        beanResult.get(i).setFollowCinema("0");
+                    }else{
+                        beanResult.get(i).setFollowCinema("1");
+                    }
+                    String followCinema1 = beanResult.get(i).getFollowCinema();
+                    attentionClick.clickattention(beanResult.get(i).getId(),followCinema1.equals("1"));
+                    notifyDataSetChanged();
+                }
+            }
+        });
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,5 +103,12 @@ public class MyCinemaByIdAdapter extends RecyclerView.Adapter<MyCinemaByIdAdapte
     }
     public interface onClicklistener{
         void click(CinemaByIdBean.ResultBean id);
+    }
+
+    public void setAttentionClick(CinemaAttentionClick attentionClick){
+        this.attentionClick = attentionClick;
+    }
+    public interface CinemaAttentionClick{
+        void clickattention(String cinemaId,boolean b);
     }
 }
