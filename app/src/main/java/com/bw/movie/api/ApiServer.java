@@ -184,7 +184,9 @@ public interface ApiServer {
     @POST
     @FormUrlEncoded
     Observable<WxLoginBean> wxLogin(@Url String url,@Field("code") String code);
-
+    //9.用户购票记录查询列表
+    @GET
+    Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
     //购票下单
     @POST
     @FormUrlEncoded
