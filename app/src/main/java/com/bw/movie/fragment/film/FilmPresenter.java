@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.bw.movie.api.Api;
 import com.bw.movie.api.ApiServer;
+import com.bw.movie.bean.CancelFollowMovieBean;
+import com.bw.movie.bean.FlowllMovieBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.ShangFilmBean;
@@ -11,6 +13,7 @@ import com.bw.movie.mvp.BasePresenterImpl;
 import com.bw.movie.utils.RetrofitManager;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -79,4 +82,6 @@ public class FilmPresenter extends BasePresenterImpl<FilmContract.View> implemen
                     }
                 });
     }
+
+
 }

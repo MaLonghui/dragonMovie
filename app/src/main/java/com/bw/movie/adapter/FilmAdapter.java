@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.FilmSearchActivity;
+import com.bw.movie.activity.filmsearch.FilmSearchActivity;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.ShangFilmBean;
@@ -31,10 +31,12 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPETWO = 1;
     public static final int TYPETHREE = 2;
 
+
     private Context context;
     private List<ReFilmBean.ResultBean> reFilmBeanResult;
     private List<ShangFilmBean.ResultBean> shangFilmBeanResult;
     private List<JiFilmBean.ResultBean> jiFilmBeanResult;
+    private String s;
 
     public FilmAdapter(Context context) {
         this.context = context;
@@ -71,17 +73,21 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof ItemOneViewHoder) {
             ((ItemOneViewHoder) holder).recyclerFlow.setAdapter(new FlowAdapter(context));
+
+
         }
+
+
         if (holder instanceof ItemTwoViewHolder) {
             ((ItemTwoViewHolder) holder).filmTitle.setText("热门电影");
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
             ((ItemTwoViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
-            if (reFilmBeanResult.size()!=0){
+            if (reFilmBeanResult.size() != 0) {
                 ReRecylerAdapter reRecylerAdapter = new ReRecylerAdapter(context, reFilmBeanResult);
                 ((ItemTwoViewHolder) holder).filmItemRecyclerView.setAdapter(reRecylerAdapter);
             }
@@ -93,9 +99,9 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
                     bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
                     bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
-                    Intent intent = new Intent(context,FilmSearchActivity.class);
+                    Intent intent = new Intent(context, FilmSearchActivity.class);
                     intent.putExtras(bundle);
-                    intent.putExtra("type",0);
+                    intent.putExtra("type", 0);
                     context.startActivity(intent);
 
 
@@ -107,8 +113,8 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
             ((ItemThreeViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
-            if (shangFilmBeanResult.size()!=0){
-                ZhengRecyclerAdapter zhengRecyclerAdapter = new ZhengRecyclerAdapter(context,shangFilmBeanResult);
+            if (shangFilmBeanResult.size() != 0) {
+                ZhengRecyclerAdapter zhengRecyclerAdapter = new ZhengRecyclerAdapter(context, shangFilmBeanResult);
                 ((ItemThreeViewHolder) holder).filmItemRecyclerView.setAdapter(zhengRecyclerAdapter);
             }
             ((ItemThreeViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
@@ -118,9 +124,9 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
                     bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
                     bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
-                    Intent intent = new Intent(context,FilmSearchActivity.class);
+                    Intent intent = new Intent(context, FilmSearchActivity.class);
                     intent.putExtras(bundle);
-                    intent.putExtra("type",1);
+                    intent.putExtra("type", 1);
                     context.startActivity(intent);
                 }
             });
@@ -130,7 +136,7 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
             linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
             ((ItemFourViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
-            if (jiFilmBeanResult.size()!=0){
+            if (jiFilmBeanResult.size() != 0) {
                 JiRecyclerAdapter jiRecyclerAdapter = new JiRecyclerAdapter(context, jiFilmBeanResult);
                 ((ItemFourViewHolder) holder).filmItemRecyclerView.setAdapter(jiRecyclerAdapter);
             }
@@ -141,19 +147,25 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
                     bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
                     bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
-                    Intent intent = new Intent(context,FilmSearchActivity.class);
+                    Intent intent = new Intent(context, FilmSearchActivity.class);
                     intent.putExtras(bundle);
-                    intent.putExtra("type",2);
+                    intent.putExtra("type", 2);
                     context.startActivity(intent);
                 }
             });
         }
     }
 
+    public static int dp2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
     @Override
     public int getItemCount() {
         return 4;
     }
+
 
     @Override
     public int getItemViewType(int position) {
@@ -163,6 +175,7 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public class ItemOneViewHoder extends RecyclerView.ViewHolder {
         @BindView(R.id.recycler_flow)
         RecyclerCoverFlow recyclerFlow;
+
 
         public ItemOneViewHoder(View itemView) {
             super(itemView);
@@ -210,5 +223,16 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private OnSearchClick onSearchClick;
+
+    public void setOnSearchClick(OnSearchClick onSearchClick) {
+        this.onSearchClick = onSearchClick;
+    }
+
+    public interface OnSearchClick{
+        void searchClick(View view,String s);
+        void textClick(String s);
     }
 }

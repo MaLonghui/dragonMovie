@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.FilmSearchActivity;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.bean.ShangFilmBean;
 import com.facebook.drawee.view.SimpleDraweeView;

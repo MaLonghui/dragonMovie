@@ -49,8 +49,9 @@ public class MainActivity extends AppCompatActivity {
                         }else{
                             Looper.prepare();
                             startActivity(new Intent(MainActivity.this,ShowActivity.class),ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
-                            Looper.loop();
                             finish();
+                            Looper.loop();
+
                         }
 
                     }

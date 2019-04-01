@@ -1,6 +1,6 @@
-package com.bw.movie.activity;
+package com.bw.movie.activity.filmsearch;
 
-import android.app.Activity;
+
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -17,9 +17,12 @@ import com.bw.movie.R;
 import com.bw.movie.adapter.MyJiAdapter;
 import com.bw.movie.adapter.MyReMenAdapter;
 import com.bw.movie.adapter.MyZhengAdapter;
+import com.bw.movie.bean.CancelFollowMovieBean;
+import com.bw.movie.bean.FlowllMovieBean;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.ShangFilmBean;
+import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
 
 import java.util.HashMap;
@@ -30,8 +33,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class FilmSearchActivity extends Activity {
 
+/**
+ * MVPPlugin
+ *  邮箱 784787081@qq.com
+ */
+
+public class FilmSearchActivity extends MVPBaseActivity<FilmSearchContract.View, FilmSearchPresenter> implements FilmSearchContract.View {
     public static final String TAG = "FilmDetailsActivity";
     @BindView(R.id.btn_re)
     Button btnRe;
@@ -60,6 +68,8 @@ public class FilmSearchActivity extends Activity {
         reBeanList = (List<ReFilmBean.ResultBean>) getIntent().getSerializableExtra("reBeanList");
         shangBeanList = (List<ShangFilmBean.ResultBean>) getIntent().getSerializableExtra("shangBeanList");
         jiBeanList = (List<JiFilmBean.ResultBean>) getIntent().getSerializableExtra("jiBeanList");
+
+
     }
 
     @Override
@@ -81,9 +91,6 @@ public class FilmSearchActivity extends Activity {
         searchRecyclerView.setLayoutManager(linearLayoutManager);
         MyReMenAdapter reMenAdapter = new MyReMenAdapter(this, reBeanList);
         searchRecyclerView.setAdapter(reMenAdapter);
-
-
-
         int type = getIntent().getIntExtra("type", 0);
         if (type == 0) {
             setReAdapter();
@@ -100,6 +107,8 @@ public class FilmSearchActivity extends Activity {
         });
 
     }
+
+
 
     @OnClick({R.id.btn_re, R.id.btn_zheng, R.id.btn_jijiang})
     public void onViewClicked(View view) {
@@ -125,15 +134,18 @@ public class FilmSearchActivity extends Activity {
         btnZheng.setBackgroundColor(Color.parseColor("#ffffff"));
         final MyJiAdapter jiAdapter = new MyJiAdapter(this, jiBeanList);
         searchRecyclerView.setAdapter(jiAdapter);
-        jiAdapter.setAttentionClick(new MyReMenAdapter.AttentionClick() {
+        jiAdapter.setAttentionClick(new MyJiAdapter.AttentionClick() {
             @Override
-            public void clickattention(String cinemaId, boolean b) {
+            public void clickattention(String cinemaId,int i,boolean b) {
                 if (b) {
                     if (!userId.equals("") && !sessionId.equals("")) {
-                        Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
-                       /* Map<String, Object> headMap = new HashMap<>();
+                        //Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
+                        Map<String, Object> headMap = new HashMap<>();
                         headMap.put("userId", userId);
-                        headMap.put("sessionId", sessionId);*/
+                        headMap.put("sessionId", sessionId);
+
+                        mPresenter.getFlowllMoviePresenter(headMap,cinemaId);
+                        jiBeanList.get(i).setFollowMovie(1);
                         jiAdapter.notifyDataSetChanged();
                     } else {
                         AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
@@ -141,10 +153,13 @@ public class FilmSearchActivity extends Activity {
                     jiAdapter.notifyDataSetChanged();
                 }else{
                     if (!userId.equals("")&&!sessionId.equals("")){
-                       /* Map<String,Object> headMap = new HashMap<>();
+                        HashMap<String,Object> headMap = new HashMap<>();
+                        HashMap<String, Object> canclePrams = new HashMap<>();
+                        canclePrams.put("movieId", cinemaId);
                         headMap.put("userId",userId);
                         headMap.put("sessionId",sessionId);
-                        mPresenter.CancelAttentionPresenter(headMap,cinemaId);*/
+                        mPresenter.cancelFollowMoviePresenter(headMap,canclePrams);
+                        jiBeanList.get(i).setFollowMovie(2);
                         jiAdapter.notifyDataSetChanged();
                     }else{
                         AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
@@ -163,15 +178,17 @@ public class FilmSearchActivity extends Activity {
         btnJijiang.setBackgroundColor(Color.parseColor("#ffffff"));
         final MyZhengAdapter zhengAdapter = new MyZhengAdapter(this, shangBeanList);
         searchRecyclerView.setAdapter(zhengAdapter);
-        zhengAdapter.setAttentionClick(new MyReMenAdapter.AttentionClick() {
+        zhengAdapter.setAttentionClick(new MyZhengAdapter.AttentionClick() {
             @Override
-            public void clickattention(String cinemaId, boolean b) {
+            public void clickattention(String cinemaId,int i,boolean b) {
                 if (b) {
                     if (!userId.equals("") && !sessionId.equals("")) {
-                        Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
-                       /* Map<String, Object> headMap = new HashMap<>();
+                       // Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
+                        Map<String, Object> headMap = new HashMap<>();
                         headMap.put("userId", userId);
-                        headMap.put("sessionId", sessionId);*/
+                        headMap.put("sessionId", sessionId);
+                        mPresenter.getFlowllMoviePresenter(headMap,cinemaId);
+                        shangBeanList.get(i).setFollowMovie(1);
                         zhengAdapter.notifyDataSetChanged();
                     } else {
                         AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
@@ -179,10 +196,13 @@ public class FilmSearchActivity extends Activity {
                     zhengAdapter.notifyDataSetChanged();
                 }else{
                     if (!userId.equals("")&&!sessionId.equals("")){
-                       /* Map<String,Object> headMap = new HashMap<>();
+                        HashMap<String,Object> headMap = new HashMap<>();
+                        HashMap<String, Object> canclePrams = new HashMap<>();
+                        canclePrams.put("movieId", cinemaId);
                         headMap.put("userId",userId);
                         headMap.put("sessionId",sessionId);
-                        mPresenter.CancelAttentionPresenter(headMap,cinemaId);*/
+                        mPresenter.cancelFollowMoviePresenter(headMap,canclePrams);
+                        shangBeanList.get(i).setFollowMovie(2);
                         zhengAdapter.notifyDataSetChanged();
                     }else{
                         AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
@@ -204,13 +224,16 @@ public class FilmSearchActivity extends Activity {
         searchRecyclerView.setAdapter(reMenAdapter);
         reMenAdapter.setAttentionClick(new MyReMenAdapter.AttentionClick() {
             @Override
-            public void clickattention(String cinemaId, boolean b) {
+            public void clickattention(String cinemaId, int i,boolean b) {
                 if (b) {
                     if (!userId.equals("") && !sessionId.equals("")) {
-                        Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
-                       /* Map<String, Object> headMap = new HashMap<>();
+                       // Toast.makeText(FilmSearchActivity.this, cinemaId, Toast.LENGTH_LONG).show();
+                        Map<String, Object> headMap = new HashMap<>();
                         headMap.put("userId", userId);
-                        headMap.put("sessionId", sessionId);*/
+                        headMap.put("sessionId", sessionId);
+
+                        mPresenter.getFlowllMoviePresenter(headMap,cinemaId);
+                        reBeanList.get(i).setFollowMovie(1);
                         reMenAdapter.notifyDataSetChanged();
                     } else {
                         AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
@@ -218,10 +241,13 @@ public class FilmSearchActivity extends Activity {
                     reMenAdapter.notifyDataSetChanged();
                 }else{
                     if (!userId.equals("")&&!sessionId.equals("")){
-                       /* Map<String,Object> headMap = new HashMap<>();
+                        HashMap<String,Object> headMap = new HashMap<>();
                         headMap.put("userId",userId);
                         headMap.put("sessionId",sessionId);
-                        mPresenter.CancelAttentionPresenter(headMap,cinemaId);*/
+                        HashMap<String, Object> canclePrams = new HashMap<>();
+                        canclePrams.put("movieId", cinemaId);
+                        mPresenter.cancelFollowMoviePresenter(headMap,canclePrams);
+                        reBeanList.get(i).setFollowMovie(2);
                         reMenAdapter.notifyDataSetChanged();
                     }else{
                         AlertDialogUtils.AlertDialogLogin(FilmSearchActivity.this);
@@ -229,5 +255,26 @@ public class FilmSearchActivity extends Activity {
                 }
             }
         });
+    }
+
+    @Override
+    public void getFlowllMovieData(Object object) {
+        if (object != null) {
+            FlowllMovieBean flowllMovieBean = (FlowllMovieBean) object;
+            if (flowllMovieBean.getStatus().equals("0000")) {
+                Toast.makeText(this, flowllMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void cancelFollowMovieData(Object object) {
+        if (object != null) {
+            CancelFollowMovieBean cancelFollowMovieBean = (CancelFollowMovieBean) object;
+            if (cancelFollowMovieBean.getStatus().equals("0000")) {
+                Toast.makeText(this, cancelFollowMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+            //Toast.makeText(this, cancelFollowMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 }

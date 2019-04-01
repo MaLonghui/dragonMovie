@@ -24,7 +24,8 @@ import butterknife.ButterKnife;
 
 public class MyJiAdapter extends RecyclerView.Adapter<MyJiAdapter.ViewHolder> {
     private Context context;
-    private List<JiFilmBean.ResultBean> jiBeanList;;
+    private List<JiFilmBean.ResultBean> jiBeanList;
+    ;
 
     public MyJiAdapter(Context context, List<JiFilmBean.ResultBean> jiBeanList) {
         this.context = context;
@@ -43,25 +44,24 @@ public class MyJiAdapter extends RecyclerView.Adapter<MyJiAdapter.ViewHolder> {
         Uri uri = Uri.parse(jiBeanList.get(position).getImageUrl());
         holder.searchSimpleView.setImageURI(uri);
         holder.searchFilmName.setText(jiBeanList.get(position).getName());
-        holder.searchSummary.setText("简介："+jiBeanList.get(position).getSummary());
-        String followMovie = jiBeanList.get(position).getFollowMovie();
-        if (followMovie.equals("1")){
+        holder.searchSummary.setText("简介：" + jiBeanList.get(position).getSummary());
+        if (jiBeanList.get(position).getFollowMovie() == 1) {
             holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_selected);
-        }else{
+        } else {
             holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_default);
         }
 
         holder.searchCollection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (attentionClick!=null){
-                    if (jiBeanList.get(position).getFollowMovie().equals("1")){
-                        jiBeanList.get(position).setFollowMovie("2");
-                    }else{
-                        jiBeanList.get(position).setFollowMovie("1");
+                if (attentionClick != null) {
+                    if (jiBeanList.get(position).getFollowMovie() == 1) {
+                        jiBeanList.get(position).setFollowMovie(2);
+                    } else {
+                        jiBeanList.get(position).setFollowMovie(1);
                     }
-                    String followMovie = jiBeanList.get(position).getFollowMovie();
-                    attentionClick.clickattention(jiBeanList.get(position).getId(),followMovie.equals("1"));
+                    int followMovie = jiBeanList.get(position).getFollowMovie();
+                    attentionClick.clickattention(jiBeanList.get(position).getId(), position, followMovie == 1);
                     notifyDataSetChanged();
                 }
             }
@@ -71,7 +71,7 @@ public class MyJiAdapter extends RecyclerView.Adapter<MyJiAdapter.ViewHolder> {
             @Override
             public void onClick(View v) {
 
-                context.startActivity(new Intent(context,FilmDetailsActivity.class));
+                context.startActivity(new Intent(context, FilmDetailsActivity.class));
                 EventBus.getDefault().postSticky(jiBeanList.get(position).getId());
             }
         });
@@ -97,13 +97,14 @@ public class MyJiAdapter extends RecyclerView.Adapter<MyJiAdapter.ViewHolder> {
             ButterKnife.bind(this, itemView);
         }
     }
-    public MyReMenAdapter.AttentionClick attentionClick;
 
-    public void setAttentionClick(MyReMenAdapter.AttentionClick attentionClick) {
+    public AttentionClick attentionClick;
+
+    public void setAttentionClick(AttentionClick attentionClick) {
         this.attentionClick = attentionClick;
     }
 
-    public interface AttentionClick{
-        void clickattention(String cinemaId,boolean b);
+    public interface AttentionClick {
+        void clickattention(String cinemaId, int i, boolean b);
     }
 }

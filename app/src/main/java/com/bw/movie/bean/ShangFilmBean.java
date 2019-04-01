@@ -52,7 +52,7 @@ public class ShangFilmBean implements Serializable {
          * summary : ICAC (廉政公署) 陆志廉（古天乐 饰），JFIU (联合财富情报组) 刘保强（张智霖 饰）分别侦查贪污及洗黑钱案，但苦无线索，这时廉政公署L组 (内部纪律调查组) 程德明（郑嘉颖 饰）收到举报，指陆志廉收贿1200万，陆无法辩解实时停职。刘发现陆被诬陷，并跟一直调查的洗黑钱案有着千丝万缕关系，同时怀疑银行主任游子新（栢天男 饰）协助罪恶集团洗黑钱；陆冒险搜集罪证却遭禁锢，命悬一线.......
          */
 
-        private String followMovie;
+        private int followMovie;
         private String id;
         private String imageUrl;
         private String name;
@@ -61,11 +61,11 @@ public class ShangFilmBean implements Serializable {
         private String releaseTimeShow;
         private String summary;
 
-        public String getFollowMovie() {
+        public int getFollowMovie() {
             return followMovie;
         }
 
-        public void setFollowMovie(String followMovie) {
+        public void setFollowMovie(int followMovie) {
             this.followMovie = followMovie;
         }
 

@@ -117,6 +117,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                     req.scope = "snsapi_userinfo";
                     req.state = "wechat_sdk_demo_test_neng";
                     WeiXinUtil.reg(LoginActivity.this).sendReq(req);
+                    finish();
                 }
 
                 break;

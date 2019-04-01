@@ -67,19 +67,7 @@ public class CinemaPresenter extends BasePresenterImpl<CinemaContract.View> impl
                 });
     }
 
-    @Override
-    public void getCinemaByNamePresenterData(Map<String, Object> parms) {
-        ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);
-        apiServer.findAllCinemas(Api.FINDAllCinemas, parms)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<CinemaByNameBean>() {
-                    @Override
-                    public void accept(CinemaByNameBean cinemaByNameBean) throws Exception {
-                        mView.getCinemaByNameViewData(cinemaByNameBean);
-                    }
-                });
-    }
+
 
     public void CancelAttentionPresenter(Map<String, Object> headMap, String cinemaId) {
         ApiServer apiServer = RetrofitManager.getInstance(Api.BASE_URL).setCreate(ApiServer.class);

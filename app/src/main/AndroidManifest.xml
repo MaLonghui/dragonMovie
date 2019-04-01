@@ -90,7 +90,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.regist.RegistActivity" />
-        <activity android:name=".activity.FilmSearchActivity" />
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" />
         <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity" />
         <activity android:name=".activity.filmdetails.FilmDetailsActivity" />
@@ -107,6 +106,7 @@
         <activity android:name=".activity.AMapActivity" />
         <activity android:name=".activity.reccord.ReccordActivity" />
         <activity android:name=".activity.seat.SeatActivity"/>
+        <activity android:name=".activity.filmsearch.FilmSearchActivity"/>
         <!--支付-->
         <activity android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
@@ -132,9 +132,6 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:screenOrientation="portrait"/>
-
-
-
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="e85ffa47337c9d97719ec5e2110dd32a">
