@@ -111,6 +111,19 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                     editPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
                 break;
+            case R.id.login_wx:
+                if (!WeiXinUtil.success(this)) {
+                    Toast.makeText(this, "请先安装应用", Toast.LENGTH_SHORT).show();
+                } else {
+                    //  验证
+                    SendAuth.Req req = new SendAuth.Req();
+                    req.scope = "snsapi_userinfo";
+                    req.state = "wechat_sdk_demo_test_neng";
+                    WeiXinUtil.reg(LoginActivity.this).sendReq(req);
+                    finish();
+                }
+
+                break;
         }
     }
 

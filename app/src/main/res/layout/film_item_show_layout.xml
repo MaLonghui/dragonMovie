@@ -10,9 +10,9 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/film_simple_view"
         android:layout_width="@dimen/dp_126"
-        fresco:progressBarImage="@mipmap/timg"
-        fresco:progressBarImageScaleType="centerInside"
+        fresco:progressBarImage="@mipmap/loading"
         fresco:progressBarAutoRotateInterval="2000"
+        fresco:progressBarImageScaleType="centerInside"
         fresco:roundedCornerRadius="@dimen/dp_8"
         android:layout_height="@dimen/dp_164" />
     <TextView

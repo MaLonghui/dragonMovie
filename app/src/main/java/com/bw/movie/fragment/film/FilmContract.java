@@ -6,6 +6,7 @@ import com.bw.movie.mvp.BasePresenter;
 import com.bw.movie.mvp.BaseView;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * MVPPlugin
@@ -21,6 +22,7 @@ public class FilmContract {
         void getZhengViewData(Object object);
         //即将上映
         void getJiViewData(Object object);
+
     }
 
     interface  Presenter extends BasePresenter<View> {
@@ -30,5 +32,6 @@ public class FilmContract {
         void getZhengPresenter(HashMap<String,Object> headMap,HashMap<String,Object> parms);
         //即将上映
         void getJiPresenter(HashMap<String,Object> headMap,HashMap<String,Object> parms);
+
     }
 }

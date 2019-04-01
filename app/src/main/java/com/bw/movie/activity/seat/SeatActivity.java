@@ -23,10 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
+import com.bw.movie.activity.reccord.ReccordActivity;
+import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
-import com.bw.movie.bean.BuyTicketBean;
+import com.bw.movie.utils.MD5Utils;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
@@ -37,7 +40,7 @@ import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
-import com.bw.movie.utils.MD5Utils;
+import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
@@ -139,6 +142,9 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
             }
         });
 
+
+
+
         seatNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,7 +198,6 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //下单成功跳转到购票记录
                 Map<String,Object> headMap = new HashMap<>();
                 Map<String,Object> prams = new HashMap<>();
 
@@ -263,7 +268,6 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 }
             }
         }
-
     }
 
 }

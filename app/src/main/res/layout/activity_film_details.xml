@@ -57,7 +57,7 @@
             android:id="@+id/details_simple_view"
             android:layout_width="@dimen/dp_259"
             android:layout_height="@dimen/dp_360"
-            app:progressBarImage="@mipmap/timg"
+            app:progressBarImage="@mipmap/loading"
 
             app:progressBarAutoRotateInterval="2000"
             android:layout_gravity="center"

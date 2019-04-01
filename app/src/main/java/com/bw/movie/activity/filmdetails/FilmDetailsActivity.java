@@ -20,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
@@ -108,6 +109,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     private SharedPreferences preferences;
     private HashMap<String, Object> followHeadMap;
     private HashMap<String, Object> canclePrams;
+    private FilmReviewAdapter filmReviewAdapter;
 
     @Override
     protected void onResume() {
@@ -134,6 +136,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_film_details);
         getWindow().setEnterTransition(new Explode().setDuration(800));
         getWindow().setExitTransition(new Explode().setDuration(800));
@@ -249,6 +252,15 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             FilmCommentBean filmCommentBean = (FilmCommentBean) object;
             if (filmCommentBean.getStatus().equals("0000")) {
                 Toast.makeText(this, filmCommentBean.getMessage(), Toast.LENGTH_SHORT).show();
+                HashMap<String, Object> reviewHeadMap = new HashMap<>();
+                HashMap<String, Object> reviewPrams = new HashMap<>();
+                reviewPrams.put("movieId", movieId);
+                reviewPrams.put("page", page);
+                reviewPrams.put("count", count);
+                reviewHeadMap.put("userId", userId);
+                reviewHeadMap.put("sessionId", sessionId);
+                mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
+                filmReviewAdapter.notifyDataSetChanged();
 
             } else if (filmCommentBean.getStatus().equals("9999")) {
                 AlertDialogUtils.AlertDialogLogin(this);
@@ -265,6 +277,16 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 AlertDialogUtils.AlertDialogLogin(this);
             } else if (cinemaPraiseBean.getStatus().equals("0000")) {
                 Toast.makeText(this, cinemaPraiseBean.getMessage(), Toast.LENGTH_SHORT).show();
+                HashMap<String, Object> reviewHeadMap = new HashMap<>();
+                HashMap<String, Object> reviewPrams = new HashMap<>();
+                reviewPrams.put("movieId", movieId);
+                reviewPrams.put("page", page);
+                reviewPrams.put("count", count);
+                reviewHeadMap.put("userId", userId);
+                reviewHeadMap.put("sessionId", sessionId);
+                mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
+                filmReviewAdapter.notifyDataSetChanged();
+
             }
         }
     }
@@ -277,6 +299,15 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 AlertDialogUtils.AlertDialogLogin(this);
             } else if (movieCommentReply.getStatus().equals("0000")) {
                 Toast.makeText(this, movieCommentReply.getMessage(), Toast.LENGTH_SHORT).show();
+                HashMap<String, Object> reviewHeadMap = new HashMap<>();
+                HashMap<String, Object> reviewPrams = new HashMap<>();
+                reviewPrams.put("movieId", movieId);
+                reviewPrams.put("page", page);
+                reviewPrams.put("count", count);
+                reviewHeadMap.put("userId", userId);
+                reviewHeadMap.put("sessionId", sessionId);
+                mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
+                filmReviewAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -332,7 +363,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
      * @param resultBean
      */
     private void initSonPopupwindow(View v, FilmDetailsBean.ResultBean resultBean) {
-
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = View.inflate(this, R.layout.details_son_popwindow_layout, null);
         SimpleDraweeView son_simpleview = view.findViewById(R.id.detail_son_simpleview);
         TextView son_type = view.findViewById(R.id.son_type);
@@ -393,6 +424,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
      * @param resultBean
      */
     private void initPopupwindow(View v, String string, final FilmDetailsBean.ResultBean resultBean) {
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = View.inflate(this, R.layout.details_popwindow_layout, null);
         popName = view.findViewById(R.id.popwindow_name);
         pop_down = view.findViewById(R.id.popwindow_down);
@@ -427,22 +459,21 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
             popRecyclerView.setLayoutManager(linearLayoutManager);
-            FilmReviewAdapter filmReviewAdapter = new FilmReviewAdapter(this, reviewBeanResult);
+            filmReviewAdapter = new FilmReviewAdapter(this, reviewBeanResult);
             popRecyclerView.setAdapter(filmReviewAdapter);
             filmReviewAdapter.setID(userId, sessionId);
             filmReviewAdapter.setReplyClickListener(new FilmReviewAdapter.ReplyClickListener() {
                 @Override
                 public void replyClick(String commentId, String replyContent) {
                     if (!userId.equals("") && !sessionId.equals("")) {
-
                         Map<String, Object> headMap = new HashMap<>();
                         Map<String, Object> prams = new HashMap<>();
                         prams.put("commentId", commentId);
                         prams.put("replyContent",replyContent);
-
                         headMap.put("userId", userId);
                         headMap.put("sessionId", sessionId);
                         mPresenter.getcommentReplyPresenter(headMap,prams);
+
 
                     } else {
                         AlertDialogUtils.AlertDialogLogin(FilmDetailsActivity.this);
@@ -465,7 +496,9 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                     } else {
                         Toast.makeText(FilmDetailsActivity.this, "不能重复点赞", Toast.LENGTH_LONG).show();
                     }
+
                 }
+
             });
 
             writePingunImg.setOnClickListener(new View.OnClickListener() {
@@ -495,6 +528,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                         writePingunImg.setVisibility(View.VISIBLE);
                         commtenRealtive.setVisibility(View.GONE);
                         commtentEdit.setText("");
+
                     }
                 }
             });

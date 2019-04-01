@@ -45,8 +45,8 @@ public class MyZhengAdapter extends RecyclerView.Adapter<MyZhengAdapter.ViewHold
         holder.searchSimpleView.setImageURI(uri);
         holder.searchFilmName.setText(shangBeanList.get(position).getName());
         holder.searchSummary.setText("简介："+shangBeanList.get(position).getSummary());
-        String followMovie = shangBeanList.get(position).getFollowMovie();
-        if (followMovie.equals("1")){
+        int followMovie = shangBeanList.get(position).getFollowMovie();
+        if (followMovie ==1){
             holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_selected);
         }else{
             holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_default);
@@ -55,13 +55,13 @@ public class MyZhengAdapter extends RecyclerView.Adapter<MyZhengAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 if (attentionClick!=null){
-                    if (shangBeanList.get(position).getFollowMovie().equals("1")){
-                        shangBeanList.get(position).setFollowMovie("2");
+                    if (shangBeanList.get(position).getFollowMovie()==1){
+                        shangBeanList.get(position).setFollowMovie(2);
                     }else{
-                        shangBeanList.get(position).setFollowMovie("1");
+                        shangBeanList.get(position).setFollowMovie(1);
                     }
-                    String followMovie = shangBeanList.get(position).getFollowMovie();
-                    attentionClick.clickattention(shangBeanList.get(position).getId(),followMovie.equals("1"));
+                    int followMovie = shangBeanList.get(position).getFollowMovie();
+                    attentionClick.clickattention(shangBeanList.get(position).getId(),position,followMovie ==1);
                     notifyDataSetChanged();
                 }
             }
@@ -96,13 +96,13 @@ public class MyZhengAdapter extends RecyclerView.Adapter<MyZhengAdapter.ViewHold
             ButterKnife.bind(this, itemView);
         }
     }
-    public MyReMenAdapter.AttentionClick attentionClick;
+    public AttentionClick attentionClick;
 
-    public void setAttentionClick(MyReMenAdapter.AttentionClick attentionClick) {
+    public void setAttentionClick(AttentionClick attentionClick) {
         this.attentionClick = attentionClick;
     }
 
     public interface AttentionClick{
-        void clickattention(String cinemaId,boolean b);
+        void clickattention(String cinemaId,int i,boolean b);
     }
 }

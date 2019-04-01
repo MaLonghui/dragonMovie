@@ -84,7 +84,7 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
                 replyContent = viewHolder.replyEdit.getText().toString();
                 if (!userId.equals("") && !sessionId.equals("")) {
 
-                    Toast.makeText(context, replyContent, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, replyContent, Toast.LENGTH_SHORT).show();
                     if (TextUtils.isEmpty(replyContent)) {
                         Toast.makeText(context, "请输入回复内容", Toast.LENGTH_SHORT).show();
                     } else {
@@ -109,11 +109,11 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
         viewHolder.reviewPriseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
+               /* if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
                     viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
                 } else {
                     viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
-                }
+                }*/
 
                 if (!userId.equals("") && !sessionId.equals("")) {
                     viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);

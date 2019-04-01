@@ -51,6 +51,7 @@ public class WXEntryActivity extends MVPBaseActivity<WXEntryContract.View, WXEnt
                 //将登录信息存入数据库
                 SharedPreferences sp = getSharedPreferences("config", Context.MODE_PRIVATE);
                 sp.edit().putString("userId", wxLoginBean.getResult().getUserId()).putString("sessionId", wxLoginBean.getResult().getSessionId()).commit();
+                //startActivity(new Intent(WXEntryActivity.this,ShowActivity.class),ActivityOptions.makeSceneTransitionAnimation(WXEntryActivity.this).toBundle());
                 finish();
             }
         }

@@ -69,20 +69,7 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     @BindView(R.id.xrecycler_view)
     RecyclerView xrecyclerView;
     Unbinder unbinder;
-    @BindView(R.id.cinema_dingwei)
-    ImageView cinemaDingwei;
-    @BindView(R.id.cinema_dw_addr)
-    TextView cinemaDwAddr;
-    @BindView(R.id.relative)
-    RelativeLayout relative;
-    @BindView(R.id.film_seach_ima)
-    ImageView filmSeachIma;
-    @BindView(R.id.film_seach_relative)
-    RelativeLayout filmSeachRelative;
-    @BindView(R.id.film_seach_edit)
-    EditText filmSeachEdit;
-    @BindView(R.id.film_seach_text)
-    TextView filmSeachText;
+
     @BindView(R.id.linear_layout)
     LinearLayout linearLayout;
 
@@ -117,14 +104,8 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
 
-        //定位
-        cinemaDingwei.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
-//                        REQUEST_CODE_PICK_CITY);
-            }
-        });
+      /*  //定位
+        */
 
 
         if (!userId.equals("") && !sessionId.equals("")) {
@@ -163,29 +144,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
         btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
         btnRecommend.setTextColor(Color.WHITE);
-        filmSeachIma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initfsi();
-            }
-        });
-
-        filmSeachText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                s = filmSeachEdit.getText().toString();
-                if (TextUtils.isEmpty(s)) {
-                    initfst();
-                } else {
-                    HashMap<String, Object> pram = new HashMap<>();
-                    pram.put("page", page);
-                    pram.put("count", count);
-                    pram.put("cinemaName", s);
-                    mPresenter.getCinemaByNamePresenterData(pram);
-
-                }
-            }
-        });
         return view;
     }
 
@@ -217,45 +175,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         unbinder.unbind();
     }
 
-    public static int dp2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
-
-    //点击图标拉伸搜索框
-    boolean mBoolean = true;
-
-    private void initfsi() {
-        if (mBoolean) {
-            ObjectAnimator translationX = ObjectAnimator.ofFloat(filmSeachRelative, "translationX", 0, (dp2px(getActivity(), -170)));
-            ObjectAnimator alpha = ObjectAnimator.ofFloat(filmSeachEdit, "alpha", 0.0f, 1.0f);
-            ObjectAnimator alphaButton = ObjectAnimator.ofFloat(filmSeachText, "alpha", 0.0f, 1.0f);
-            alphaButton.setDuration(1000);
-            filmSeachText.setVisibility(VISIBLE);
-            alphaButton.start();
-            alpha.setDuration(1000);
-            filmSeachEdit.setVisibility(VISIBLE);
-            alpha.start();
-            //动画时间
-            translationX.setDuration(1000);
-            translationX.start();
-            mBoolean = !mBoolean;
-        }
-    }
-
-    //收缩搜索框
-    private void initfst() {
-        ObjectAnimator translationX = ObjectAnimator.ofFloat(filmSeachRelative, "translationX", (dp2px(getActivity(), -170)), 0);
-        ObjectAnimator alpha = ObjectAnimator.ofFloat(filmSeachEdit, "alpha", 1.0f, 0.5f, 0.0f);
-        ObjectAnimator alphaButton = ObjectAnimator.ofFloat(filmSeachText, "alpha", 1.0f, 0.5f, 0.0f);
-        alphaButton.setDuration(1000);
-        alphaButton.start();
-        alpha.setDuration(1000);
-        alpha.start();
-        translationX.setDuration(1000);
-        translationX.start();
-        mBoolean = !mBoolean;
-    }
 
 
     @Override
@@ -357,32 +276,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
         if (cancelAttentionBean.getStatus().equals("0000")) {
             Toast.makeText(getActivity(), cancelAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
-
-        }
-    }
-
-    @Override
-    public void getCinemaByNameViewData(Object object) {
-        if (object != null) {
-            CinemaByNameBean cinemaByNameBean = (CinemaByNameBean) object;
-            List<CinemaByNameBean.ResultBean> nameBeanResult = cinemaByNameBean.getResult();
-            if (nameBeanResult != null) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("nameBeanResult", (Serializable) nameBeanResult);
-                Intent intent = new Intent(getActivity(), CinemaByNameActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-                filmSeachEdit.setText("");
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        initfst();
-                    }
-                }, 1000);
-
-            } else {
-                Toast.makeText(getActivity(), "暂无数据", Toast.LENGTH_SHORT).show();
-            }
 
         }
     }

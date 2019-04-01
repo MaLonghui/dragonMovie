@@ -17,8 +17,9 @@ public class AlreadyMoneyContract {
         void AlreadyTicketView(Object obj);
     }
 
+
+
     interface  Presenter extends BasePresenter<View> {
         void AlreadyTicketPresenter(Map<String,Object> headMap, Map<String,Object> parms);
-
     }
 }

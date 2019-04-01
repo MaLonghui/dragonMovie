@@ -2,7 +2,6 @@ package com.bw.movie.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.FilmSearchActivity;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.bean.ReFilmBean;
 import com.facebook.drawee.view.SimpleDraweeView;
