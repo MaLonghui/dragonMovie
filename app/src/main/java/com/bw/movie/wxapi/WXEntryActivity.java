@@ -50,11 +50,9 @@ public class WXEntryActivity extends MVPBaseActivity<WXEntryContract.View, WXEnt
                 Toast.makeText(WXEntryActivity.this, "" + wxLoginBean.getMessage(), Toast.LENGTH_SHORT).show();
                 //将登录信息存入数据库
                 SharedPreferences sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-                sp.edit().putString("key", wxLoginBean.getResult().getUserId()).putString("keyone", wxLoginBean.getResult().getSessionId()).commit();
-
-                startActivity(new Intent(WXEntryActivity.this,ShowActivity.class),ActivityOptions.makeSceneTransitionAnimation(WXEntryActivity.this).toBundle());
+                sp.edit().putString("userId", wxLoginBean.getResult().getUserId()).putString("sessionId", wxLoginBean.getResult().getSessionId()).commit();
+                //startActivity(new Intent(WXEntryActivity.this,ShowActivity.class),ActivityOptions.makeSceneTransitionAnimation(WXEntryActivity.this).toBundle());
                 finish();
-                //overridePendingTransition(R.anim.ac_in, R.anim.ac_out);
             }
         }
     }

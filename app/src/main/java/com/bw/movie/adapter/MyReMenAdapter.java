@@ -45,8 +45,7 @@ public class MyReMenAdapter extends RecyclerView.Adapter<MyReMenAdapter.ViewHold
         holder.searchSimpleView.setImageURI(uri);
         holder.searchFilmName.setText(reBeanList.get(position).getName());
         holder.searchSummary.setText("简介："+reBeanList.get(position).getSummary());
-        String followMovie = reBeanList.get(position).getFollowMovie();
-        if (followMovie.equals("1")){
+        if (reBeanList.get(position).getFollowMovie()==1){
             holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_selected);
         }else{
             holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_default);
@@ -55,13 +54,13 @@ public class MyReMenAdapter extends RecyclerView.Adapter<MyReMenAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 if (attentionClick!=null){
-                    if (reBeanList.get(position).getFollowMovie().equals("1")){
-                        reBeanList.get(position).setFollowMovie("2");
+                    if (reBeanList.get(position).getFollowMovie()==1){
+                        reBeanList.get(position).setFollowMovie(2);
                     }else{
-                        reBeanList.get(position).setFollowMovie("1");
+                        reBeanList.get(position).setFollowMovie(1);
                     }
-                    String followMovie = reBeanList.get(position).getFollowMovie();
-                    attentionClick.clickattention(reBeanList.get(position).getId(),followMovie.equals("1"));
+                    int followMovie = reBeanList.get(position).getFollowMovie();
+                    attentionClick.clickattention(reBeanList.get(position).getId(),position,followMovie ==1);
                     notifyDataSetChanged();
                 }
             }
@@ -69,7 +68,6 @@ public class MyReMenAdapter extends RecyclerView.Adapter<MyReMenAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 context.startActivity(new Intent(context,FilmDetailsActivity.class));
                 EventBus.getDefault().postSticky(reBeanList.get(position).getId());
             }
@@ -103,6 +101,6 @@ public class MyReMenAdapter extends RecyclerView.Adapter<MyReMenAdapter.ViewHold
     }
 
     public interface AttentionClick{
-        void clickattention(String cinemaId,boolean b);
+        void clickattention(String cinemaId,int i,boolean b);
     }
 }

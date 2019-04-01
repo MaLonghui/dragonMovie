@@ -17,6 +17,8 @@
             android:id="@+id/simPle_recommend"
             android:layout_width="@dimen/dp_70"
             android:layout_height="@dimen/dp_70"
+            app:progressBarImage="@mipmap/loading"
+            app:progressBarAutoRotateInterval="2000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_10"
             android:layout_marginRight="@dimen/sp_20" />

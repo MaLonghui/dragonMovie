@@ -70,14 +70,12 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
         Map<String,Object> headMap = new HashMap<>();
         headMap.put("userId",userId);
         headMap.put("sessionId",sessionId);
-        if (NoStudoInterent.isNetworkAvailable(InfoActivity.this)) {
-            mPresenter.userInfoPresenter(headMap);
-            Map<String,Object> parms = new HashMap<>();
-            parms.put("nickName","杜拉拉");
-            parms.put("sex","1");
-            parms.put("email","1971658757@qq.com");
-            mPresenter.userInfoPresenter(headMap);
-        }
+        mPresenter.userInfoPresenter(headMap);
+        Map<String,Object> parms = new HashMap<>();
+        parms.put("nickName","杜拉拉");
+        parms.put("sex","1");
+        parms.put("email","1971658757@qq.com");
+        mPresenter.userInfoPresenter(headMap);
 
     }
 
