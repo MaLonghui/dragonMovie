@@ -24,8 +24,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.transition.Explode;
-import android.util.Log;
 import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -307,9 +307,22 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         stateNetWork();
     }
 
+    private long firstTime = 0;
 
-
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        long secondTime = System.currentTimeMillis();
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if (secondTime - firstTime < 2000) {
+                System.exit(0);
+            } else {
+                Toast.makeText(ShowActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                firstTime = System.currentTimeMillis();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
@@ -381,22 +394,6 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         mLocationClient.setLocationOption(mLocationOption);
         //启动定位
         mLocationClient.startLocation();
-    }
-    private long firstTime = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        long secondTime = System.currentTimeMillis();
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (secondTime - firstTime < 2000) {
-                System.exit(0);
-            } else {
-                Toast.makeText(ShowActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                firstTime = System.currentTimeMillis();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     //动态注册权限
