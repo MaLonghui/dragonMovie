@@ -8,15 +8,24 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.annotation.SuppressLint;
+import android.os.Build;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.transition.Explode;
 import android.view.KeyEvent;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -28,6 +37,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
 import com.bw.movie.R;
 import com.bw.movie.activity.show.ShowContract;
 import com.bw.movie.activity.show.ShowPresenter;
@@ -36,6 +49,8 @@ import com.bw.movie.fragment.cinema.CinemaFragment;
 import com.bw.movie.fragment.film.FilmFragment;
 import com.bw.movie.fragment.mine.MineFragment;
 import com.bw.movie.net.NoStudoInterent;
+import com.zaaach.citypicker.CityPickerActivity;
+import com.zaaach.citypicker.model.City;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -48,7 +63,7 @@ import butterknife.ButterKnife;
 import static android.view.View.VISIBLE;
 
 
-public class ShowActivity extends AppCompatActivity implements ShowContract.IView{
+public class ShowActivity extends AppCompatActivity implements ShowContract.IView {
 
     @BindView(R.id.fram_layout)
     FrameLayout framLayout;
@@ -84,6 +99,13 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
     private ShowPresenter showPresenter;
     private int page = 1;
     private int count = 20;
+    private int REQUEST_CODE_PICK_CITY = 0;
+    public static final String TAG = "ShowActivity";
+    private SharedPreferences mConfig;
+    private String mString, mStrings;
+    private AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         fragmentManager = getSupportFragmentManager();
@@ -93,14 +115,26 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
             mineFragment = (MineFragment) fragmentManager.findFragmentByTag("mineFragment");
         }
         super.onCreate(savedInstanceState);
-        showPresenter = new ShowPresenter(this);
-
-        getWindow().setEnterTransition(new Explode().setDuration(800));
-        getWindow().setExitTransition(new Explode().setDuration(800));
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_show);
         ButterKnife.bind(this);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
+
+        showPresenter = new ShowPresenter(this);
+
+        mConfig = getSharedPreferences("configs", Context.MODE_PRIVATE);
+        mString = mConfig.getString("city", "");
+        cinemaDwAddr.setText(mString);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {//未开启定位权限
+            //开启定位权限,200是标识码
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        } else {
+            startLocaion();//进入页面开始定位
+            Toast.makeText(this, "已开启定位权限", Toast.LENGTH_LONG).show();
+        }
 
 
         filmSeachIma.setOnClickListener(new View.OnClickListener() {
@@ -112,8 +146,9 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         cinemaDingwei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                startActivityForResult(new Intent(getActivity(), CityPickerActivity.class),
-//                        REQUEST_CODE_PICK_CITY);
+
+                startActivityForResult(new Intent(ShowActivity.this, CityPickerActivity.class),REQUEST_CODE_PICK_CITY);
+
             }
         });
         filmSeachText.setOnClickListener(new View.OnClickListener() {
@@ -288,10 +323,81 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         }
         return super.onKeyDown(keyCode, event);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
+            if (data != null){
+                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
+                cinemaDwAddr.setText(city);
+            }
+        }
+
+
+    }
+
+    private SharedPreferences mSP;
+    public AMapLocationListener mLocationListener = new AMapLocationListener() {
+
+        private String mCity;
+
+        @Override
+        public void onLocationChanged(AMapLocation amapLocation) {
+            if (amapLocation != null) {
+                if (amapLocation.getErrorCode() == 0) {
+                    //定位成功回调信息，设置相关消息
+                    Log.i(TAG, "当前定位结果来源-----" + amapLocation.getLocationType());//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                    Log.i(TAG, "纬度 ----------------" + amapLocation.getLatitude());//获取纬度
+                    Log.i(TAG, "经度-----------------" + amapLocation.getLongitude());//获取经度
+                    Log.i(TAG, "精度信息-------------" + amapLocation.getAccuracy());//获取精度信息
+                    Log.i(TAG, "地址-----------------" + amapLocation.getAddress());//地址，如果option中设置isNeedAddress为false，则没有此结果，网络定位结果中会有地址信息，GPS定位不返回地址信息。
+                    Log.i(TAG, "国家信息-------------" + amapLocation.getCountry());//国家信息
+                    Log.i(TAG, "省信息---------------" + amapLocation.getProvince());//省信息
+                    Log.i(TAG, "城市信息-------------" + amapLocation.getCity());//城市信息
+                    Log.i(TAG, "城区信息-------------" + amapLocation.getDistrict());//城区信息
+                    Log.i(TAG, "街道信息-------------" + amapLocation.getStreet());//街道信息
+                    Log.i(TAG, "街道门牌号信息-------" + amapLocation.getStreetNum());//街道门牌号信息
+                    Log.i(TAG, "城市编码-------------" + amapLocation.getCityCode());//城市编码
+                    Log.i(TAG, "地区编码-------------" + amapLocation.getAdCode());//地区编码
+                    Log.i(TAG, "当前定位点的信息-----" + amapLocation.getAoiName());//获取当前定位点的AOI信息
+                    Toast.makeText(ShowActivity.this, "当前定位城市：" + amapLocation.getCity(), Toast.LENGTH_SHORT).show();
+                    //创建SharedPreferences储存数据
+                    mSP = getSharedPreferences("configs", Context.MODE_PRIVATE);
+                    mSP.edit().putString("city",amapLocation.getCity()).commit();
+                    mCity = amapLocation.getCity();
+                    cinemaDwAddr.setText(amapLocation.getCity());
+                } else {
+                    //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                    Log.e("AmapError", "location Error, ErrCode:"
+                            + amapLocation.getErrorCode() + ", errInfo:"
+                            + amapLocation.getErrorInfo());
+                }
+            }
+        }
+    };
+    private void startLocaion() {
+        mLocationClient = new AMapLocationClient(this);
+        mLocationClient.setLocationListener(mLocationListener);
+
+        mLocationOption = new AMapLocationClientOption();
+        //设置定位模式为AMapLocationMode.Hight_Accuracy，高精度模式。
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);
+        //设置是否返回地址信息（默认返回地址信息）
+        mLocationOption.setNeedAddress(true);
+        //获取一次定位结果：
+        //该方法默认为false。
+        mLocationOption.setOnceLocation(true);
+        //设置是否允许模拟位置,默认为false，不允许模拟位置
+        mLocationOption.setMockEnable(false);
+
+        //给定位客户端对象设置定位参数
+        mLocationClient.setLocationOption(mLocationOption);
+        //启动定位
+        mLocationClient.startLocation();
+    }
 
     //动态注册权限
     private void stateNetWork() {
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             String[] mStatenetwork = new String[]{
                     //写的权限
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -310,7 +416,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     Manifest.permission.WRITE_APN_SETTINGS,
                     Manifest.permission.ACCESS_NETWORK_STATE,
             };
-            ActivityCompat.requestPermissions(this,mStatenetwork,100);
+            ActivityCompat.requestPermissions(this, mStatenetwork, 100);
         }
     }
 
@@ -394,4 +500,6 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         super.onDestroy();
         showPresenter.onDetach();
     }
+
+
 }

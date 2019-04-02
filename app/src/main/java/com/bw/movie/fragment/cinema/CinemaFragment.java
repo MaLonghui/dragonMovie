@@ -104,8 +104,8 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
 
-      /*  //定位
-        */
+        /*  //定位
+         */
 
 
         if (!userId.equals("") && !sessionId.equals("")) {
@@ -174,7 +174,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         super.onDestroyView();
         unbinder.unbind();
     }
-
 
 
     @Override
@@ -279,7 +278,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
         }
     }
-
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -332,14 +330,5 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
-            if (data != null) {
-//                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-//                cinemaDwAddr.setText(city);
-            }
-        }
 
-    }
 }

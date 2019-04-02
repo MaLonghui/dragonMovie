@@ -190,9 +190,11 @@ public interface ApiServer {
     @FormUrlEncoded
     Observable<BuyTicketBean> buyTicket(@Url String url,@HeaderMap Map<String,Object> headMap,@FieldMap Map<String,Object> parms);
 
-    //9.用户购票记录查询列表
+
+    //购票破纪录
     @GET
     Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
+
     //支付
     @POST
     @FormUrlEncoded
