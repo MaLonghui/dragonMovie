@@ -2,11 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
+    android:background="#F2F2F2"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view_already"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-    
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/image_wuhuo"
+        android:layout_width="@dimen/dp_300"
+        android:layout_height="@dimen/dp_300"
+        android:src="@mipmap/wuhuo"/>
+
 </LinearLayout>
