@@ -77,29 +77,33 @@ public class MsgActivity extends MVPBaseActivity<MsgContract.View, MsgPresenter>
         if (object != null) {
             SysMsgBean sysMsgBean = (SysMsgBean) object;
             List<SysMsgBean.ResultBean> result = sysMsgBean.getResult();
-            for (SysMsgBean.ResultBean resultBean : result) {
-                if (resultBean.getStatus().equals("0")) {
-                    max = max+ 1;
-                }
-                textMsg.setText("系统消息"+"("+max+"条未读)");
-            }
-//            Log.i("aa","sysMsgBean:"+sysMsgBean.getMessage());
-            if (sysMsgBean.getStatus().equals("0000")) {
-                MySysMsgAdapter mySysMsgAdapter = new MySysMsgAdapter(MsgActivity.this);
-                xRecyclerMsg.setAdapter(mySysMsgAdapter);
-                mySysMsgAdapter.setList(sysMsgBean);
-                mySysMsgAdapter.setStatusList(new MySysMsgAdapter.SysMsgStatusClick() {
-                    @Override
-                    public void statusClick(String id) {
-                        Map<String, Object> headMap1 = new HashMap<>();
-                        headMap1.put("userId", userId);
-                        headMap1.put("sessionId", sessionId);
-                        mPresenter.SysMsgStatusPresenter(headMap1, id);
-
+            if (result!=null){
+                for (SysMsgBean.ResultBean resultBean : result) {
+                    if (resultBean.getStatus().equals("0")) {
+                        max = max+ 1;
                     }
-                });
+                    textMsg.setText("系统消息"+"("+max+"条未读)");
+                }
+//            Log.i("aa","sysMsgBean:"+sysMsgBean.getMessage());
+                if (sysMsgBean.getStatus().equals("0000")) {
+                    MySysMsgAdapter mySysMsgAdapter = new MySysMsgAdapter(MsgActivity.this);
+                    xRecyclerMsg.setAdapter(mySysMsgAdapter);
+                    mySysMsgAdapter.setList(sysMsgBean);
+                    mySysMsgAdapter.setStatusList(new MySysMsgAdapter.SysMsgStatusClick() {
+                        @Override
+                        public void statusClick(String id) {
+                            Map<String, Object> headMap1 = new HashMap<>();
+                            headMap1.put("userId", userId);
+                            headMap1.put("sessionId", sessionId);
+                            mPresenter.SysMsgStatusPresenter(headMap1, id);
+
+                        }
+                    });
+                }
+            }else{
+                textMsg.setText("系统消息"+"("+0+"条未读)");
             }
-        }
+    }
         max = 0;
     }
 

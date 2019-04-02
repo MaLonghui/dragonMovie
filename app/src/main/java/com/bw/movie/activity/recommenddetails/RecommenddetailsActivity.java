@@ -34,7 +34,6 @@ import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.mvp.MVPBaseActivity;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -279,8 +278,8 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 break;
             case R.id.img_recommend_details:
 
-                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
+//                startActivity(intent);
                 break;
         }
 
