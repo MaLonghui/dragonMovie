@@ -4,48 +4,14 @@
     package="com.bw.movie">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <!--用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"></uses-permission>
-    <!--用于访问GPS定位-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"></uses-permission>
-    <!--用于获取运营商信息，用于支持提供运营商信息相关的接口-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>
-    <!--用于访问wifi网络信息，wifi信息会用于进行网络定位-->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"></uses-permission>
-    <!--用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"></uses-permission>
-    <!--用于访问网络，网络定位需要上网-->
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
-    <!--用于读取手机当前的状态-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"></uses-permission>
     <!--用于申请调用A-GPS模块-->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"></uses-permission>
     <!--用于申请获取蓝牙信息进行室内定位-->
     <uses-permission android:name="android.permission.BLUETOOTH"></uses-permission>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"></uses-permission>
-
-
-    <!--<meta-data-->
-        <!--android:name="com.amap.api.v2.apikey"-->
-        <!--android:value="8de97527b294035f74c924dd9ec5e7ac" />-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <!-- 允许程序获取网络状态 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <!-- 允许程序访问WiFi网络信息 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 允许程序读写手机状态和身份 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 允许程序访问CellID或WiFi热点来获取粗略的位置 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
-    <!-- 用于进行网络定位 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <!-- 用于访问GPS定位 -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -55,17 +21,19 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <!-- 用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <!-- 用于访问网络，网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <!-- 用于写入缓存数据到扩展存储卡 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <!-- 用于申请获取蓝牙信息进行室内定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 允许 弹出系统级别的AlterDialog -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
 
     <application
         android:name=".app.MyApp"
@@ -77,6 +45,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -87,8 +56,8 @@
         <activity android:name=".activity.GuideActivity" />
         <activity
             android:name=".activity.ShowActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            android:launchMode="singleTop"/>
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".activity.login.LoginActivity" />
         <activity android:name=".activity.regist.RegistActivity" />
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" />
@@ -101,27 +70,32 @@
         <activity android:name=".activity.feedback.FeedbackActivity" />
         <activity android:name=".activity.updateinfo.UpdateInfoActivity" />
         <activity android:name=".activity.msg.MsgActivity" />
-        <activity android:name=".activity.updatepwd.UpdatePwdActivity" android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.updatepwd.UpdatePwdActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".activity.AMapActivity" />
         <activity android:name=".activity.reccord.ReccordActivity" />
-        <activity android:name=".activity.seat.SeatActivity"/>
-        <activity android:name=".activity.filmsearch.FilmSearchActivity"/>
-        <activity android:name=".activity.vision.VisionActivity"/>
+        <activity android:name=".activity.seat.SeatActivity" />
+        <activity android:name=".activity.filmsearch.FilmSearchActivity" />
+        <activity android:name=".activity.vision.VisionActivity" />
+        <activity
+            android:name="com.zaaach.citypicker.CityPickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/CityPicker.NoActionBar"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <service android:name="com.amap.api.location.APSService"></service>
         <!--支付-->
-        <activity android:name=".wxapi.WXPayEntryActivity"
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:scheme="wxb3852e6a6b7d9516"/>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="wxb3852e6a6b7d9516" />
             </intent-filter>
         </activity>
-        <!--<activity-->
-            <!--android:name="com.zaaach.citypicker.CityPickerActivity"-->
-            <!--android:screenOrientation="portrait"-->
-            <!--android:theme="@style/CityPicker.NoActionBar"-->
-            <!--android:windowSoftInputMode="stateHidden|adjustPan" />-->
+
 
         <!--微信-->
         <activity
@@ -129,13 +103,17 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:exported="true"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="e85ffa47337c9d97719ec5e2110dd32a">
-
-            <!-- //开发者申请的key -->
         </meta-data>
+
+        <meta-data android:value="5ca33dad61f5649e51000fe4" android:name="UMENG_APPKEY"/>
+        <meta-data android:value="Umeng" android:name="UMENG_CHANNEL"/>
+
+        <service android:name="com.amap.api.location.APSService"></service>
     </application>
 
 </manifest>

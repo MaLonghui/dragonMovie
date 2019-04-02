@@ -16,22 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.amap.api.maps.AMap;
-import com.amap.api.maps.CameraUpdate;
-import com.amap.api.maps.CameraUpdateFactory;
-import com.amap.api.maps.MapView;
-import com.amap.api.maps.model.BitmapDescriptorFactory;
-import com.amap.api.maps.model.CameraPosition;
-import com.amap.api.maps.model.LatLng;
-import com.amap.api.maps.model.Marker;
-import com.amap.api.maps.model.MarkerOptions;
-import com.amap.api.services.core.LatLonPoint;
-import com.amap.api.services.geocoder.GeocodeAddress;
-import com.amap.api.services.geocoder.GeocodeQuery;
-import com.amap.api.services.geocoder.GeocodeResult;
-import com.amap.api.services.geocoder.GeocodeSearch;
-import com.amap.api.services.geocoder.RegeocodeQuery;
-import com.amap.api.services.geocoder.RegeocodeResult;
+
 import com.bw.movie.R;
 
 import java.lang.reflect.Method;
@@ -40,24 +25,26 @@ import java.util.List;
 
 public class AMapActivity extends AppCompatActivity {
 
-    MapView mapView=null;//地图视图
+    /*MapView mapView=null;//地图视图
     AMap aMap;//地图对象
-    CameraUpdate cameraUpdate;
+    CameraUpdate cameraUpdate;*/
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_amap);
-        mapView= (MapView) findViewById(R.id.map);
+      /*  mapView= (MapView) findViewById(R.id.map);
         mapView.onCreate(savedInstanceState);//创建地图
         aMap=mapView.getMap();//获取地图对象
-        aMap.moveCamera(CameraUpdateFactory.zoomTo(5));
+        aMap.moveCamera(CameraUpdateFactory.zoomTo(5));*/
+
         getadress();
     }
 
     //根据地址绘制需要显示的点
     public void makepoint(String s,double s1,double s2){
-        Log.e("Shunxu","开始绘图");
+       /* Log.e("Shunxu","开始绘图");
         //北纬39.22，东经116.39，为负则表示相反方向
         LatLng latLng=new LatLng(s2,s1);
         Log.e("地址",s);
@@ -92,13 +79,13 @@ public class AMapActivity extends AppCompatActivity {
             public void onInfoWindowClick(Marker marker) {
                 Toast.makeText(AMapActivity.this,"点击了我的地点",Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 
     //解析指定坐标的地址
     public void getadress(){
         Log.e("Shunxu","调用getadress");
-        GeocodeSearch geocodeSearch=new GeocodeSearch(this);//地址查询器
+       /* GeocodeSearch geocodeSearch=new GeocodeSearch(this);//地址查询器
 
 //        //设置查询参数,
 //        //三个参数依次为坐标，范围多少米，坐标系
@@ -127,7 +114,7 @@ public class AMapActivity extends AppCompatActivity {
 
 
             }
-        });
+        });*/
 //        //设置查询结果监听
 //        geocodeSearch.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
 //            //根据坐标获取地址信息调用
@@ -146,7 +133,7 @@ public class AMapActivity extends AppCompatActivity {
     }
 
     //将地图生命周期跟活动绑定，减少某些不必要的bug
-    @Override
+   /* @Override
     protected void onPostResume() {
         super.onPostResume();
         mapView.onResume();
@@ -160,7 +147,7 @@ public class AMapActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-    }
+    }*/
 
     /*************************************** 权限检查******************************************************/
 

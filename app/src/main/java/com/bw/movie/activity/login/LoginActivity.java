@@ -28,6 +28,7 @@ import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.WeiXinUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -90,6 +91,18 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
         login_Wx();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     @OnClick({R.id.jump_regist, R.id.btn_login, R.id.btn_eyePwd})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -101,6 +114,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 String pwd = editPwd.getText().toString().trim();
                 encrypt = EncryptUtil.encrypt(pwd);
                 mPresenter.loginPresenter(phone, encrypt);
+                MobclickAgent.onProfileSignIn("userID");
                 break;
             case R.id.btn_eyePwd:
                 if (editPwd.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {

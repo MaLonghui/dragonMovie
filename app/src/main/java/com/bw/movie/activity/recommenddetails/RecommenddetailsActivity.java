@@ -123,6 +123,14 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 }
             }
         });
+
+        imgRecommendDetails.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecommenddetailsActivity.this, AMapActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

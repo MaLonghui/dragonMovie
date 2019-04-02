@@ -5,6 +5,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven { url 'https://dl.bintray.com/umsdk/release' }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.0'
@@ -17,7 +18,7 @@ buildscript {
 
 allprojects {
     repositories {
-
+        maven { url 'https://dl.bintray.com/umsdk/release' }
         //集成支付宝支付
         flatDir {
             dirs 'libs'

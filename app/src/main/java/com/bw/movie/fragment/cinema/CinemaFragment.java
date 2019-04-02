@@ -335,14 +335,5 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
-            if (data != null) {
-//                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-//                cinemaDwAddr.setText(city);
-            }
-        }
 
-    }
 }
