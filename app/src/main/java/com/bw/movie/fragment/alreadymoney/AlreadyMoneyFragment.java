@@ -12,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.bw.movie.R;
 import com.bw.movie.adapter.MyAlreadyMoneyAdapter;
@@ -35,6 +36,8 @@ public class AlreadyMoneyFragment extends MVPBaseFragment<AlreadyMoneyContract.V
     @BindView(R.id.recycler_view_already)
     RecyclerView recyclerViewAlready;
     Unbinder unbinder;
+    @BindView(R.id.image_wuhuo)
+    ImageView imageWuhuo;
     private SharedPreferences sp;
     private String userId;
     private String sessionId;
@@ -63,11 +66,13 @@ public class AlreadyMoneyFragment extends MVPBaseFragment<AlreadyMoneyContract.V
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
         recyclerViewAlready.setLayoutManager(linearLayoutManager);
-        if (obj!=null){
+        if (obj != null) {
             TicketBean ticketBean = (TicketBean) obj;
-            if (ticketBean!=null){
-                MyAlreadyMoneyAdapter myAlreadyMoneyAdapter = new MyAlreadyMoneyAdapter(getActivity(),ticketBean);
-                recyclerViewAlready.setAdapter(myAlreadyMoneyAdapter);
+            if (ticketBean != null) {
+//                recyclerViewAlready.setVisibility(View.VISIBLE);
+//                imageWuhuo.setVisibility(View.GONE);
+                    MyAlreadyMoneyAdapter myAlreadyMoneyAdapter = new MyAlreadyMoneyAdapter(getActivity(), ticketBean);
+                    recyclerViewAlready.setAdapter(myAlreadyMoneyAdapter);
             }
         }
     }

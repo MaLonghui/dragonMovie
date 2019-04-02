@@ -23,7 +23,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.AMapActivity;
 import com.bw.movie.adapter.FlowAdapter;
 import com.bw.movie.adapter.MyCinemaCommmentAdapter;
 import com.bw.movie.adapter.MyMovieIdAndFilmAdapter;
@@ -34,7 +33,6 @@ import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.mvp.MVPBaseActivity;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -271,8 +269,8 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 break;
             case R.id.img_recommend_details:
 
-                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
-                startActivity(intent);
+//                Intent intent = new Intent(RecommenddetailsActivity.this,AMapActivity.class);
+//                startActivity(intent);
                 break;
         }
 
