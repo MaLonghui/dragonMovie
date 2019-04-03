@@ -104,9 +104,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
 
-        /*  //定位
-         */
-
 
         if (!userId.equals("") && !sessionId.equals("")) {
             Map<String, Object> headMap = new HashMap<>();

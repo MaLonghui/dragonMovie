@@ -49,6 +49,7 @@ import com.bw.movie.fragment.cinema.CinemaFragment;
 import com.bw.movie.fragment.film.FilmFragment;
 import com.bw.movie.fragment.mine.MineFragment;
 import com.bw.movie.net.NoStudoInterent;
+import com.umeng.analytics.MobclickAgent;
 import com.zaaach.citypicker.CityPickerActivity;
 import com.zaaach.citypicker.model.City;
 
@@ -106,6 +107,17 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         fragmentManager = getSupportFragmentManager();
@@ -205,6 +217,8 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     switch (checkedId) {
                         //影片
                         case R.id.rb_film:
+
+                            MobclickAgent.onEvent(ShowActivity.this, "film");
                             //开启事务
                             fragmentManager.beginTransaction()
                                     .show(filmFragment)
@@ -240,6 +254,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                             break;
                         //影院
                         case R.id.rb_cinema:
+                            MobclickAgent.onEvent(ShowActivity.this, "cinema");
                             fragmentManager.beginTransaction()
                                     .hide(filmFragment)
                                     .show(cinemaFragment)
@@ -270,6 +285,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                             break;
                         //我的
                         case R.id.rb_my:
+                            MobclickAgent.onEvent(ShowActivity.this, "mine");
                             fragmentManager.beginTransaction()
                                     .hide(filmFragment)
                                     .hide(cinemaFragment)

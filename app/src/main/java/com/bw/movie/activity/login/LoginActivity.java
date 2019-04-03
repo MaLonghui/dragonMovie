@@ -114,7 +114,8 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 String pwd = editPwd.getText().toString().trim();
                 encrypt = EncryptUtil.encrypt(pwd);
                 mPresenter.loginPresenter(phone, encrypt);
-                MobclickAgent.onProfileSignIn("userID");
+                MobclickAgent.onProfileSignIn("as");
+                MobclickAgent.onEvent(LoginActivity.this, "login_mlh");
                 break;
             case R.id.btn_eyePwd:
                 if (editPwd.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {

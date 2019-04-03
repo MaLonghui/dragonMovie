@@ -260,7 +260,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-                filmReviewAdapter.notifyDataSetChanged();
 
             } else if (filmCommentBean.getStatus().equals("9999")) {
                 AlertDialogUtils.AlertDialogLogin(this);
@@ -285,7 +284,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-                filmReviewAdapter.notifyDataSetChanged();
 
             }
         }
@@ -307,7 +305,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-                filmReviewAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -318,6 +315,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             FlowllMovieBean flowllMovieBean = (FlowllMovieBean) object;
             if (flowllMovieBean.getStatus().equals("0000")) {
                 Toast.makeText(this, flowllMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         }
     }
@@ -473,8 +471,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                         headMap.put("userId", userId);
                         headMap.put("sessionId", sessionId);
                         mPresenter.getcommentReplyPresenter(headMap,prams);
-
-
                     } else {
                         AlertDialogUtils.AlertDialogLogin(FilmDetailsActivity.this);
                     }
