@@ -394,6 +394,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         }
     }
 
+
     private SharedPreferences mSP;
     public AMapLocationListener mLocationListener = new AMapLocationListener() {
 

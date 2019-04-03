@@ -278,6 +278,11 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
         }
     }
+
+
+
+
+
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})
     public void onViewClicked(View view) {
         switch (view.getId()) {

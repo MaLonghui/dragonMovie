@@ -202,4 +202,5 @@ public interface ApiServer {
     //版本更新
     @GET
     Observable<VisionBean> vision(@Url String url,@HeaderMap Map<String,Object> headMap);
+
 }
