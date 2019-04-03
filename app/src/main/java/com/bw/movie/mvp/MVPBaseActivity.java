@@ -1,21 +1,18 @@
 package com.bw.movie.mvp;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 
 
-import com.bw.movie.net.NoStudoInterent;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.lang.reflect.ParameterizedType;
 
-import static com.bw.movie.net.NoStudoInterent.connectionReceiver;
+import static com.bw.movie.net.NetWorkUtils.connectionReceiver;
 
 
 /**
@@ -28,10 +25,8 @@ public abstract class MVPBaseActivity<V extends BaseView,T extends BasePresenter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (NoStudoInterent.isNetworkAvailable(getContext())){
-            mPresenter= getInstance(this,1);
-            mPresenter.attachView((V) this);
-        }
+                mPresenter= getInstance(this,1);
+                mPresenter.attachView((V) this);
         connectionReceiver = connectionReceiver;
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);

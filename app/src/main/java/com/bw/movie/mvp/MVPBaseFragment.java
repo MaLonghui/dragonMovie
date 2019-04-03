@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
+import com.bw.movie.net.NetWorkUtils;
+
 import java.lang.reflect.ParameterizedType;
 
-import static com.bw.movie.net.NoStudoInterent.connectionReceiver;
+import static com.bw.movie.net.NetWorkUtils.connectionReceiver;
+
 
 /**
  * MVPPlugin
@@ -22,8 +25,8 @@ public abstract class MVPBaseFragment<V extends BaseView,T extends BasePresenter
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPresenter= getInstance(this,1);
-        mPresenter.attachView((V) this);
+            mPresenter= getInstance(this,1);
+            mPresenter.attachView((V) this);
         connectionReceiver = connectionReceiver;
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);

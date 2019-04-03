@@ -1,5 +1,7 @@
 package com.bw.movie.net;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -12,14 +14,18 @@ import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.bw.movie.R;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
 
-public class NoStudoInterent {
+public class NetWorkUtils {
 
     /*
     * 判断是否有网络连接
@@ -111,14 +117,13 @@ public class NoStudoInterent {
                 ConnectivityManager connectMgr = (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
                 NetworkInfo mobNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
                 NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-
                 if (!mobNetInfo.isConnected() && !wifiNetInfo.isConnected()) {
-                    LayoutInflater inflater = LayoutInflater.from(context);
-                    LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.network, null);
+                    View view = LayoutInflater.from(context).inflate(R.layout.network, null);
+                    ImageView imageWangqiu = view.findViewById(R.id.image_wangqiu);
                     final Dialog dialog = new AlertDialog.Builder(context).create();
                     dialog.setCancelable(false);
                     dialog.show();
-                    dialog.getWindow().setContentView(layout);
+                    dialog.getWindow().setContentView(view);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -146,7 +151,7 @@ public class NoStudoInterent {
 
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    NoStudoInterent noStudoInterent = new NoStudoInterent();
+                                    NetWorkUtils noStudoInterent = new NetWorkUtils();
                                     if (noStudoInterent.isNetworkConnected(context)){
                                         dialog.dismiss();
                                         Toast.makeText(context,"有网络",Toast.LENGTH_LONG).show();

@@ -5,12 +5,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -38,28 +35,16 @@ import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.UserHeadIconBean;
 import com.bw.movie.mvp.MVPBaseFragment;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
-import com.bw.movie.utils.FileImageUntils;
-import com.bw.movie.utils.ImageUtil;
-import com.facebook.common.util.UriUtil;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * MVPPlugin

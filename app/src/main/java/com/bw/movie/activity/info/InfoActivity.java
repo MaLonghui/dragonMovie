@@ -8,18 +8,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.transition.Explode;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.bw.movie.R;
-import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.activity.updateinfo.UpdateInfoActivity;
 import com.bw.movie.activity.updatepwd.UpdatePwdActivity;
 import com.bw.movie.bean.FindInfoBean;
-import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.mvp.MVPBaseActivity;
-import com.bw.movie.net.NoStudoInterent;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
@@ -56,6 +52,7 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
     @BindView(R.id.info_request)
     SimpleDraweeView infoRequest;
     private SharedPreferences sp;
+    private FindInfoBean findInfoBean;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,9 +79,9 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
     @Override
     public void userInfoView(Object obj) {
         if (obj!=null){
-            FindInfoBean findInfoBean = (FindInfoBean) obj;
+            findInfoBean = (FindInfoBean) obj;
 //            Log.i("aa","findInfoBean:"+findInfoBean.getMessage());
-            if (findInfoBean!=null){
+            if (findInfoBean !=null){
                 Uri uri = Uri.parse(findInfoBean.getResult().getHeadPic());
                 infoSdv.setImageURI(uri);
                 infoNick.setText(findInfoBean.getResult().getNickName());
@@ -113,22 +110,26 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
                 break;
             case R.id.info_reset_psw:
                 startActivity(new Intent(InfoActivity.this,UpdatePwdActivity.class));
-                finish();
+//                finish();
                 break;
             case R.id.info_request:
                 finish();
                 break;
             case R.id.info_nick:
-                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
-                finish();
+                Intent intent = new Intent(InfoActivity.this, UpdateInfoActivity.class);
+                intent.putExtra("nickName",findInfoBean.getResult().getNickName());
+                intent.putExtra("sex",findInfoBean.getResult().getSex());
+                intent.putExtra("email",findInfoBean.getResult().getEmail());
+                startActivity(intent);
+//                finish();
                 break;
             case R.id.info_mail:
                 startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
-                finish();
+//                finish();
                 break;
             case R.id.info_sex:
                 startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
-                finish();
+//                finish();
                 break;
 
         }

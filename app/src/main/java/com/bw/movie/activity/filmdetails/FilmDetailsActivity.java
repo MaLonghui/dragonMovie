@@ -30,7 +30,6 @@ import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.cinemabymovieid.CinemaByMovieIdActivity;
-import com.bw.movie.activity.recommenddetails.RecommenddetailsActivity;
 import com.bw.movie.adapter.FilmReviewAdapter;
 import com.bw.movie.adapter.MyJuZhaoAdapter;
 import com.bw.movie.adapter.MyPopwindowAdapter;
@@ -42,7 +41,6 @@ import com.bw.movie.bean.FilmReviewBean;
 import com.bw.movie.bean.FlowllMovieBean;
 import com.bw.movie.bean.MovieCommentReply;
 import com.bw.movie.mvp.MVPBaseActivity;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -50,7 +48,6 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -559,7 +556,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         popupWindow.setFocusable(true);
         popupWindow.update();
         popupWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+        /*popupWindow.setTouchInterceptor(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
@@ -568,7 +565,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 }
                 return false;
             }
-        });
+        });*/
         pop_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -576,12 +573,18 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 JCVideoPlayer.releaseAllVideos();
             }
         });
+        if (!popupWindow.isShowing()){
+            JCVideoPlayer.releaseAllVideos();
+        }
         v.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    popupWindow.dismiss();
-                    JCVideoPlayer.releaseAllVideos();
+                    if (popupWindow.isShowing()){
+                        popupWindow.dismiss();
+                        JCVideoPlayer.releaseAllVideos();
+                    }
+
                     return true;
                 }
                 return false;
@@ -593,10 +596,8 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
 
     @Override
     public void onBackPressed() {
-        if (JCVideoPlayer.backPress()) {
-            return;
-        }
         super.onBackPressed();
+        JCVideoPlayer.releaseAllVideos();
     }
 
     @Override

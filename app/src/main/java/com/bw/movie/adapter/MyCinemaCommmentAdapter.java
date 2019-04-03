@@ -92,7 +92,6 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
                     }
                     btnPriaseListener.praiseBtn(list.get(i).getCommentId(),list.get(i).getIsGreat());
                     notifyDataSetChanged();
-                    btnPriaseListener.praiseBtn(list.get(i).getCommentId(),list.get(i).getIsGreat());
                 }
             }
         });
