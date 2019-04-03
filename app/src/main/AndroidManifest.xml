@@ -57,24 +57,24 @@
         <activity
             android:name=".activity.ShowActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
-            android:launchMode="singleTask"/>
-        <activity android:name=".activity.login.LoginActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.regist.RegistActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.filmdetails.FilmDetailsActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.info.InfoActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.attention.AttentionActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.CinemaByNameActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.feedback.FeedbackActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.updateinfo.UpdateInfoActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.msg.MsgActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.updatepwd.UpdatePwdActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.reccord.ReccordActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.seat.SeatActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.vision.VisionActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.filmsearch.FilmSearchActivity" android:launchMode="singleTask"/>
+            android:launchMode="standard"/>
+        <activity android:name=".activity.login.LoginActivity"/>
+        <activity android:name=".activity.regist.RegistActivity"/>
+        <activity android:name=".activity.recommenddetails.RecommenddetailsActivity"/>
+        <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity" />
+        <activity android:name=".activity.filmdetails.FilmDetailsActivity"/>
+        <activity android:name=".activity.info.InfoActivity"/>
+        <activity android:name=".activity.attention.AttentionActivity"/>
+        <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity"/>
+        <activity android:name=".activity.CinemaByNameActivity"/>
+        <activity android:name=".activity.feedback.FeedbackActivity"/>
+        <activity android:name=".activity.updateinfo.UpdateInfoActivity"/>
+        <activity android:name=".activity.msg.MsgActivity"/>
+        <activity android:name=".activity.updatepwd.UpdatePwdActivity"/>
+        <activity android:name=".activity.reccord.ReccordActivity"/>
+        <activity android:name=".activity.seat.SeatActivity"/>
+        <activity android:name=".activity.vision.VisionActivity"/>
+        <activity android:name=".activity.filmsearch.FilmSearchActivity"/>
         <activity
             android:name="com.zaaach.citypicker.CityPickerActivity"
             android:screenOrientation="portrait"
@@ -85,7 +85,7 @@
         <activity
             android:name=".wxapi.WXPayEntryActivity"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:launchMode="standard">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

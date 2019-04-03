@@ -114,7 +114,9 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 String pwd = editPwd.getText().toString().trim();
                 encrypt = EncryptUtil.encrypt(pwd);
                 mPresenter.loginPresenter(phone, encrypt);
-                MobclickAgent.onProfileSignIn("userID");
+                MobclickAgent.onProfileSignIn("userId");
+                MobclickAgent.setSessionContinueMillis(1000*40);
+                MobclickAgent.onEvent(LoginActivity.this, "login_id");
                 break;
             case R.id.btn_eyePwd:
                 if (editPwd.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
@@ -136,7 +138,9 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                     WeiXinUtil.reg(LoginActivity.this).sendReq(req);
                     finish();
                 }
-
+                MobclickAgent.onProfileSignIn("userId1");
+                MobclickAgent.setSessionContinueMillis(1000*40);
+                MobclickAgent.onEvent(LoginActivity.this, "login_wx");
                 break;
         }
     }

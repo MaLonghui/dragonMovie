@@ -37,6 +37,7 @@ import com.bw.movie.bean.PayResult;
 import com.bw.movie.bean.TicketBean;
 import com.bw.movie.mvp.MVPBaseFragment;
 import com.bw.movie.wxapi.WXPayEntryActivity;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,11 +135,29 @@ public class WillMoneyFragment extends MVPBaseFragment<WillMoneyContract.View, W
                     public void waitcallback(double price, int position) {
                         orderId = ticketBean.getResult().get(position).getOrderId();
                         initpopup(price);
+                        MobclickAgent.setSessionContinueMillis(1000*40);
+                        MobclickAgent.onEvent(getActivity(), "willmoney");
                     }
                 });
 
             }
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(getActivity());
+        MobclickAgent.onResume(getActivity()); //统计时长
+        MobclickAgent.onPageStart("willmoney"); //统计页面("MainScreen"为页面名称，可自定义)
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(getActivity());
+        MobclickAgent.onPause(getActivity()); //统计时长
+        MobclickAgent.onPageEnd("willmoney");
     }
 
     @Override

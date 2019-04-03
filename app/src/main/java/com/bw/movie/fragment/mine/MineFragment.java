@@ -92,7 +92,6 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     private SharedPreferences sp;
     private Map<String, Object> headMap;
     private PopupWindow popupWindow;
-    private final int CAIJIAN_FLAG=200;
     private String userId;
     private String sessionId;
 
@@ -117,12 +116,12 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         Map<String, Object> headMap = new HashMap<>();
         headMap.put("userId", userId);
         headMap.put("sessionId", sessionId);
-            mPresenter.userInfoPresenter(headMap);
+        mPresenter.userInfoPresenter(headMap);
 
-        if (!userId.equals("")&&!sessionId.equals("")){
-            Map<String,Object> headMap1 = new HashMap<>();
-            headMap1.put("userId",userId);
-            headMap1.put("sessionId",sessionId);
+        if (!userId.equals("") && !sessionId.equals("")) {
+            Map<String, Object> headMap1 = new HashMap<>();
+            headMap1.put("userId", userId);
+            headMap1.put("sessionId", sessionId);
             mPresenter.SignInPresenter(headMap1);
         }
 
@@ -151,26 +150,25 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
 
     @Override
     public void headIconView(Object object) {
-        if (object!=null){
+        if (object != null) {
             UserHeadIconBean userHeadIconBean = (UserHeadIconBean) object;
+            Log.i("aa", "userHeadIconBean:" + userHeadIconBean.getMessage());
             if (userHeadIconBean.getStatus().equals("0000")) {
                 myIcon.setImageURI(Uri.parse(userHeadIconBean.getHeadPath()));
-               Toast.makeText(getActivity(),userHeadIconBean.getMessage(),Toast.LENGTH_LONG).show();
-                //重新请求数据实现即时更新头像图片
-
+//               Toast.makeText(getActivity(),userHeadIconBean.getMessage(),Toast.LENGTH_LONG).show();
             }
         }
     }
 
     @Override
     public void SignInView(Object obj) {
-        if (obj!=null){
+        if (obj != null) {
             SignInBean signInBean = (SignInBean) obj;
 
-            if (signInBean.getStatus().equals("0000")){
+            if (signInBean.getStatus().equals("0000")) {
                 mySignIn.setBackgroundResource(R.drawable.shape_bg_button);
 //                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 mySignIn.setBackgroundResource(R.drawable.shape_signin);
 //                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
             }
@@ -184,7 +182,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         } else {
             switch (view.getId()) {
                 case R.id.my_message:
-                    startActivity(new Intent(getActivity(),MsgActivity.class));
+                    startActivity(new Intent(getActivity(), MsgActivity.class));
                     break;
                 case R.id.my_icon:
 //                    Toast.makeText(getActivity(), "个人头像", Toast.LENGTH_LONG).show();
@@ -193,31 +191,35 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
                 case R.id.my_name:
                     break;
                 case R.id.my_sign_in:
-                    Map<String,Object> headMap1 = new HashMap<>();
-                    headMap1.put("userId",userId);
-                    headMap1.put("sessionId",sessionId);
+                    Map<String, Object> headMap1 = new HashMap<>();
+                    headMap1.put("userId", userId);
+                    headMap1.put("sessionId", sessionId);
                     mPresenter.SignInPresenter(headMap1);
                     break;
                 case R.id.my_info:
-                    startActivity(new Intent(getActivity(),InfoActivity.class));
+                    startActivity(new Intent(getActivity(), InfoActivity.class));
                     break;
                 case R.id.my_attentions:
-                    startActivity(new Intent(getActivity(),AttentionActivity.class));
+                    startActivity(new Intent(getActivity(), AttentionActivity.class));
                     break;
                 case R.id.my_rccord:
-                    startActivity(new Intent(getActivity(),ReccordActivity.class));
+                    startActivity(new Intent(getActivity(), ReccordActivity.class));
                     break;
                 case R.id.my_feedbacks:
-                    startActivity(new Intent(getActivity(),FeedbackActivity.class));
+                    startActivity(new Intent(getActivity(), FeedbackActivity.class));
                     break;
                 case R.id.my_version:
-                    startActivity(new Intent(getActivity(),VisionActivity.class));
+                    startActivity(new Intent(getActivity(), VisionActivity.class));
                     break;
                 case R.id.my_logout:
                     Toast.makeText(getActivity(), "用户退出登录", Toast.LENGTH_LONG).show();
+                    SharedPreferences.Editor edit = sp.edit();
+                    edit.putString("userId", "");
+                    edit.putString("sessionId", "");
+                    edit.commit();
                     Map<String, Object> headMap = new HashMap<>();
-                    headMap.put("userId", "");
-                    headMap.put("sessionId", "");
+                    headMap.put("userId", sp.getString("userId", userId));
+                    headMap.put("sessionId", sp.getString("sessionId", sessionId));
                     mPresenter.userInfoPresenter(headMap);
                     myLogout.setVisibility(View.GONE);
                     break;
@@ -230,7 +232,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
      */
     private void showChoosePicPopWindow() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.popup_layout, null);
-        popupWindow = new PopupWindow(view,ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
         popupWindow.setTouchable(true);
@@ -241,80 +243,32 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         btnAlbum.setOnClickListener(this);
         btnQu.setOnClickListener(this);
         View view1 = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_mine, null);
-        popupWindow.showAsDropDown(view1,Gravity.BOTTOM,0,0);
+        popupWindow.showAsDropDown(view1, Gravity.BOTTOM, 0, 0);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.btn_camera:
-                //意图
+                if (Build.VERSION.SDK_INT >= 23) {
+                    String[] mPermissionList = new String[]{Manifest.permission.CAMERA};
+                    ActivityCompat.requestPermissions(getActivity(), mPermissionList, 123);
+                }
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //带值跳转
-                startActivityForResult(intent,1);
+                getActivity().startActivityForResult(intent, 1);
+
                 popupWindow.dismiss();
                 break;
             case R.id.btn_album:
-                //意图
                 Intent intent1 = new Intent(Intent.ACTION_PICK);
-                //类型
                 intent1.setType("image/*");
-                //带值跳转
-                startActivityForResult(intent1,2);
+                getActivity().startActivityForResult(intent1, 2);
                 popupWindow.dismiss();
                 break;
             case R.id.btn_qu:
                 popupWindow.dismiss();
                 break;
 
-        }
-    }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 1:
-                Bitmap bitmap = data.getParcelableExtra("data");
-                Uri uri1 = Uri.parse(MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmap, null, null));
-                if (uri1 != null) {
-                    //调用工具类将uri图片转为path
-                    String path = ImageUtil.getPath(getActivity(), uri1);
-                    if (path != null) {
-                        //将图片转为file
-                        File file = new File(path);
-                        //调用P层
-                        userId = sp.getString("userId", "");
-                        sessionId = sp.getString("sessionId", "");
-                        Map<String, Object> headMap = new HashMap<>();
-                        headMap.put("userId", userId);
-                        headMap.put("sessionId", sessionId);
-                        mPresenter.headIconPresenter(headMap, file);
-//                        animationUtils.hideDialog();
-                    }
-                }
-                break;
-            case 2:
-                Uri uri = data.getData();
-                if (uri != null) {
-                    //调用工具类将uri图片转为path
-                    String path = ImageUtil.getPath(getActivity(), uri);
-                    if (path != null) {
-                        //将图片转为file
-                        File file = new File(path);
-                        //调用P层
-                        userId = sp.getString("userId", "");
-                        sessionId = sp.getString("sessionId", "");
-                        Map<String, Object> headMap = new HashMap<>();
-                        headMap.put("userId", userId);
-                        headMap.put("sessionId", sessionId);
-                        mPresenter.headIconPresenter(headMap, file);
-//                        animationUtils.hideDialog();
-                    }
-                }
-                break;
-
-            default:
-                break;
         }
     }
 }

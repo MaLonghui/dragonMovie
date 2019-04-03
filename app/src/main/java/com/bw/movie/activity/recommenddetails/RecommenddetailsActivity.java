@@ -136,7 +136,23 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         super.onResume();
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
-//        handler.sendEmptyMessageDelayed(0,1000);
+//        if (!userId.equals("")&&!sessionId.equals("")){
+//            Map<String,Object> headMap = new HashMap<>();
+//            headMap.put("userId",userId);
+//            headMap.put("sessionId",sessionId);
+//            Map<String,Object> parms = new HashMap<>();
+//            parms.put("cinemaId",eid);
+//            parms.put("page",page);
+//            parms.put("count",count);
+//            mPresenter.cinemaCommentPresenter(headMap,parms);
+//        }else{
+//            Map<String,Object> headMap = new HashMap<>();
+//            Map<String,Object> parms = new HashMap<>();
+//            parms.put("cinemaId",eid);
+//            parms.put("page",page);
+//            parms.put("count",count);
+//            mPresenter.cinemaCommentPresenter(headMap,parms);
+//        }
     }
 
     @Override
@@ -201,9 +217,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
 
     @Override
     public void cinemaCommentView(Object obj) {
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(RecommenddetailsActivity.this);
-        linearLayoutManager1.setOrientation(OrientationHelper.VERTICAL);
-        recyclerContent.setLayoutManager(linearLayoutManager1);
         if (obj!=null){
             CinemaCommentBean cinemaCommentBean = (CinemaCommentBean) obj;
             Log.i("aa","cinemaCommentBean:"+cinemaCommentBean.getMessage());
@@ -211,13 +224,12 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 textErrorComment.setVisibility(View.VISIBLE);
                 recyclerContent.setVisibility(View.GONE);
             }else{
-                myCinemaCommmentAdapter = new MyCinemaCommmentAdapter(RecommenddetailsActivity.this);
-                recyclerContent.setAdapter(myCinemaCommmentAdapter);
-                myCinemaCommmentAdapter.setList(cinemaCommentBean);
+                myCinemaCommmentAdapter.setList(cinemaCommentBean.getResult());
                 myCinemaCommmentAdapter.setID(userId,sessionId);
                 myCinemaCommmentAdapter.setListener(new MyCinemaCommmentAdapter.BtnPriaseListener() {
                     @Override
                     public void praiseBtn(String commentId,String isGreate) {
+
                         if (isGreate.equals("0")){
                             if (!userId.equals("")&&!sessionId.equals("")){
                                 Map<String,Object> headMap = new HashMap<>();
@@ -242,6 +254,35 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         if (obj!=null){
             CinemaPraiseBean cinemaPraiseBean = (CinemaPraiseBean) obj;
             Log.i("aa","cinemaPraiseBean:"+cinemaPraiseBean.getMessage());
+            if (!userId.equals("")&&!sessionId.equals("")){
+                Map<String,Object> headMap = new HashMap<>();
+                headMap.put("userId",userId);
+                headMap.put("sessionId",sessionId);
+                Map<String,Object> parms = new HashMap<>();
+                parms.put("cinemaId",eid);
+                parms.put("page",page);
+                parms.put("count",count);
+                mPresenter.cinemaCommentPresenter(headMap,parms);
+            }
+            if (cinemaPraiseBean.getStatus().equals("0000")){
+                if (!userId.equals("")&&!sessionId.equals("")){
+                    Map<String,Object> headMap = new HashMap<>();
+                    headMap.put("userId",userId);
+                    headMap.put("sessionId",sessionId);
+                    Map<String,Object> parms = new HashMap<>();
+                    parms.put("cinemaId",eid);
+                    parms.put("page",page);
+                    parms.put("count",count);
+                    mPresenter.cinemaCommentPresenter(headMap,parms);
+                }else{
+                    Map<String,Object> headMap = new HashMap<>();
+                    Map<String,Object> parms = new HashMap<>();
+                    parms.put("cinemaId",eid);
+                    parms.put("page",page);
+                    parms.put("count",count);
+                    mPresenter.cinemaCommentPresenter(headMap,parms);
+                }
+            }
         }
     }
 
@@ -264,6 +305,11 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 ImageView imgDown = view.findViewById(R.id.img_down);
                 linearLayout = view.findViewById(R.id.linear_layout);
                 recyclerContent = (XRecyclerView)view.findViewById(R.id.recyclerView_content);
+                myCinemaCommmentAdapter = new MyCinemaCommmentAdapter(RecommenddetailsActivity.this);
+                LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(RecommenddetailsActivity.this);
+                linearLayoutManager1.setOrientation(OrientationHelper.VERTICAL);
+                recyclerContent.setLayoutManager(linearLayoutManager1);
+                recyclerContent.setAdapter(myCinemaCommmentAdapter);
                 TextView textAddress = view.findViewById(R.id.text_address_details);
                 TextView textIphone = view.findViewById(R.id.text_iphone_details);
                 TextView textLine = view.findViewById(R.id.text_line_details);

@@ -17,24 +17,27 @@ import com.bw.movie.bean.CinemaCommentBean;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommmentAdapter.ViewHolder> {
     Context context;
-    CinemaCommentBean cinemaCommentBean;
+    List<CinemaCommentBean.ResultBean> list;
     private BtnPriaseListener btnPriaseListener;
     private String userId;
     private String sessionId;
 
     public MyCinemaCommmentAdapter(Context context) {
         this.context = context;
+        this.list = new ArrayList<>();
     }
 
-    public void setList(CinemaCommentBean cinemaCommentBean) {
-        this.cinemaCommentBean = cinemaCommentBean;
+    public void setList(List<CinemaCommentBean.ResultBean> list) {
+        this.list = list;
         notifyDataSetChanged();
     }
     public void setID(String userId, String sessionId) {
@@ -51,17 +54,17 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-        Uri uri = Uri.parse(cinemaCommentBean.getResult().get(i).getCommentHeadPic());
+        Uri uri = Uri.parse(list.get(i).getCommentHeadPic());
         viewHolder.simPleCinemaComment.setImageURI(uri);
-        viewHolder.textNameCinemaComment.setText(cinemaCommentBean.getResult().get(i).getCommentUserName());
-        viewHolder.textContentCinemaComment.setText(cinemaCommentBean.getResult().get(i).getCommentContent());
-        Date date = new Date(cinemaCommentBean.getResult().get(i).getCommentTime());
+        viewHolder.textNameCinemaComment.setText(list.get(i).getCommentUserName());
+        viewHolder.textContentCinemaComment.setText(list.get(i).getCommentContent());
+        Date date = new Date(list.get(i).getCommentTime());
         SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
         String format = sd.format(date);
         viewHolder.textDateCinemaComment.setText(format);
-        viewHolder.textPraiseNum.setText(cinemaCommentBean.getResult().get(i).getGreatNum());
+        viewHolder.textPraiseNum.setText(list.get(i).getGreatNum());
 
-        if (cinemaCommentBean.getResult().get(i).getIsGreat().equals("0")){
+        if (list.get(i).getIsGreat().equals("0")){
             viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
         }else{
             viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
@@ -71,15 +74,15 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
             public void onClick(View v) {
 
                 if (btnPriaseListener!=null){
-                    if (cinemaCommentBean.getResult().get(i).getIsGreat().equals("0")){
+                    if (list.get(i).getIsGreat().equals("0")){
                         viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
                     }else{
                         viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
                     }
                     if (!userId.equals("")&&!sessionId.equals("")){
                         viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
-                        if (cinemaCommentBean.getResult().get(i).getIsGreat().equals("0")){
-                            String greatNum = cinemaCommentBean.getResult().get(i).getGreatNum();
+                        if (list.get(i).getIsGreat().equals("0")){
+                            String greatNum = list.get(i).getGreatNum();
                             int i1 = Integer.parseInt(greatNum);
                             i1++;
                             viewHolder.textPraiseNum.setText(String.valueOf(i1));
@@ -87,7 +90,7 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
                     }else{
                         viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
                     }
-                    btnPriaseListener.praiseBtn(cinemaCommentBean.getResult().get(i).getCommentId(),cinemaCommentBean.getResult().get(i).getIsGreat());
+                    btnPriaseListener.praiseBtn(list.get(i).getCommentId(),list.get(i).getIsGreat());
                 }
             }
         });
@@ -95,7 +98,7 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
 
     @Override
     public int getItemCount() {
-        return cinemaCommentBean.getResult().size();
+        return list.size();
     }
 
 

@@ -260,7 +260,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-                filmReviewAdapter.notifyDataSetChanged();
+//                filmReviewAdapter.notifyDataSetChanged();
 
             } else if (filmCommentBean.getStatus().equals("9999")) {
                 AlertDialogUtils.AlertDialogLogin(this);
@@ -285,7 +285,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-                filmReviewAdapter.notifyDataSetChanged();
+//                filmReviewAdapter.notifyDataSetChanged();
 
             }
         }
@@ -307,7 +307,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-                filmReviewAdapter.notifyDataSetChanged();
+//                filmReviewAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -459,8 +459,9 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
             linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
             popRecyclerView.setLayoutManager(linearLayoutManager);
-            filmReviewAdapter = new FilmReviewAdapter(this, reviewBeanResult);
+            filmReviewAdapter = new FilmReviewAdapter(this);
             popRecyclerView.setAdapter(filmReviewAdapter);
+            filmReviewAdapter.setList(reviewBeanResult);
             filmReviewAdapter.setID(userId, sessionId);
             filmReviewAdapter.setReplyClickListener(new FilmReviewAdapter.ReplyClickListener() {
                 @Override
@@ -473,8 +474,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                         headMap.put("userId", userId);
                         headMap.put("sessionId", sessionId);
                         mPresenter.getcommentReplyPresenter(headMap,prams);
-
-
                     } else {
                         AlertDialogUtils.AlertDialogLogin(FilmDetailsActivity.this);
                     }
@@ -489,7 +488,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                             Map<String, Object> headMap = new HashMap<>();
                             headMap.put("userId", userId);
                             headMap.put("sessionId", sessionId);
-                            mPresenter.getMovieCommentPresenter(headMap, commentId);
+                            mPresenter.getMovieCommentPresenter(headMap,commentId);
                         } else {
                             AlertDialogUtils.AlertDialogLogin(FilmDetailsActivity.this);
                         }

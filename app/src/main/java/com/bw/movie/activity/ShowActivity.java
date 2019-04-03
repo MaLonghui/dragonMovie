@@ -3,8 +3,11 @@ package com.bw.movie.activity;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.content.Context;
 import android.content.Intent;
@@ -49,13 +52,16 @@ import com.bw.movie.fragment.cinema.CinemaFragment;
 import com.bw.movie.fragment.film.FilmFragment;
 import com.bw.movie.fragment.mine.MineFragment;
 import com.bw.movie.net.NoStudoInterent;
+import com.bw.movie.utils.ImageUtil;
 import com.zaaach.citypicker.CityPickerActivity;
 import com.zaaach.citypicker.model.City;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -105,6 +111,9 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
     private String mString, mStrings;
     private AMapLocationClient mLocationClient;
     private AMapLocationClientOption mLocationOption;
+    private SharedPreferences sp;
+    private String userId;
+    private String sessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +127,9 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         setContentView(R.layout.activity_show);
         ButterKnife.bind(this);
-
+        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+        userId = sp.getString("userId", "");
+        sessionId = sp.getString("sessionId", "");
         getWindow().setEnterTransition(new Explode().setDuration(800));
         getWindow().setExitTransition(new Explode().setDuration(800));
 
@@ -147,7 +158,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
             @Override
             public void onClick(View v) {
 
-                startActivityForResult(new Intent(ShowActivity.this, CityPickerActivity.class),REQUEST_CODE_PICK_CITY);
+                startActivityForResult(new Intent(ShowActivity.this, CityPickerActivity.class), REQUEST_CODE_PICK_CITY);
 
             }
         });
@@ -323,16 +334,64 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         }
         return super.onKeyDown(keyCode, event);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK){
-            if (data != null){
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
+            if (data != null) {
                 String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
                 cinemaDwAddr.setText(city);
             }
         }
+        if (data==null){
+            return;
+        }else{
+            switch (requestCode) {
+                case 1:
+                    Log.i("aa", "1");
+                    Bitmap bitmap = data.getParcelableExtra("data");
+                    Uri uri1 = Uri.parse(MediaStore.Images.Media.insertImage(ShowActivity.this.getContentResolver(), bitmap, null, null));
+                    if (uri1 != null) {
+                        //调用工具类将uri图片转为path
+                        String path = ImageUtil.getPath(ShowActivity.this, uri1);
+                        if (path != null) {
+                            //将图片转为file
+                            File file = new File(path);
+                            //调用P层
+                            userId = sp.getString("userId", "");
+                            sessionId = sp.getString("sessionId", "");
+                            Map<String, Object> headMap = new HashMap<>();
+                            headMap.put("userId", userId);
+                            headMap.put("sessionId", sessionId);
+                            mineFragment.mPresenter.headIconPresenter(headMap, file);
+                        }
+                    }
+                    break;
+                case 2:
+                    Uri uri = data.getData();
+                    if (uri != null) {
+                        //调用工具类将uri图片转为path
+                        String path = ImageUtil.getPath(ShowActivity.this, uri);
+                        Toast.makeText(ShowActivity.this, path, Toast.LENGTH_LONG).show();
+                        if (path != null) {
+                            //将图片转为file
+                            File file = new File(path);
+                            //调用P层
+                            userId = sp.getString("userId", "");
+                            sessionId = sp.getString("sessionId", "");
+                            Map<String, Object> headMap = new HashMap<>();
+                            headMap.put("userId", userId);
+                            headMap.put("sessionId", sessionId);
+                            mineFragment.mPresenter.headIconPresenter(headMap, file);
+                        }
+                    }
+                    break;
 
-
+                default:
+                    break;
+            }
+        }
     }
 
     private SharedPreferences mSP;
@@ -362,7 +421,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     Toast.makeText(ShowActivity.this, "当前定位城市：" + amapLocation.getCity(), Toast.LENGTH_SHORT).show();
                     //创建SharedPreferences储存数据
                     mSP = getSharedPreferences("configs", Context.MODE_PRIVATE);
-                    mSP.edit().putString("city",amapLocation.getCity()).commit();
+                    mSP.edit().putString("city", amapLocation.getCity()).commit();
                     mCity = amapLocation.getCity();
                     cinemaDwAddr.setText(amapLocation.getCity());
                 } else {
@@ -374,6 +433,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
             }
         }
     };
+
     private void startLocaion() {
         mLocationClient = new AMapLocationClient(this);
         mLocationClient.setLocationListener(mLocationListener);

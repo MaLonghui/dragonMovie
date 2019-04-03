@@ -34,9 +34,13 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
     private String userId;
     private String sessionId;
 
-    public FilmReviewAdapter(Context context, List<FilmReviewBean.ResultBean> reviewBeanResult) {
+    public FilmReviewAdapter(Context context) {
         this.context = context;
+    }
+
+    public void setList(List<FilmReviewBean.ResultBean> reviewBeanResult) {
         this.reviewBeanResult = reviewBeanResult;
+        notifyDataSetChanged();
     }
 
     public void setID(String userId, String sessionId) {
@@ -70,6 +74,7 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
         viewHolder.reviewReplyImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 viewHolder.replyRelative.setVisibility(View.VISIBLE);
 
             }
@@ -109,25 +114,26 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
         viewHolder.reviewPriseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               /* if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
-                    viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
-                } else {
-                    viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
-                }*/
-
-                if (!userId.equals("") && !sessionId.equals("")) {
-                    viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
+//                viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
+                if (btnPriaseListener!=null){
                     if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
-                        String greatNum = reviewBeanResult.get(i).getGreatNum();
-                        int i1 = Integer.parseInt(greatNum);
-                        i1++;
-                        viewHolder.reviewPriseNum.setText(String.valueOf(i1));
+                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
+                    } else {
+                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
                     }
-                } else {
-                    viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
+                    if (!userId.equals("") && !sessionId.equals("")) {
+                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
+                        if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
+                            String greatNum = reviewBeanResult.get(i).getGreatNum();
+                            int i1 = Integer.parseInt(greatNum);
+                            i1++;
+                            viewHolder.reviewPriseNum.setText(String.valueOf(i1));
+                        }
+                    } else {
+                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
+                    }
+                    btnPriaseListener.praiseBtn(reviewBeanResult.get(i).getCommentId(), reviewBeanResult.get(i).getIsGreat());
                 }
-                btnPriaseListener.praiseBtn(reviewBeanResult.get(i).getCommentId(), reviewBeanResult.get(i).getIsGreat());
-                notifyDataSetChanged();
             }
         });
         viewHolder.reviewTime.setText(format);
@@ -141,6 +147,8 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
     public int getItemCount() {
         return reviewBeanResult.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.review_simple_view)

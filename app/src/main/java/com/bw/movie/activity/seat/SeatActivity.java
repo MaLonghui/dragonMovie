@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
+import com.bw.movie.activity.login.LoginActivity;
 import com.bw.movie.activity.reccord.ReccordActivity;
 import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
@@ -44,6 +45,7 @@ import com.bw.movie.bean.BuyTicketBean;
 import com.bw.movie.bean.MoveSeatAmount;
 import com.bw.movie.mvp.MVPBaseActivity;
 import com.bw.movie.utils.AlertDialogUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -131,7 +133,8 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                     initpopup();
 
                 }
-
+                MobclickAgent.setSessionContinueMillis(1000*40);
+                MobclickAgent.onEvent(SeatActivity.this, "seat_ok");
             }
         });
         seatNo.setOnClickListener(new View.OnClickListener() {
@@ -159,6 +162,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
         super.onResume();
         userId = preferences.getString("userId", "");
         sessionId = preferences.getString("sessionId", "");
+        MobclickAgent.onResume(this);
     }
 
     private void initpopup() {
@@ -268,6 +272,14 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 }
             }
         }
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 }
