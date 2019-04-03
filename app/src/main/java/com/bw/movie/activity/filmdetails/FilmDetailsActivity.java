@@ -143,6 +143,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         userId = preferences.getString("userId", "");
         sessionId = preferences.getString("sessionId", "");
 
+        filmReviewAdapter = new FilmReviewAdapter(this);
 
         //参数集合
         HashMap<String, Object> prams = new HashMap<>();
@@ -167,13 +168,13 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         reviewPrams.put("count", count);
         if (userId.equals("") || sessionId.equals("")) {
             HashMap<String, Object> headMapNull = new HashMap<>();
-                mPresenter.getReviewPresenterData(headMapNull, reviewPrams);
+            mPresenter.getReviewPresenterData(headMapNull, reviewPrams);
         } else {
             //影片评论
             HashMap<String, Object> reviewHeadMap = new HashMap<>();
             reviewHeadMap.put("userId", userId);
             reviewHeadMap.put("sessionId", sessionId);
-                mPresenter.getReviewPresenterData(reviewHeadMap, reviewPrams);
+            mPresenter.getReviewPresenterData(reviewHeadMap, reviewPrams);
         }
         buyTicket.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,6 +241,8 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         if (o != null) {
             FilmReviewBean filmReviewBean = (FilmReviewBean) o;
             reviewBeanResult = filmReviewBean.getResult();
+            filmReviewAdapter.setList(reviewBeanResult);
+
         }
     }
 
@@ -257,7 +260,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-//                filmReviewAdapter.notifyDataSetChanged();
 
             } else if (filmCommentBean.getStatus().equals("9999")) {
                 AlertDialogUtils.AlertDialogLogin(this);
@@ -282,7 +284,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-//                filmReviewAdapter.notifyDataSetChanged();
 
             }
         }
@@ -304,7 +305,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 reviewHeadMap.put("userId", userId);
                 reviewHeadMap.put("sessionId", sessionId);
                 mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
-//                filmReviewAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -315,6 +315,14 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             FlowllMovieBean flowllMovieBean = (FlowllMovieBean) object;
             if (flowllMovieBean.getStatus().equals("0000")) {
                 Toast.makeText(this, flowllMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+                HashMap<String, Object> reviewHeadMap = new HashMap<>();
+                HashMap<String, Object> reviewPrams = new HashMap<>();
+                reviewPrams.put("movieId", movieId);
+                reviewPrams.put("page", page);
+                reviewPrams.put("count", count);
+                reviewHeadMap.put("userId", userId);
+                reviewHeadMap.put("sessionId", sessionId);
+                mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
             }
         }
     }
@@ -325,6 +333,14 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
             CancelFollowMovieBean cancelFollowMovieBean = (CancelFollowMovieBean) object;
             if (cancelFollowMovieBean.getStatus().equals("0000")) {
                 Toast.makeText(this, cancelFollowMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
+                HashMap<String, Object> reviewHeadMap = new HashMap<>();
+                HashMap<String, Object> reviewPrams = new HashMap<>();
+                reviewPrams.put("movieId", movieId);
+                reviewPrams.put("page", page);
+                reviewPrams.put("count", count);
+                reviewHeadMap.put("userId", userId);
+                reviewHeadMap.put("sessionId", sessionId);
+                mPresenter.getReviewPresenterData(reviewHeadMap,reviewPrams);
             }
             //Toast.makeText(this, cancelFollowMovieBean.getMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -430,13 +446,18 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         commtenRealtive = (RelativeLayout) view.findViewById(R.id.comment_relative_layout);
         commtentEdit = (EditText) view.findViewById(R.id.comment_ed_text);
         textn_send = (TextView) view.findViewById(R.id.comment_send);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+
+
+
         popName.setText(string);
 
         if (string.equals("预告片")) {
             writePingunImg.setVisibility(View.GONE);
             //布局管理器
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+           /* LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);*/
             popRecyclerView.setLayoutManager(linearLayoutManager);
             //设置适配器
             MyPopwindowAdapter popwindowAdapter = new MyPopwindowAdapter(this, resultBean);
@@ -453,10 +474,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         }
         if (string.equals("影评")) {
             writePingunImg.setVisibility(View.VISIBLE);
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-            linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
             popRecyclerView.setLayoutManager(linearLayoutManager);
-            filmReviewAdapter = new FilmReviewAdapter(this);
             popRecyclerView.setAdapter(filmReviewAdapter);
             filmReviewAdapter.setList(reviewBeanResult);
             filmReviewAdapter.setID(userId, sessionId);

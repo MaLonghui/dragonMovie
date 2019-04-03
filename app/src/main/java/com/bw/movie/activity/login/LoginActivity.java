@@ -113,6 +113,8 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 String pwd = editPwd.getText().toString().trim();
                 encrypt = EncryptUtil.encrypt(pwd);
                 mPresenter.loginPresenter(phone, encrypt);
+                MobclickAgent.onProfileSignIn("as");
+                MobclickAgent.onEvent(LoginActivity.this, "login_mlh");
                 MobclickAgent.onProfileSignIn("userId");
                 MobclickAgent.setSessionContinueMillis(1000*40);
                 MobclickAgent.onEvent(LoginActivity.this, "login_id");

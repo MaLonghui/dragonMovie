@@ -1,5 +1,6 @@
 package com.bw.movie.adapter;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +30,10 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(context).inflate(R.layout.layout_item, parent, false);
         ViewHolder holder = new ViewHolder(v);
+        final ObjectAnimator anim = ObjectAnimator.ofInt(holder.img, "ImageLevel", 0, 10000);
+        anim.setDuration(1000);
+        anim.setRepeatCount(ObjectAnimator.INFINITE);
+        anim.start();
         return holder;
     }
 
@@ -37,10 +42,17 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
         //设置图片圆角角度
         RoundedCorners roundedCorners= new RoundedCorners(8);
         //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
-        RequestOptions options=RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
+        RequestOptions options=RequestOptions
+                .bitmapTransform(roundedCorners)
+                .placeholder(R.mipmap.loading)
+                .override(300, 300);
 
-        Glide.with(context).load(mColor[position % mColor.length]).apply(options)
+        
+        Glide.with(context)
+                .load(mColor[position % mColor.length])
+                .apply(options)
                 .into(holder.img);
+
     }
 
     @Override

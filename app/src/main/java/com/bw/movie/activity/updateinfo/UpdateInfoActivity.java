@@ -55,10 +55,14 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
         sessionId = sp.getString("sessionId", "");
         Intent intent = getIntent();
         String nickName = intent.getStringExtra("nickName");
-        String sex = intent.getStringExtra("sex");
+        String sexse = intent.getStringExtra("sex");
+        if (sexse.equals("1")){
+            editSexUpdate.setText("男");
+        }else{
+            editSexUpdate.setText("女");
+        }
         String email = intent.getStringExtra("email");
         editNickUpdate.setText(nickName);
-        editSexUpdate.setText(sex);
         editEmailUpdate.setText(email);
     }
 

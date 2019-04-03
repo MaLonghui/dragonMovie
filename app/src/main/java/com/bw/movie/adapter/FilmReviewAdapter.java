@@ -19,6 +19,7 @@ import com.bw.movie.bean.FilmReviewBean;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -36,6 +37,7 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
 
     public FilmReviewAdapter(Context context) {
         this.context = context;
+        this.reviewBeanResult = new ArrayList<>();
     }
 
     public void setList(List<FilmReviewBean.ResultBean> reviewBeanResult) {
@@ -62,6 +64,7 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
         viewHolder.reviewSimpleView.setImageURI(uri);
         viewHolder.reviewName.setText(reviewBeanResult.get(i).getCommentUserName());
         viewHolder.reviewComment.setText(reviewBeanResult.get(i).getCommentContent());
+        viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
         Date date = new Date(reviewBeanResult.get(i).getCommentTime());
         SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
         String format = sd.format(date);
@@ -88,22 +91,20 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
             public void onClick(View v) {
                 replyContent = viewHolder.replyEdit.getText().toString();
                 if (!userId.equals("") && !sessionId.equals("")) {
-
                     //Toast.makeText(context, replyContent, Toast.LENGTH_SHORT).show();
+                    viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
                     if (TextUtils.isEmpty(replyContent)) {
                         Toast.makeText(context, "请输入回复内容", Toast.LENGTH_SHORT).show();
                     } else {
                         String replyNum = reviewBeanResult.get(i).getReplyNum();
-                        Integer integer = Integer.valueOf(replyNum);
+                        int integer = Integer.parseInt(replyNum);
                         integer++;
-                        viewHolder.reviewReplyNum.setText(integer+"");
+                        viewHolder.reviewReplyNum.setText(integer + "");
+                        viewHolder.replyRelative.setVisibility(View.GONE);
+                        viewHolder.replyEdit.setText("");
 
                     }
-                } else {
-                    viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
                 }
-                viewHolder.replyRelative.setVisibility(View.GONE);
-                viewHolder.replyEdit.setText("");
                 replyClickListener.replyClick(reviewBeanResult.get(i).getCommentId(), replyContent);
                 notifyDataSetChanged();
 
@@ -114,8 +115,7 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
         viewHolder.reviewPriseImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
-                if (btnPriaseListener!=null){
+                if (btnPriaseListener != null) {
                     if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
                         viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
                     } else {
@@ -147,7 +147,6 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
     public int getItemCount() {
         return reviewBeanResult.size();
     }
-
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {

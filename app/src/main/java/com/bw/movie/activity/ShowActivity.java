@@ -2,6 +2,8 @@ package com.bw.movie.activity;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
+import android.app.ActivityOptions;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -45,6 +47,8 @@ import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.fragment.cinema.CinemaFragment;
 import com.bw.movie.fragment.film.FilmFragment;
 import com.bw.movie.fragment.mine.MineFragment;
+import com.bw.movie.net.NetWorkUtils;
+import com.umeng.analytics.MobclickAgent;
 import com.bw.movie.utils.ImageUtil;
 import com.zaaach.citypicker.CityPickerActivity;
 
@@ -108,67 +112,80 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
     private String sessionId;
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         fragmentManager = getSupportFragmentManager();
-        if (savedInstanceState != null) {
-            cinemaFragment = (CinemaFragment) fragmentManager.findFragmentByTag("cinemaFragment");
-            filmFragment = (FilmFragment) fragmentManager.findFragmentByTag("filmFragment");
-            mineFragment = (MineFragment) fragmentManager.findFragmentByTag("mineFragment");
-        }
-        super.onCreate(savedInstanceState);
-        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        setContentView(R.layout.activity_show);
-        ButterKnife.bind(this);
-        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        getWindow().setEnterTransition(new Explode().setDuration(800));
-        getWindow().setExitTransition(new Explode().setDuration(800));
-
-        showPresenter = new ShowPresenter(this);
-
-        mConfig = getSharedPreferences("configs", Context.MODE_PRIVATE);
-        mString = mConfig.getString("city", "");
-        cinemaDwAddr.setText(mString);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {//未开启定位权限
-            //开启定位权限,200是标识码
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-        } else {
-            startLocaion();//进入页面开始定位
-            Toast.makeText(this, "已开启定位权限", Toast.LENGTH_LONG).show();
-        }
-
-
-        filmSeachIma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                initfsi();
+        if (NetWorkUtils.isNetworkAvailable(ShowActivity.this)) {
+            if (savedInstanceState != null) {
+                cinemaFragment = (CinemaFragment) fragmentManager.findFragmentByTag("cinemaFragment");
+                filmFragment = (FilmFragment) fragmentManager.findFragmentByTag("filmFragment");
+                mineFragment = (MineFragment) fragmentManager.findFragmentByTag("mineFragment");
             }
-        });
-        cinemaDingwei.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            super.onCreate(savedInstanceState);
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+            setContentView(R.layout.activity_show);
+            ButterKnife.bind(this);
+            sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+            getWindow().setEnterTransition(new Explode().setDuration(800));
+            getWindow().setExitTransition(new Explode().setDuration(800));
 
-                startActivityForResult(new Intent(ShowActivity.this, CityPickerActivity.class), REQUEST_CODE_PICK_CITY);
+            showPresenter = new ShowPresenter(this);
 
+            mConfig = getSharedPreferences("configs", Context.MODE_PRIVATE);
+            mString = mConfig.getString("city", "");
+            cinemaDwAddr.setText(mString);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {//未开启定位权限
+                //开启定位权限,200是标识码
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+            } else {
+                startLocaion();//进入页面开始定位
+                // Toast.makeText(this, "已开启定位权限", Toast.LENGTH_LONG).show();
             }
-        });
-        filmSeachText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String s = filmSeachEdit.getText().toString();
-                if (TextUtils.isEmpty(s)) {
-                    initfst();
-                } else {
-                    HashMap<String, Object> pram = new HashMap<>();
-                    pram.put("page", page);
-                    pram.put("count", count);
-                    pram.put("cinemaName", s);
-                    showPresenter.getCinemaByNamePresenterData(pram);
+
+
+            filmSeachIma.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    initfsi();
                 }
-            }
-        });
+            });
+            cinemaDingwei.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    startActivityForResult(new Intent(ShowActivity.this, CityPickerActivity.class), REQUEST_CODE_PICK_CITY);
+
+                }
+            });
+            filmSeachText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String s = filmSeachEdit.getText().toString();
+                    if (TextUtils.isEmpty(s)) {
+                        initfst();
+                    } else {
+                        HashMap<String, Object> pram = new HashMap<>();
+                        pram.put("page", page);
+                        pram.put("count", count);
+                        pram.put("cinemaName", s);
+                        showPresenter.getCinemaByNamePresenterData(pram);
+                    }
+                }
+            });
 
 
             //获取fragment事务
@@ -207,6 +224,8 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     switch (checkedId) {
                         //影片
                         case R.id.rb_film:
+
+                            MobclickAgent.onEvent(ShowActivity.this, "film");
                             //开启事务
                             fragmentManager.beginTransaction()
                                     .show(filmFragment)
@@ -242,6 +261,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                             break;
                         //影院
                         case R.id.rb_cinema:
+                            MobclickAgent.onEvent(ShowActivity.this, "cinema");
                             fragmentManager.beginTransaction()
                                     .hide(filmFragment)
                                     .show(cinemaFragment)
@@ -272,6 +292,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                             break;
                         //我的
                         case R.id.rb_my:
+                            MobclickAgent.onEvent(ShowActivity.this, "mine");
                             fragmentManager.beginTransaction()
                                     .hide(filmFragment)
                                     .hide(cinemaFragment)
@@ -305,7 +326,8 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
             });
 
 
-        stateNetWork();
+            stateNetWork();
+        }
     }
 
     private long firstTime = 0;
@@ -334,9 +356,9 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                 cinemaDwAddr.setText(city);
             }
         }
-        if (data==null){
+        if (data == null) {
             return;
-        }else{
+        } else {
             switch (requestCode) {
                 case 1:
                     Bitmap bitmap = data.getParcelableExtra("data");
@@ -487,7 +509,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                 bundle.putSerializable("nameBeanResult", (Serializable) nameBeanResult);
                 Intent intent = new Intent(this, CinemaByNameActivity.class);
                 intent.putExtras(bundle);
-                startActivity(intent);
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(ShowActivity.this).toBundle());
                 filmSeachEdit.setText("");
                 new Handler().postDelayed(new Runnable() {
                     @Override

@@ -11,7 +11,8 @@
         android:layout_width="@dimen/dp_151"
         android:scaleType="center"
         app:roundedCornerRadius="@dimen/dp_8"
-        app:progressBarImage="@mipmap/timg"
+        app:progressBarImage="@mipmap/loading"
+        app:progressBarAutoRotateInterval="2000"
         android:adjustViewBounds="true"
         android:layout_height="match_parent" />
 

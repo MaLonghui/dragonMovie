@@ -80,7 +80,7 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
     private View viewdetailsPop;
     private View viewcommentPop;
     private LinearLayout linearLayout;
-    private XRecyclerView recyclerContent;
+    private RecyclerView recyclerContent;
     private RecommendDetailsBean recommendDetailsBean;
     private int page = 1;
     private int count = 5;
@@ -94,8 +94,8 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recommend);
         ButterKnife.bind(this);
-        getWindow().setEnterTransition(new Explode().setDuration(800));
-        getWindow().setExitTransition(new Explode().setDuration(800));
+        getWindow().setEnterTransition(new Explode().setDuration(1000));
+        getWindow().setExitTransition(new Explode().setDuration(1000));
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
@@ -113,9 +113,10 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
             }
             mPresenter.filmFromIdPresenter(eid);
 
+
         recyclerFlowRecommend.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
             @Override
-            public void onItemSelected(int position) {
+            public void onItemSelected(int position){
                 if (!filmFromIdBean.getMessage().equals("无数据")) {
                     String id = filmFromIdBean.getResult().get(position).getId();
                     mPresenter.movieIdAndfilmIdPresenter(id, eid);
@@ -137,23 +138,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         super.onResume();
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
-//        if (!userId.equals("")&&!sessionId.equals("")){
-//            Map<String,Object> headMap = new HashMap<>();
-//            headMap.put("userId",userId);
-//            headMap.put("sessionId",sessionId);
-//            Map<String,Object> parms = new HashMap<>();
-//            parms.put("cinemaId",eid);
-//            parms.put("page",page);
-//            parms.put("count",count);
-//            mPresenter.cinemaCommentPresenter(headMap,parms);
-//        }else{
-//            Map<String,Object> headMap = new HashMap<>();
-//            Map<String,Object> parms = new HashMap<>();
-//            parms.put("cinemaId",eid);
-//            parms.put("page",page);
-//            parms.put("count",count);
-//            mPresenter.cinemaCommentPresenter(headMap,parms);
-//        }
     }
 
     @Override
@@ -295,7 +279,7 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 viewcommentPop = view.findViewById(R.id.view_comment_pop);
                 ImageView imgDown = view.findViewById(R.id.img_down);
                 linearLayout = view.findViewById(R.id.linear_layout);
-                recyclerContent = (XRecyclerView)view.findViewById(R.id.recyclerView_content);
+                recyclerContent = view.findViewById(R.id.recyclerView_content);
                 myCinemaCommmentAdapter = new MyCinemaCommmentAdapter(RecommenddetailsActivity.this);
                 LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(RecommenddetailsActivity.this);
                 linearLayoutManager1.setOrientation(OrientationHelper.VERTICAL);

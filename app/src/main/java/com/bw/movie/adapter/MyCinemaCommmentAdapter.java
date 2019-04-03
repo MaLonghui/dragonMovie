@@ -91,6 +91,7 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
                         viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
                     }
                     btnPriaseListener.praiseBtn(list.get(i).getCommentId(),list.get(i).getIsGreat());
+                    notifyDataSetChanged();
                 }
             }
         });

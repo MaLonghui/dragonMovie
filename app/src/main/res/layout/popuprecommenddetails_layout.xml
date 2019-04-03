@@ -53,7 +53,7 @@
             android:layout_height="@dimen/dp_24"
             android:src="@mipmap/com_icon_down_default"/>
     </RelativeLayout>
-    <com.jcodecraeer.xrecyclerview.XRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:visibility="gone"
         android:id="@+id/recyclerView_content"
         android:layout_width="match_parent"
