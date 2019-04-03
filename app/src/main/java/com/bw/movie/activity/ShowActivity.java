@@ -384,6 +384,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     if (uri != null) {
                         //调用工具类将uri图片转为path
                         String path = ImageUtil.getPath(ShowActivity.this, uri);
+                        //Toast.makeText(ShowActivity.this, path, Toast.LENGTH_LONG).show();
                         if (path != null) {
                             //将图片转为file
                             File file = new File(path);

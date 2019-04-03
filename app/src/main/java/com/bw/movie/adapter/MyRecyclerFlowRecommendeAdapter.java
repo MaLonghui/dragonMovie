@@ -1,6 +1,7 @@
 package com.bw.movie.adapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bw.movie.R;
 import com.bw.movie.bean.FilmFromIdBean;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -21,7 +23,6 @@ import butterknife.ButterKnife;
 public class MyRecyclerFlowRecommendeAdapter extends RecyclerView.Adapter<MyRecyclerFlowRecommendeAdapter.ViewHolder> {
     Context context;
     FilmFromIdBean filmFromIdBean;
-    String[] images;
 
 
     public MyRecyclerFlowRecommendeAdapter(Context context, FilmFromIdBean filmFromIdBean) {
@@ -39,13 +40,15 @@ public class MyRecyclerFlowRecommendeAdapter extends RecyclerView.Adapter<MyRecy
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        //设置图片圆角角度
+        /*//设置图片圆角角度
         RoundedCorners roundedCorners= new RoundedCorners(8);
         //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
         RequestOptions options=RequestOptions.bitmapTransform(roundedCorners).override(300, 300);
 
         Glide.with(context).load( filmFromIdBean.getResult().get(i).getImageUrl()).apply(options)
-                .into(viewHolder.img);
+                .into(viewHolder.img);*/
+        Uri uri = Uri.parse(filmFromIdBean.getResult().get(i).getImageUrl());
+        viewHolder.img.setImageURI(uri);
     }
 
     @Override
@@ -55,7 +58,7 @@ public class MyRecyclerFlowRecommendeAdapter extends RecyclerView.Adapter<MyRecy
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img)
-        ImageView img;
+        SimpleDraweeView img;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             ButterKnife.bind(this,itemView);

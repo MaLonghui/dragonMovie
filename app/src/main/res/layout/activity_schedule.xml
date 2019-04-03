@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="#ffffff"
     android:paddingLeft="@dimen/dp_24"
@@ -60,6 +61,8 @@ android:id="@+id/schedule_rela"
             android:layout_height="@dimen/dp_130"
             android:layout_marginRight="@dimen/dp_20"
             android:layout_alignParentLeft="true"
+            app:progressBarImage="@mipmap/loading"
+            app:progressBarAutoRotateInterval="2000"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/dp_6" />
 

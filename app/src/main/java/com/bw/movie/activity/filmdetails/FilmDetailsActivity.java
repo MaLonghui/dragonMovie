@@ -556,7 +556,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         popupWindow.setFocusable(true);
         popupWindow.update();
         popupWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
-        popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+        /*popupWindow.setTouchInterceptor(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
@@ -565,7 +565,7 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 }
                 return false;
             }
-        });
+        });*/
         pop_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -573,12 +573,18 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                 JCVideoPlayer.releaseAllVideos();
             }
         });
+        if (!popupWindow.isShowing()){
+            JCVideoPlayer.releaseAllVideos();
+        }
         v.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    popupWindow.dismiss();
-                    JCVideoPlayer.releaseAllVideos();
+                    if (popupWindow.isShowing()){
+                        popupWindow.dismiss();
+                        JCVideoPlayer.releaseAllVideos();
+                    }
+
                     return true;
                 }
                 return false;
@@ -590,10 +596,8 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
 
     @Override
     public void onBackPressed() {
-        if (JCVideoPlayer.backPress()) {
-            return;
-        }
         super.onBackPressed();
+        JCVideoPlayer.releaseAllVideos();
     }
 
     @Override

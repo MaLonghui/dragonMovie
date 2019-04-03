@@ -272,7 +272,6 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
         if (cancelAttentionBean.getStatus().equals("0000")) {
             Toast.makeText(getActivity(), cancelAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
-
         }
     }
 

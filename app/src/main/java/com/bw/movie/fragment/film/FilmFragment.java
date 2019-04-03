@@ -90,7 +90,6 @@ public class FilmFragment extends MVPBaseFragment<FilmContract.View, FilmPresent
             //Log.i(TAG, "getReMenViewData: "+reFilmBean.getMessage());
             reFilmBeanResult = reFilmBean.getResult();
             filmAdapter.setReFilmBeanResult(reFilmBeanResult);
-
         }
     }
 

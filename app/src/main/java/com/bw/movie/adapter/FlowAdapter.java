@@ -46,6 +46,7 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
                 .bitmapTransform(roundedCorners)
                 .placeholder(R.mipmap.loading)
                 .override(300, 300);
+        
 
         
         Glide.with(context)

@@ -58,6 +58,12 @@
             android:name=".activity.ShowActivity"
             android:windowSoftInputMode="stateHidden|adjustPan"
             android:launchMode="singleTask"/>
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+
+
+>>>>>>> 23324bb80eb53cbdb94c2faae9cc9211d4612427
         <activity android:name=".activity.login.LoginActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.regist.RegistActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" android:launchMode="singleTask"/>
@@ -78,7 +84,6 @@
 
 
         <activity android:name=".activity.AMapActivity" />
-
         <activity
             android:name="com.zaaach.citypicker.CityPickerActivity"
             android:screenOrientation="portrait"

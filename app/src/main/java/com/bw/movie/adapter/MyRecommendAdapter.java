@@ -77,7 +77,6 @@ public class MyRecommendAdapter extends RecyclerView.Adapter<MyRecommendAdapter.
             public void onClick(View v) {
                 Intent intent = new Intent(context, RecommenddetailsActivity.class);
                 intent.putExtra("eid", recommendCinemasBean.getResult().get(i).getId());
-
                 context.startActivity(intent);
             }
         });
