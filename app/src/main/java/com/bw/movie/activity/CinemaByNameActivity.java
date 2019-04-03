@@ -1,6 +1,7 @@
 package com.bw.movie.activity;
 
 
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,12 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Explode;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.recommenddetails.RecommenddetailsActivity;
 import com.bw.movie.adapter.MyCinemaByNameAdapter;
 import com.bw.movie.bean.CinemaByNameBean;
 
@@ -45,6 +48,8 @@ public class CinemaByNameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cinema_byname);
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(1000));
+        getWindow().setExitTransition(new Explode().setDuration(1000));
         Intent intent = getIntent();
         List<CinemaByNameBean.ResultBean> nameBeanResult = (List<CinemaByNameBean.ResultBean>) intent.getSerializableExtra("nameBeanResult");
         //Toast.makeText(this, nameBeanResult.get(0).getName(), Toast.LENGTH_SHORT).show();
@@ -56,6 +61,14 @@ public class CinemaByNameActivity extends AppCompatActivity {
             cinemaBynameRecycler.setLayoutManager(linearLayoutManager);
             MyCinemaByNameAdapter myCinemaByNameAdapter = new MyCinemaByNameAdapter(this, nameBeanResult);
             cinemaBynameRecycler.setAdapter(myCinemaByNameAdapter);
+            myCinemaByNameAdapter.setOnItemClickListener(new MyCinemaByNameAdapter.OnItemClickListener() {
+                @Override
+                public void click(String id) {
+                      Intent intent = new Intent(CinemaByNameActivity.this, RecommenddetailsActivity.class);
+                        intent.putExtra("eid",id);
+                        startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(CinemaByNameActivity.this).toBundle());
+                }
+            });
         }else{
             cinemaRelative.setVisibility(View.GONE);
             cinemaLayoutOut.setVisibility(View.VISIBLE);

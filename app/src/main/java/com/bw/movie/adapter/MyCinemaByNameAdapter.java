@@ -1,6 +1,9 @@
 package com.bw.movie.adapter;
 
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.CinemaByNameActivity;
+import com.bw.movie.activity.recommenddetails.RecommenddetailsActivity;
 import com.bw.movie.bean.CinemaByNameBean;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -39,7 +44,7 @@ public class MyCinemaByNameAdapter extends RecyclerView.Adapter<MyCinemaByNameAd
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
         Uri uri = Uri.parse(nameBeanResult.get(i).getLogo());
         viewHolder.simPleRecommend.setImageURI(uri);
         viewHolder.textNameRecommend.setText(nameBeanResult.get(i).getName());
@@ -53,6 +58,12 @@ public class MyCinemaByNameAdapter extends RecyclerView.Adapter<MyCinemaByNameAd
         }else{
             viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_default);
         }
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              onItemClickListener.click(nameBeanResult.get(i).getId());
+            }
+        });
     }
 
     @Override
@@ -75,5 +86,14 @@ public class MyCinemaByNameAdapter extends RecyclerView.Adapter<MyCinemaByNameAd
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
+
+    public interface OnItemClickListener{
+        void click(String id);
     }
 }

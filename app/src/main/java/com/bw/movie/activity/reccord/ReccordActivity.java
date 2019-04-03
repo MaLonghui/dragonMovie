@@ -61,8 +61,8 @@ public class ReccordActivity extends MVPBaseActivity<ReccordContract.View, Recco
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reccord);
-        getWindow().setEnterTransition(new Explode().setDuration(800));
-        getWindow().setExitTransition(new Explode().setDuration(800));
+        getWindow().setEnterTransition(new Explode().setDuration(1000));
+        getWindow().setExitTransition(new Explode().setDuration(1000));
         ButterKnife.bind(this);
         final List<Fragment> list = new ArrayList<>();
         list.add(new WillMoneyFragment());

@@ -12,7 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.login.LoginActivity;
 import com.bw.movie.bean.TicketBean;
+import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -61,6 +63,7 @@ public class MyWillMoneyAdapter extends RecyclerView.Adapter<MyWillMoneyAdapter.
         viewHolder.willButt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (mWaitCallBack!=null){
                     mWaitCallBack.waitcallback(price,i);
                 }

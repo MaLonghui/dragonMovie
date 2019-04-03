@@ -203,6 +203,4 @@ public interface ApiServer {
     @GET
     Observable<VisionBean> vision(@Url String url,@HeaderMap Map<String,Object> headMap);
 
-    @GET
-    Observable<TicketBean> ticket(@Url String url,@HeaderMap Map<String,Object> headMap,@QueryMap Map<String,Object> parms);
 }
