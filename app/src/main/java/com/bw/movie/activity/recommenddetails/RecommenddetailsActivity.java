@@ -255,16 +255,6 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         if (obj!=null){
             CinemaPraiseBean cinemaPraiseBean = (CinemaPraiseBean) obj;
             Log.i("aa","cinemaPraiseBean:"+cinemaPraiseBean.getMessage());
-            if (!userId.equals("")&&!sessionId.equals("")){
-                Map<String,Object> headMap = new HashMap<>();
-                headMap.put("userId",userId);
-                headMap.put("sessionId",sessionId);
-                Map<String,Object> parms = new HashMap<>();
-                parms.put("cinemaId",eid);
-                parms.put("page",page);
-                parms.put("count",count);
-                mPresenter.cinemaCommentPresenter(headMap,parms);
-            }
             if (cinemaPraiseBean.getStatus().equals("0000")){
                 if (!userId.equals("")&&!sessionId.equals("")){
                     Map<String,Object> headMap = new HashMap<>();

@@ -25,12 +25,8 @@ import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.mvp.MVPBaseActivity;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.AlertDialogUtils;
 
-import org.greenrobot.eventbus.Subscribe;
-
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

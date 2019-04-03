@@ -21,7 +21,6 @@ import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.ShangFilmBean;
 import com.bw.movie.mvp.MVPBaseFragment;
-import com.bw.movie.net.NoStudoInterent;
 
 import java.util.HashMap;
 import java.util.List;

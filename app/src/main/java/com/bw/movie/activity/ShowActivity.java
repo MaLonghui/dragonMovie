@@ -2,7 +2,6 @@ package com.bw.movie.activity;
 
 import android.Manifest;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -14,13 +13,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.os.Handler;
-import android.annotation.SuppressLint;
-import android.os.Build;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -51,10 +45,8 @@ import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.fragment.cinema.CinemaFragment;
 import com.bw.movie.fragment.film.FilmFragment;
 import com.bw.movie.fragment.mine.MineFragment;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.ImageUtil;
 import com.zaaach.citypicker.CityPickerActivity;
-import com.zaaach.citypicker.model.City;
 
 import java.io.File;
 import java.io.Serializable;
@@ -179,7 +171,6 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         });
 
 
-        if (NoStudoInterent.isNetworkAvailable(ShowActivity.this)) {
             //获取fragment事务
             list = new ArrayList<>();
             filmFragment = new FilmFragment();
@@ -314,7 +305,6 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
             });
 
 
-        }
         stateNetWork();
     }
 
@@ -349,7 +339,6 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
         }else{
             switch (requestCode) {
                 case 1:
-                    Log.i("aa", "1");
                     Bitmap bitmap = data.getParcelableExtra("data");
                     Uri uri1 = Uri.parse(MediaStore.Images.Media.insertImage(ShowActivity.this.getContentResolver(), bitmap, null, null));
                     if (uri1 != null) {
@@ -373,7 +362,6 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     if (uri != null) {
                         //调用工具类将uri图片转为path
                         String path = ImageUtil.getPath(ShowActivity.this, uri);
-                        Toast.makeText(ShowActivity.this, path, Toast.LENGTH_LONG).show();
                         if (path != null) {
                             //将图片转为file
                             File file = new File(path);

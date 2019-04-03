@@ -24,7 +24,6 @@ import com.bw.movie.activity.regist.RegistActivity;
 import com.bw.movie.aes.EncryptUtil;
 import com.bw.movie.bean.LoginBean;
 import com.bw.movie.mvp.MVPBaseActivity;
-import com.bw.movie.net.NoStudoInterent;
 import com.bw.movie.utils.WeiXinUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;

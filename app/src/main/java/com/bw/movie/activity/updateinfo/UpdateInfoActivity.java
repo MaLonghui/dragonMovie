@@ -53,6 +53,13 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
+        Intent intent = getIntent();
+        String nickName = intent.getStringExtra("nickName");
+        String sex = intent.getStringExtra("sex");
+        String email = intent.getStringExtra("email");
+        editNickUpdate.setText(nickName);
+        editSexUpdate.setText(sex);
+        editEmailUpdate.setText(email);
     }
 
     @Override
@@ -96,5 +103,6 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
             parms.put("email",editEmail);
             mPresenter.updateInfoPresenter(headMap,parms);
         }
+        finish();
     }
 }

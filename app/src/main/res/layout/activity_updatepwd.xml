@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:gravity="center_horizontal"
     android:background="@drawable/frag_myacty_infoacty"
     >
@@ -28,15 +29,16 @@
             android:id="@+id/pwd_oldpwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#999999"
+            android:textSize="@dimen/sp_18"
+            android:textColor="#fff"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/btn_shape_login"
             android:layout_weight="9"
             android:hint="请输入原始密码"
             android:singleLine="true"
             android:imeOptions="actionNext"
             android:inputType="textVisiblePassword"
-            android:textSize="@dimen/sp_14"
             android:layout_marginRight="@dimen/dp_20"
-            android:background="@null"
             />
     </LinearLayout>
     <View
@@ -66,15 +68,16 @@
             android:id="@+id/pwd_newpwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#999999"
             android:textSize="@dimen/sp_14"
             android:layout_weight="9"
             android:singleLine="true"
+            android:textColor="#fff"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/btn_shape_login"
             android:imeOptions="actionNext"
             android:inputType="textVisiblePassword"
             android:hint="请输入新密码"
             android:layout_marginRight="@dimen/dp_20"
-            android:background="@null"
             />
     </LinearLayout>
     <View
@@ -104,15 +107,16 @@
             android:id="@+id/pwd_aginpwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#999999"
             android:layout_weight="9"
             android:singleLine="true"
+            android:textColor="#fff"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:background="@drawable/btn_shape_login"
             android:imeOptions="actionNext"
             android:inputType="textVisiblePassword"
             android:hint="请再次输入新密码"
             android:textSize="@dimen/sp_14"
             android:layout_marginRight="@dimen/dp_20"
-            android:background="@null"
             />
     </LinearLayout>
     <View

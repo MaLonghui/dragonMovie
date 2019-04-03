@@ -83,6 +83,6 @@ public class UpdatePwdActivity extends MVPBaseActivity<UpdatePwdContract.View, U
             parms.put("newPwd2",pwdAginPwdencrypt);
             mPresenter.UpdatePwdPresenter(headMap,parms);
         }
-
+        finish();
     }
 }
