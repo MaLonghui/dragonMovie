@@ -61,6 +61,8 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
         getWindow().setEnterTransition(new Explode().setDuration(800));
         getWindow().setExitTransition(new Explode().setDuration(800));
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         String userId = sp.getString("userId", "");
         String sessionId = sp.getString("sessionId", "");
@@ -124,11 +126,11 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
 //                finish();
                 break;
             case R.id.info_mail:
-                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
+                //startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
 //                finish();
                 break;
             case R.id.info_sex:
-                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
+                //startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
 //                finish();
                 break;
 

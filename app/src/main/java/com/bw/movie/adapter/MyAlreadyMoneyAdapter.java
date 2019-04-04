@@ -41,7 +41,6 @@ public class MyAlreadyMoneyAdapter extends RecyclerView.Adapter<MyAlreadyMoneyAd
         String beginTime = ticketBean.getResult().get(i).getBegintime();
         String endTime = ticketBean.getResult().get(i).getEndTime();
         String date = DateUtils.getDateToStrings(ticketBean.getResult().get(i).getCreateTime());
-        viewHolder.finshTime.setText(beginTime+"-"+endTime);
         viewHolder.finshCode.setText("订单号："+ticketBean.getResult().get(i).getOrderId());
         viewHolder.finshCinema.setText("影院："+ticketBean.getResult().get(i).getCinemaName());
         viewHolder.finshOrdertime.setText("下单时间："+date);
@@ -58,10 +57,6 @@ public class MyAlreadyMoneyAdapter extends RecyclerView.Adapter<MyAlreadyMoneyAd
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.finsh_title)
         TextView finshTitle;
-        @BindView(R.id.finsh_time)
-        TextView finshTime;
-        @BindView(R.id.time)
-        TextView time;
         @BindView(R.id.finsh_code)
         TextView finshCode;
         @BindView(R.id.finsh_ordertime)

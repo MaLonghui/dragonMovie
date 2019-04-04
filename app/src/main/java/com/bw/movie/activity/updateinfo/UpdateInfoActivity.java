@@ -1,6 +1,7 @@
 package com.bw.movie.activity.updateinfo;
 
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -107,6 +108,8 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
             parms.put("email",editEmail);
             mPresenter.updateInfoPresenter(headMap,parms);
         }
+        startActivity(new Intent(this,InfoActivity.class),ActivityOptions.makeSceneTransitionAnimation(UpdateInfoActivity.this).toBundle());
         finish();
     }
+
 }

@@ -117,7 +117,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
         String endTime = intent.getStringExtra("endTime");
         scheduleId = intent.getStringExtra("scheduleId");
         String screeningHall = intent.getStringExtra("screeningHall");
-        seatBegingtime.setText(beginTime+" - ");
+        seatBegingtime.setText(beginTime + " - ");
         seatEndtime.setText(endTime);
         seatHall.setText(screeningHall);
         double v = mMPrice * 0;
@@ -127,13 +127,21 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
         seatOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (userId.equals("")||sessionId.equals("")){
+                if (userId.equals("") || sessionId.equals("")) {
                     AlertDialogUtils.AlertDialogLogin(SeatActivity.this);
-                }else{
-                    initpopup();
-
+                } else {
+                    Map<String, Object> headMap = new HashMap<>();
+                    Map<String, Object> prams = new HashMap<>();
+                    headMap.put("userId", userId);
+                    headMap.put("sessionId", sessionId);
+                    prams.put("scheduleId", scheduleId);
+                    prams.put("amount", mNum + "");
+                    String signMD5 = userId + scheduleId + mNum + "movie";
+                    String sign = MD5Utils.string2MD5(signMD5);
+                    prams.put("sign", sign);
+                    mPresenter.getTicketPresenterData(headMap, prams);
                 }
-                MobclickAgent.setSessionContinueMillis(1000*40);
+                MobclickAgent.setSessionContinueMillis(1000 * 40);
                 MobclickAgent.onEvent(SeatActivity.this, "seat_ok");
             }
         });
@@ -144,8 +152,6 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 finish();
             }
         });
-
-
 
 
         seatNo.setOnClickListener(new View.OnClickListener() {
@@ -198,23 +204,7 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
                 popup_wei.setChecked(false);
             }
         });
-       //下单的点击事件
-        popup_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Map<String,Object> headMap = new HashMap<>();
-                Map<String,Object> prams = new HashMap<>();
 
-                headMap.put("userId",userId);
-                headMap.put("sessionId",sessionId);
-                prams.put("scheduleId",scheduleId);
-                prams.put("amount",mNum+"");
-                String signMD5 = userId+scheduleId+mNum+"movie";
-                String sign = MD5Utils.string2MD5(signMD5);
-                prams.put("sign",sign);
-                mPresenter.getTicketPresenterData(headMap,prams);
-            }
-        });
     }
 
     @Subscribe(sticky = true)
@@ -226,8 +216,8 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
             mSpannableString = changTVsize(v + "");
             seatPrice.setText(mSpannableString);
         } else {
-            if (mNum>3){
-                mNum=3;
+            if (mNum > 3) {
+                mNum = 3;
             }
             double v = mMPrice * mNum;
             //保证总价为double
@@ -256,24 +246,20 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
 
     @Override
     public void getTicketViewData(Object object) {
-        if (object!=null){
+        if (object != null) {
             BuyTicketBean buyTicketBean = (BuyTicketBean) object;
             Toast.makeText(this, buyTicketBean.getMessage(), Toast.LENGTH_SHORT).show();
-            if (mPopupWindow.isShowing()){
-                if (buyTicketBean.getStatus().equals("0000")){
-                    mPopupWindow.dismiss();
-                   handler.postDelayed(new Runnable() {
-                       @Override
-                       public void run() {
-                           startActivity(new Intent(SeatActivity.this,ReccordActivity.class),ActivityOptions.makeSceneTransitionAnimation(SeatActivity.this).toBundle());
-                           finish();
-                       }
-                   },1000);
-                }
+            if (buyTicketBean.getStatus().equals("0000")) {
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(SeatActivity.this, ReccordActivity.class), ActivityOptions.makeSceneTransitionAnimation(SeatActivity.this).toBundle());
+                        finish();
+                    }
+                }, 1000);
             }
         }
     }
-
 
 
     @Override

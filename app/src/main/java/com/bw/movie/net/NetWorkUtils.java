@@ -119,7 +119,6 @@ public class NetWorkUtils {
                 NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
                 if (!mobNetInfo.isConnected() && !wifiNetInfo.isConnected()) {
                     View view = LayoutInflater.from(context).inflate(R.layout.network, null);
-                    ImageView imageWangqiu = view.findViewById(R.id.image_wangqiu);
                     final Dialog dialog = new AlertDialog.Builder(context).create();
                     dialog.setCancelable(false);
                     dialog.show();
