@@ -62,8 +62,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
 
-
->>>>>>> 23324bb80eb53cbdb94c2faae9cc9211d4612427
         <activity android:name=".activity.login.LoginActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.regist.RegistActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" android:launchMode="singleTask"/>
@@ -81,7 +79,6 @@
         <activity android:name=".activity.seat.SeatActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.vision.VisionActivity" android:launchMode="singleTask"/>
         <activity android:name=".activity.filmsearch.FilmSearchActivity" android:launchMode="singleTask"/>
-
 
         <activity android:name=".activity.AMapActivity" />
         <activity

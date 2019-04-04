@@ -107,6 +107,7 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
             parms.put("email",editEmail);
             mPresenter.updateInfoPresenter(headMap,parms);
         }
+        startActivity(new Intent(UpdateInfoActivity.this,InfoActivity.class));
         finish();
     }
 }

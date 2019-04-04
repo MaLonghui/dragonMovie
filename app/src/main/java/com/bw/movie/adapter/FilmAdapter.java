@@ -3,14 +3,17 @@ package com.bw.movie.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.filmsearch.FilmSearchActivity;
@@ -76,8 +79,21 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         if (holder instanceof ItemOneViewHoder) {
-            ((ItemOneViewHoder) holder).recyclerFlow.setAdapter(new FlowAdapter(context));
-
+            FlowAdapter flowAdapter = new FlowAdapter(context);
+            ((ItemOneViewHoder) holder).recyclerFlow.setAdapter(flowAdapter);
+            flowAdapter.setOnClickListener(new FlowAdapter.OnClickListener() {
+                @Override
+                public void click() {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
+                    Intent intent = new Intent(context, FilmSearchActivity.class);
+                    intent.putExtras(bundle);
+                    intent.putExtra("type", 0);
+                    context.startActivity(intent);
+                }
+            });
 
         }
 
@@ -156,10 +172,6 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    public static int dp2px(Context context, float dipValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dipValue * scale + 0.5f);
-    }
 
     @Override
     public int getItemCount() {
@@ -225,14 +237,5 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
     }
 
-    private OnSearchClick onSearchClick;
 
-    public void setOnSearchClick(OnSearchClick onSearchClick) {
-        this.onSearchClick = onSearchClick;
-    }
-
-    public interface OnSearchClick{
-        void searchClick(View view,String s);
-        void textClick(String s);
-    }
 }

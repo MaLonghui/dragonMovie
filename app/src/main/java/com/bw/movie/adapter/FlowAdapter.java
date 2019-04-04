@@ -33,6 +33,12 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
         final ObjectAnimator anim = ObjectAnimator.ofInt(holder.img, "ImageLevel", 0, 10000);
         anim.setDuration(1000);
         anim.setRepeatCount(ObjectAnimator.INFINITE);
+        holder.img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onClickListener.click();
+            }
+        });
         anim.start();
         return holder;
     }
@@ -46,7 +52,7 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
                 .bitmapTransform(roundedCorners)
                 .placeholder(R.mipmap.loading)
                 .override(300, 300);
-        
+
 
         
         Glide.with(context)
@@ -68,5 +74,14 @@ public class FlowAdapter extends RecyclerView.Adapter<FlowAdapter.ViewHolder> {
             super(itemView);
             ButterKnife.bind(this,itemView);
         }
+    }
+    private OnClickListener onClickListener;
+
+    public void setOnClickListener(OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
+
+    public interface OnClickListener{
+        void click();
     }
 }

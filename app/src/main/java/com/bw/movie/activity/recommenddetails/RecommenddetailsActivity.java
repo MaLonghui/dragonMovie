@@ -162,6 +162,12 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
             if (filmFromIdBean.getMessage().equals("无数据")) {
                 FlowAdapter flowAdapter = new FlowAdapter(this);
                 recyclerFlowRecommend.setAdapter(flowAdapter);
+                flowAdapter.setOnClickListener(new FlowAdapter.OnClickListener() {
+                    @Override
+                    public void click() {
+
+                    }
+                });
                 textErrorTitle.setVisibility(View.VISIBLE);
                 recyclerViewRecommend.setVisibility(View.GONE);
 //                Toast.makeText(this,"无数据",Toast.LENGTH_LONG).show();
