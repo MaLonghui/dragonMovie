@@ -80,7 +80,7 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
     private View viewdetailsPop;
     private View viewcommentPop;
     private LinearLayout linearLayout;
-    private XRecyclerView recyclerContent;
+    private RecyclerView recyclerContent;
     private RecommendDetailsBean recommendDetailsBean;
     private int page = 1;
     private int count = 5;
@@ -112,6 +112,7 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 mPresenter.recommendDetailsPresenter(headMap, eid);
             }
             mPresenter.filmFromIdPresenter(eid);
+
 
         recyclerFlowRecommend.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
             @Override
@@ -161,6 +162,12 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
             if (filmFromIdBean.getMessage().equals("无数据")) {
                 FlowAdapter flowAdapter = new FlowAdapter(this);
                 recyclerFlowRecommend.setAdapter(flowAdapter);
+                flowAdapter.setOnClickListener(new FlowAdapter.OnClickListener() {
+                    @Override
+                    public void click() {
+
+                    }
+                });
                 textErrorTitle.setVisibility(View.VISIBLE);
                 recyclerViewRecommend.setVisibility(View.GONE);
 //                Toast.makeText(this,"无数据",Toast.LENGTH_LONG).show();
@@ -278,7 +285,7 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
                 viewcommentPop = view.findViewById(R.id.view_comment_pop);
                 ImageView imgDown = view.findViewById(R.id.img_down);
                 linearLayout = view.findViewById(R.id.linear_layout);
-                recyclerContent = (XRecyclerView)view.findViewById(R.id.recyclerView_content);
+                recyclerContent = view.findViewById(R.id.recyclerView_content);
                 myCinemaCommmentAdapter = new MyCinemaCommmentAdapter(RecommenddetailsActivity.this);
                 LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(RecommenddetailsActivity.this);
                 linearLayoutManager1.setOrientation(OrientationHelper.VERTICAL);

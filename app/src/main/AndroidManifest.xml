@@ -60,24 +60,57 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
 
-
-        <activity android:name=".activity.login.LoginActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.regist.RegistActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.recommenddetails.RecommenddetailsActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity" android:launchMode="singleTask" />
-        <activity android:name=".activity.filmdetails.FilmDetailsActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.info.InfoActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.attention.AttentionActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.movieschedulelist.MovieScheduleListActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.CinemaByNameActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.feedback.FeedbackActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.updateinfo.UpdateInfoActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.msg.MsgActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.updatepwd.UpdatePwdActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.reccord.ReccordActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.seat.SeatActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.vision.VisionActivity" android:launchMode="singleTask"/>
-        <activity android:name=".activity.filmsearch.FilmSearchActivity" android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.login.LoginActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.regist.RegistActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.recommenddetails.RecommenddetailsActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.cinemabymovieid.CinemaByMovieIdActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.filmdetails.FilmDetailsActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.info.InfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.attention.AttentionActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.movieschedulelist.MovieScheduleListActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.CinemaByNameActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.feedback.FeedbackActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.updateinfo.UpdateInfoActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.msg.MsgActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.updatepwd.UpdatePwdActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.reccord.ReccordActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.seat.SeatActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.vision.VisionActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".activity.filmsearch.FilmSearchActivity"
+            android:launchMode="singleTask" />
 
 
         <activity android:name=".activity.AMapActivity" />
