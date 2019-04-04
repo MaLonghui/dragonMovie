@@ -2,7 +2,6 @@
     <string name="app_name">维度影院</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="login_phone">手机号</string>
     <string name="login_pwd">密码</string>
     <string name="login_rememberPwd">记住密码</string>
