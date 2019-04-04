@@ -61,6 +61,8 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
         getWindow().setEnterTransition(new Explode().setDuration(800));
         getWindow().setExitTransition(new Explode().setDuration(800));
         ButterKnife.bind(this);
+        getWindow().setEnterTransition(new Explode().setDuration(800));
+        getWindow().setExitTransition(new Explode().setDuration(800));
         sp = getSharedPreferences("config", Context.MODE_PRIVATE);
         String userId = sp.getString("userId", "");
         String sessionId = sp.getString("sessionId", "");
@@ -103,7 +105,7 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
     }
 
 
-    @OnClick({R.id.info_sdv, R.id.info_reset_psw, R.id.info_request,R.id.info_nick,R.id.info_sex,R.id.info_mail})
+    @OnClick({R.id.info_sdv, R.id.info_reset_psw, R.id.info_request,R.id.info_nick})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.info_sdv:
@@ -124,10 +126,6 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
 //                finish();
                 break;
             case R.id.info_mail:
-//                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
-//                finish();
-                break;
-            case R.id.info_sex:
 //                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
 //                finish();
                 break;
