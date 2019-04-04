@@ -46,7 +46,7 @@ public class MyMovieIdAndFilmAdapter extends RecyclerView.Adapter<MyMovieIdAndFi
         String[] split = movieIdAndFilmBean.getResult().get(i).getPrice().split("\\.");
         viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
         viewHolder.textPrice1Movieandfilm.setText(split[1]);
-        viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Toast.makeText(context,"好使",Toast.LENGTH_LONG).show();
