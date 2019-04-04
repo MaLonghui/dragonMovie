@@ -89,6 +89,12 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
         userId = sp.getString("userId", "");
         sessionId = sp.getString("sessionId", "");
+        if (!userId.equals("") && !sessionId.equals("")) {
+            Map<String, Object> headMap1 = new HashMap<>();
+            headMap1.put("userId", userId);
+            headMap1.put("sessionId", sessionId);
+            mPresenter.SignInPresenter(headMap1);
+        }
         return view;
     }
 
@@ -103,12 +109,7 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         headMap.put("sessionId", sessionId);
         mPresenter.userInfoPresenter(headMap);
 
-        if (!userId.equals("") && !sessionId.equals("")) {
-            Map<String, Object> headMap1 = new HashMap<>();
-            headMap1.put("userId", userId);
-            headMap1.put("sessionId", sessionId);
-            mPresenter.SignInPresenter(headMap1);
-        }
+
 
     }
 

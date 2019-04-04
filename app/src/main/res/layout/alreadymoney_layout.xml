@@ -28,23 +28,23 @@
         android:textColor="#333"
         />
 
-    <TextView
-        android:id="@+id/finsh_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="14:40:00 - 16:46:00"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:textColor="#f77421"
-        />
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="开始时间 - 结束时间"
-        android:layout_marginLeft="@dimen/dp_10"
-        android:textColor="#f77421"
-        android:layout_marginTop="@dimen/dp_10"
-        />
+    <!--<TextView-->
+        <!--android:id="@+id/finsh_time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="14:40:00 - 16:46:00"-->
+        <!--android:layout_marginLeft="@dimen/dp_10"-->
+        <!--android:textColor="#f77421"-->
+        <!--/>-->
+    <!--<TextView-->
+        <!--android:id="@+id/time"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="开始时间 - 结束时间"-->
+        <!--android:layout_marginLeft="@dimen/dp_10"-->
+        <!--android:textColor="#f77421"-->
+        <!--android:layout_marginTop="@dimen/dp_10"-->
+        <!--/>-->
     <TextView
         android:id="@+id/finsh_code"
         android:layout_width="wrap_content"
