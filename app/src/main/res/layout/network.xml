@@ -9,21 +9,21 @@
     <RelativeLayout
         android:id="@+id/rl_dialog_content"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@mipmap/timg"
+        android:layout_height="@dimen/dp_200"
         android:padding="8dp"
         >
-        <com.jcodecraeer.xrecyclerview.progressindicator.AVLoadingIndicatorView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+
+        <ImageView
+            android:id="@+id/qiuqiu"
             android:layout_centerInParent="true"
-            android:id="@+id/quanquan"
-            app:indicator="BallScaleMultiple"
-            />
+            android:src="@drawable/qiuqiu"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_80" />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/quanquan"
+            android:layout_below="@+id/qiuqiu"
+            android:layout_marginTop="@dimen/dp_10"
             android:layout_centerHorizontal="true"
             android:text="正在连接网络请稍等........"
             android:textColor="#000000"

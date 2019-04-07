@@ -448,9 +448,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         textn_send = (TextView) view.findViewById(R.id.comment_send);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-
-
-
         popName.setText(string);
 
         if (string.equals("预告片")) {
@@ -556,16 +553,13 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
         popupWindow.setFocusable(true);
         popupWindow.update();
         popupWindow.showAtLocation(v, Gravity.BOTTOM, 0, 0);
-        /*popupWindow.setTouchInterceptor(new View.OnTouchListener() {
+
+        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_OUTSIDE) {
-                    popupWindow.dismiss();
-                    return true;
-                }
-                return false;
+            public void onDismiss() {
+                JCVideoPlayer.releaseAllVideos();
             }
-        });*/
+        });
         pop_down.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -584,7 +578,6 @@ public class FilmDetailsActivity extends MVPBaseActivity<FilmDetailsContract.Vie
                         popupWindow.dismiss();
                         JCVideoPlayer.releaseAllVideos();
                     }
-
                     return true;
                 }
                 return false;

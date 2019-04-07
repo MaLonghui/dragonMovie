@@ -109,6 +109,7 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
             mPresenter.updateInfoPresenter(headMap,parms);
         }
         startActivity(new Intent(this,InfoActivity.class),ActivityOptions.makeSceneTransitionAnimation(UpdateInfoActivity.this).toBundle());
+        startActivity(new Intent(UpdateInfoActivity.this,InfoActivity.class));
         finish();
     }
 

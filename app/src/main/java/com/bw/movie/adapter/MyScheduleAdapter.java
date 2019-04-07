@@ -46,7 +46,7 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
         String[] split = resultBeans.get(i).getPrice().split("\\.");
         viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
         viewHolder.textPrice1Movieandfilm.setText(split[1]);
-        viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 double price = Double.parseDouble(resultBeans.get(i).getPrice());

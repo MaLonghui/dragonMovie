@@ -34,7 +34,6 @@ import butterknife.ButterKnife;
 
 public class MovieScheduleListActivity extends MVPBaseActivity<MovieScheduleListContract.View, MovieScheduleListPresenter> implements MovieScheduleListContract.View {
 
-
     @BindView(R.id.schedule_ciname_name)
     TextView scheduleCinameName;
     @BindView(R.id.schedule_address)

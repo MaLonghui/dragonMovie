@@ -171,41 +171,6 @@ public class SeatActivity extends MVPBaseActivity<SeatContract.View, SeatPresent
         MobclickAgent.onResume(this);
     }
 
-    private void initpopup() {
-        View view = View.inflate(this, R.layout.seat_ok_popup, null);
-        popup_request = (ImageView) view.findViewById(R.id.popup_request);
-        popup_wei = (CheckBox) view.findViewById(R.id.popup_wei);
-        popup_zhi = (CheckBox) view.findViewById(R.id.popup_zhi);
-        popup_button = (Button) view.findViewById(R.id.popup_button);
-        popup_button.setText("微信支付" + mSpannableString + "元");
-        mPopupWindow = new PopupWindow(view, WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT, true);
-        mPopupWindow.showAtLocation(view, Gravity.BOTTOM, 0, 0);
-        mPopupWindow.setFocusable(true);
-        mPopupWindow.setTouchable(true);
-        //点击事件
-        popup_request.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mPopupWindow.dismiss();
-            }
-        });
-
-        popup_wei.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popup_button.setText("微信支付" + mSpannableString + "元");
-                popup_zhi.setChecked(false);
-            }
-        });
-        popup_zhi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popup_button.setText("支付宝支付" + mSpannableString + "元");
-                popup_wei.setChecked(false);
-            }
-        });
-
-    }
 
     @Subscribe(sticky = true)
     public void onMoveSeatAmount(MoveSeatAmount moveSeatBean) {

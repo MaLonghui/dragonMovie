@@ -131,6 +131,7 @@ public class InfoActivity extends MVPBaseActivity<InfoContract.View, InfoPresent
                 break;
             case R.id.info_sex:
                 //startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
+//                startActivity(new Intent(InfoActivity.this,UpdateInfoActivity.class));
 //                finish();
                 break;
 

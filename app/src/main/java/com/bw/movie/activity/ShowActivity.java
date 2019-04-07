@@ -3,6 +3,7 @@ package com.bw.movie.activity;
 import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -40,7 +41,10 @@ import com.amap.api.location.AMapLocation;
 import com.amap.api.location.AMapLocationClient;
 import com.amap.api.location.AMapLocationClientOption;
 import com.amap.api.location.AMapLocationListener;
+
 import com.bw.movie.R;
+import com.bw.movie.activity.addressselector.CityPickerActivity;
+import com.bw.movie.activity.addressselector.addressview.RequestCodeInfo;
 import com.bw.movie.activity.show.ShowContract;
 import com.bw.movie.activity.show.ShowPresenter;
 import com.bw.movie.bean.CinemaByNameBean;
@@ -50,7 +54,7 @@ import com.bw.movie.fragment.mine.MineFragment;
 import com.bw.movie.net.NetWorkUtils;
 import com.umeng.analytics.MobclickAgent;
 import com.bw.movie.utils.ImageUtil;
-import com.zaaach.citypicker.CityPickerActivity;
+
 
 import java.io.File;
 import java.io.Serializable;
@@ -105,11 +109,11 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
     public static final String TAG = "ShowActivity";
     private SharedPreferences mConfig;
     private String mString, mStrings;
-    private AMapLocationClient mLocationClient;
-    private AMapLocationClientOption mLocationOption;
     private SharedPreferences sp;
     private String userId;
     private String sessionId;
+    private AMapLocationClient mLocationClient;
+    private AMapLocationClientOption mLocationOption;
 
     @Override
     protected void onResume() {
@@ -125,6 +129,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         fragmentManager = getSupportFragmentManager();
         if (NetWorkUtils.isNetworkAvailable(ShowActivity.this)) {
             if (savedInstanceState != null) {
@@ -135,28 +140,21 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
             super.onCreate(savedInstanceState);
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
             setContentView(R.layout.activity_show);
+
             ButterKnife.bind(this);
+            startLocaion();
             sp = getSharedPreferences("config", Context.MODE_PRIVATE);
             userId = sp.getString("userId", "");
             sessionId = sp.getString("sessionId", "");
             getWindow().setEnterTransition(new Explode().setDuration(800));
             getWindow().setExitTransition(new Explode().setDuration(800));
 
+
             showPresenter = new ShowPresenter(this);
 
-            mConfig = getSharedPreferences("configs", Context.MODE_PRIVATE);
+            mConfig = getSharedPreferences("configs", MODE_PRIVATE);
             mString = mConfig.getString("city", "");
             cinemaDwAddr.setText(mString);
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED) {//未开启定位权限
-                //开启定位权限,200是标识码
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-            } else {
-                startLocaion();//进入页面开始定位
-                // Toast.makeText(this, "已开启定位权限", Toast.LENGTH_LONG).show();
-            }
-
-
             filmSeachIma.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -166,9 +164,9 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
             cinemaDingwei.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    startActivityForResult(new Intent(ShowActivity.this, CityPickerActivity.class), REQUEST_CODE_PICK_CITY);
-
+                    Intent intent = new Intent(ShowActivity.this, CityPickerActivity.class);
+                    intent.putExtra("citys", mString);
+                    startActivityForResult(intent, RequestCodeInfo.GETCITY);
                 }
             });
             filmSeachText.setOnClickListener(new View.OnClickListener() {
@@ -350,16 +348,22 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_PICK_CITY && resultCode == RESULT_OK) {
-            if (data != null) {
-                String city = data.getStringExtra(CityPickerActivity.KEY_PICKED_CITY);
-                cinemaDwAddr.setText(city);
+        if (resultCode == Activity. RESULT_OK) {
+            switch (requestCode) {
+                case RequestCodeInfo.GETCITY:
+                    String city = data.getExtras().getString("city");
+                    if (city != null) {
+                        System.out.println("ccccccctttttt" + city);
+                        cinemaDwAddr.setText(city);
+                    }
+                    break;
             }
         }
         if (data == null) {
             return;
         } else {
             switch (requestCode) {
+
                 case 1:
                     Bitmap bitmap = data.getParcelableExtra("data");
                     Uri uri1 = Uri.parse(MediaStore.Images.Media.insertImage(ShowActivity.this.getContentResolver(), bitmap, null, null));
@@ -413,6 +417,7 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
 
         @Override
         public void onLocationChanged(AMapLocation amapLocation) {
+
             if (amapLocation != null) {
                 if (amapLocation.getErrorCode() == 0) {
                     //定位成功回调信息，设置相关消息
@@ -430,7 +435,6 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     Log.i(TAG, "城市编码-------------" + amapLocation.getCityCode());//城市编码
                     Log.i(TAG, "地区编码-------------" + amapLocation.getAdCode());//地区编码
                     Log.i(TAG, "当前定位点的信息-----" + amapLocation.getAoiName());//获取当前定位点的AOI信息
-                    Toast.makeText(ShowActivity.this, "当前定位城市：" + amapLocation.getCity(), Toast.LENGTH_SHORT).show();
                     //创建SharedPreferences储存数据
                     mSP = getSharedPreferences("configs", Context.MODE_PRIVATE);
                     mSP.edit().putString("city", amapLocation.getCity()).commit();
@@ -443,7 +447,9 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                             + amapLocation.getErrorInfo());
                 }
             }
+
         }
+
     };
 
     private void startLocaion() {
@@ -481,6 +487,10 @@ public class ShowActivity extends AppCompatActivity implements ShowContract.IVie
                     Manifest.permission.ACCESS_WIFI_STATE,
                     //读手机权限
                     Manifest.permission.READ_PHONE_STATE,
+                    //定位权限
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.CHANGE_WIFI_STATE,
+                    Manifest.permission.ACCESS_WIFI_STATE,
                     //网络权限
                     Manifest.permission.INTERNET,
                     //相机

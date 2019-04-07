@@ -27,6 +27,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.alipay.sdk.app.PayTask;
@@ -99,6 +100,8 @@ public class WillMoneyFragment extends MVPBaseFragment<WillMoneyContract.View, W
             }
         };
     };
+    private RelativeLayout weiRela;
+    private RelativeLayout zhifRela;
 
     @Nullable
     @Override
@@ -208,6 +211,8 @@ public class WillMoneyFragment extends MVPBaseFragment<WillMoneyContract.View, W
         popup_wei = (CheckBox) mView.findViewById(R.id.popup_wei);
         popup_zhi = (CheckBox) mView.findViewById(R.id.popup_zhi);
         popup_button = (Button) mView.findViewById(R.id.popup_button);
+        weiRela = (RelativeLayout) mView.findViewById(R.id.wei_rela);
+        zhifRela = (RelativeLayout) mView.findViewById(R.id.zhif_rela);
         //得到价钱
         mSpannableString = changTVsize(String.valueOf(price));
         popup_button.setText("微信支付" + mSpannableString + "元");
@@ -223,11 +228,27 @@ public class WillMoneyFragment extends MVPBaseFragment<WillMoneyContract.View, W
             }
         });
 
+        weiRela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup_button.setText("微信支付" + mSpannableString + "元");
+                popup_wei.setChecked(true);
+                popup_zhi.setChecked(false);
+            }
+        });
         popup_wei.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 popup_button.setText("微信支付" + mSpannableString + "元");
                 popup_zhi.setChecked(false);
+            }
+        });
+        zhifRela.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup_button.setText("支付宝支付" + mSpannableString + "元");
+                popup_wei.setChecked(false);
+                popup_zhi.setChecked(true);
             }
         });
         popup_zhi.setOnClickListener(new View.OnClickListener() {
@@ -237,6 +258,7 @@ public class WillMoneyFragment extends MVPBaseFragment<WillMoneyContract.View, W
                 popup_wei.setChecked(false);
             }
         });
+
         //下单的点击事件
         popup_button.setOnClickListener(new View.OnClickListener() {
             @Override

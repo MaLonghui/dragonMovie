@@ -16,6 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -119,10 +122,16 @@ public class NetWorkUtils {
                 NetworkInfo wifiNetInfo = connectMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
                 if (!mobNetInfo.isConnected() && !wifiNetInfo.isConnected()) {
                     View view = LayoutInflater.from(context).inflate(R.layout.network, null);
+                    ImageView qiuqiu = view.findViewById(R.id.qiuqiu);
+                    Animation rotateAnimation = AnimationUtils.loadAnimation(context, R.anim.qiuqiu);
+                    LinearInterpolator interpolator = new LinearInterpolator();
+                    rotateAnimation.setInterpolator(interpolator);
+
                     final Dialog dialog = new AlertDialog.Builder(context).create();
                     dialog.setCancelable(false);
                     dialog.show();
                     dialog.getWindow().setContentView(view);
+                    qiuqiu.setAnimation(rotateAnimation);
                     handler.postDelayed(new Runnable() {
                         @Override
                         public void run() {

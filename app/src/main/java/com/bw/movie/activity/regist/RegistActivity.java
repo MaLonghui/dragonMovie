@@ -145,6 +145,7 @@ public class RegistActivity extends MVPBaseActivity<RegistContract.View, RegistP
         String encrypt = EncryptUtil.encrypt(pwd);
         String date = editDateRegist.getText().toString().trim();
         String emain = editEmailRegist.getText().toString().trim();
+
         @SuppressLint("MissingPermission") String imei = mTm.getDeviceId();//得到用户Id
         @SuppressLint("MissingPermission") String imsi = mTm.getSubscriberId();
         @SuppressLint("MissingPermission") String deviceid = mTm.getDeviceId();//获取智能设备唯一编号

@@ -25,7 +25,7 @@ import java.util.List;
 
 public class AMapActivity extends AppCompatActivity {
 
-    /*MapView mapView=null;//地图视图
+   /* MapView mapView=null;//地图视图
     AMap aMap;//地图对象
     CameraUpdate cameraUpdate;*/
 
