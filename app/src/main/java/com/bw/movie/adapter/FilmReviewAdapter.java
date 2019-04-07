@@ -1,6 +1,7 @@
 package com.bw.movie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.bean.FilmReviewBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
@@ -60,86 +63,91 @@ public class FilmReviewAdapter extends RecyclerView.Adapter<FilmReviewAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-        Uri uri = Uri.parse(reviewBeanResult.get(i).getCommentHeadPic());
-        viewHolder.reviewSimpleView.setImageURI(uri);
-        viewHolder.reviewName.setText(reviewBeanResult.get(i).getCommentUserName());
-        viewHolder.reviewComment.setText(reviewBeanResult.get(i).getCommentContent());
-        viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
-        Date date = new Date(reviewBeanResult.get(i).getCommentTime());
-        SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
-        String format = sd.format(date);
-        if (reviewBeanResult.get(i).getIsGreat().equals("1")) {
-            viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
-        } else {
-            viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
-        }
-
-        viewHolder.reviewReplyImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                viewHolder.replyRelative.setVisibility(View.VISIBLE);
-
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(reviewBeanResult.get(i).getCommentHeadPic());
+            viewHolder.reviewSimpleView.setImageURI(uri);
+            viewHolder.reviewName.setText(reviewBeanResult.get(i).getCommentUserName());
+            viewHolder.reviewComment.setText(reviewBeanResult.get(i).getCommentContent());
+            viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
+            Date date = new Date(reviewBeanResult.get(i).getCommentTime());
+            SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
+            String format = sd.format(date);
+            if (reviewBeanResult.get(i).getIsGreat().equals("1")) {
+                viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
+            } else {
+                viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
             }
-        });
 
-        viewHolder.replyText.setOnClickListener(new View.OnClickListener() {
+            viewHolder.reviewReplyImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-            private String replyContent;
+                    viewHolder.replyRelative.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onClick(View v) {
-                replyContent = viewHolder.replyEdit.getText().toString();
-                if (!userId.equals("") && !sessionId.equals("")) {
-                    //Toast.makeText(context, replyContent, Toast.LENGTH_SHORT).show();
-                    viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
-                    if (TextUtils.isEmpty(replyContent)) {
-                        Toast.makeText(context, "请输入回复内容", Toast.LENGTH_SHORT).show();
-                    } else {
-                        String replyNum = reviewBeanResult.get(i).getReplyNum();
-                        int integer = Integer.parseInt(replyNum);
-                        integer++;
-                        viewHolder.reviewReplyNum.setText(integer + "");
-                        viewHolder.replyRelative.setVisibility(View.GONE);
-                        viewHolder.replyEdit.setText("");
-
-                    }
                 }
-                replyClickListener.replyClick(reviewBeanResult.get(i).getCommentId(), replyContent);
-                notifyDataSetChanged();
+            });
 
-            }
-        });
+            viewHolder.replyText.setOnClickListener(new View.OnClickListener() {
 
+                private String replyContent;
 
-        viewHolder.reviewPriseImg.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (btnPriaseListener != null) {
-                    if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
-                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
-                    } else {
-                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
-                    }
-                    if (!userId.equals("") && !sessionId.equals("")) {
-                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
-                        if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
-                            String greatNum = reviewBeanResult.get(i).getGreatNum();
-                            int i1 = Integer.parseInt(greatNum);
-                            i1++;
-                            viewHolder.reviewPriseNum.setText(String.valueOf(i1));
+                @Override
+                public void onClick(View v) {
+                    if (NetWorkUtils.isNetworkAvailable(context)) {
+                        replyContent = viewHolder.replyEdit.getText().toString();
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            //Toast.makeText(context, replyContent, Toast.LENGTH_SHORT).show();
+                            viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
+                            if (TextUtils.isEmpty(replyContent)) {
+                                Toast.makeText(context, "请输入回复内容", Toast.LENGTH_SHORT).show();
+                            } else {
+                                String replyNum = reviewBeanResult.get(i).getReplyNum();
+                                int integer = Integer.parseInt(replyNum);
+                                integer++;
+                                viewHolder.reviewReplyNum.setText(integer + "");
+                                viewHolder.replyRelative.setVisibility(View.GONE);
+                                viewHolder.replyEdit.setText("");
+
+                            }
                         }
-                    } else {
-                        viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
+                        replyClickListener.replyClick(reviewBeanResult.get(i).getCommentId(), replyContent);
+                        notifyDataSetChanged();
+                    }else{
+                        context.startActivity(new Intent(context,NetActivity.class));
+                        Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
                     }
-                    btnPriaseListener.praiseBtn(reviewBeanResult.get(i).getCommentId(), reviewBeanResult.get(i).getIsGreat());
                 }
-            }
-        });
-        viewHolder.reviewTime.setText(format);
-        viewHolder.reviewPriseNum.setText(reviewBeanResult.get(i).getGreatNum());
-        viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
+            });
 
+
+            viewHolder.reviewPriseImg.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (btnPriaseListener != null) {
+                        if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
+                            viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
+                        } else {
+                            viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
+                        }
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_selected);
+                            if (reviewBeanResult.get(i).getIsGreat().equals("0")) {
+                                String greatNum = reviewBeanResult.get(i).getGreatNum();
+                                int i1 = Integer.parseInt(greatNum);
+                                i1++;
+                                viewHolder.reviewPriseNum.setText(String.valueOf(i1));
+                            }
+                        } else {
+                            viewHolder.reviewPriseImg.setImageResource(R.mipmap.com_icon_praise_default);
+                        }
+                        btnPriaseListener.praiseBtn(reviewBeanResult.get(i).getCommentId(), reviewBeanResult.get(i).getIsGreat());
+                    }
+                }
+            });
+            viewHolder.reviewTime.setText(format);
+            viewHolder.reviewPriseNum.setText(reviewBeanResult.get(i).getGreatNum());
+            viewHolder.reviewReplyNum.setText(reviewBeanResult.get(i).getReplyNum());
+        }
     }
 
 

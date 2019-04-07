@@ -29,6 +29,7 @@ import com.bw.movie.fragment.cinemaattention.CinemaattentionFragment;
 import com.bw.movie.fragment.filmattention.FilmattentionFragment;
 import com.bw.movie.fragment.willmoney.WillMoneyFragment;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,63 +65,65 @@ public class ReccordActivity extends MVPBaseActivity<ReccordContract.View, Recco
         getWindow().setEnterTransition(new Explode().setDuration(1000));
         getWindow().setExitTransition(new Explode().setDuration(1000));
         ButterKnife.bind(this);
-        final List<Fragment> list = new ArrayList<>();
-        list.add(new WillMoneyFragment());
-        list.add(new AlreadyMoneyFragment());
-        ViewPageMoney.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
-            @Override
-            public Fragment getItem(int i) {
-                return list.get(i);
-            }
-
-            @Override
-            public int getCount() {
-                return list.size();
-            }
-        });
-        ViewPageMoney.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-                radiogroup.check(radiogroup.getChildAt(i).getId());
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-        radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.WillMoney:
-                        ViewPageMoney.setCurrentItem(0);
-                        WillMoney.setBackgroundResource(R.drawable.shape_btn);
-                        WillMoney.setTextColor(Color.WHITE);
-                        AlreadyMoney.setBackgroundResource(R.drawable.shape_btn_yuan);
-                        AlreadyMoney.setTextColor(Color.BLACK);
-                        break;
-                    case R.id.AlreadyMoney:
-                        ViewPageMoney.setCurrentItem(1);
-                        AlreadyMoney.setBackgroundResource(R.drawable.shape_btn);
-                        AlreadyMoney.setTextColor(Color.WHITE);
-                        WillMoney.setBackgroundResource(R.drawable.shape_btn_yuan);
-                        WillMoney.setTextColor(Color.BLACK);
-                        break;
+        if (NetWorkUtils.isNetworkAvailable(ReccordActivity.this)){
+            final List<Fragment> list = new ArrayList<>();
+            list.add(new WillMoneyFragment());
+            list.add(new AlreadyMoneyFragment());
+            ViewPageMoney.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+                @Override
+                public Fragment getItem(int i) {
+                    return list.get(i);
                 }
-            }
-        });
-        imagesBackMoney.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+
+                @Override
+                public int getCount() {
+                    return list.size();
+                }
+            });
+            ViewPageMoney.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int i, float v, int i1) {
+
+                }
+
+                @Override
+                public void onPageSelected(int i) {
+                    radiogroup.check(radiogroup.getChildAt(i).getId());
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int i) {
+
+                }
+            });
+            radiogroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    switch (checkedId) {
+                        case R.id.WillMoney:
+                            ViewPageMoney.setCurrentItem(0);
+                            WillMoney.setBackgroundResource(R.drawable.shape_btn);
+                            WillMoney.setTextColor(Color.WHITE);
+                            AlreadyMoney.setBackgroundResource(R.drawable.shape_btn_yuan);
+                            AlreadyMoney.setTextColor(Color.BLACK);
+                            break;
+                        case R.id.AlreadyMoney:
+                            ViewPageMoney.setCurrentItem(1);
+                            AlreadyMoney.setBackgroundResource(R.drawable.shape_btn);
+                            AlreadyMoney.setTextColor(Color.WHITE);
+                            WillMoney.setBackgroundResource(R.drawable.shape_btn_yuan);
+                            WillMoney.setTextColor(Color.BLACK);
+                            break;
+                    }
+                }
+            });
+            imagesBackMoney.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            });
+        }
     }
 
 

@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bw.movie.R;
 import com.bw.movie.bean.FilmDetailsBean;
+import com.bw.movie.net.NetWorkUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -39,20 +40,21 @@ public class MyPopwindowAdapter extends RecyclerView.Adapter<MyPopwindowAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        //图片路径
-        String imageUrl = resultBean.getShortFilmList().get(i).getImageUrl();
-        //视频路径
-        String videoUrl = resultBean.getShortFilmList().get(i).getVideoUrl();
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            //图片路径
+            String imageUrl = resultBean.getShortFilmList().get(i).getImageUrl();
+            //视频路径
+            String videoUrl = resultBean.getShortFilmList().get(i).getVideoUrl();
 
-        if (!imageUrl.equals("")&&!videoUrl.equals("")){
-            boolean what = viewHolder.videoPlay.setUp(videoUrl, JCVideoPlayer.SCREEN_LAYOUT_LIST, "");
+            if (!imageUrl.equals("") && !videoUrl.equals("")) {
+                boolean what = viewHolder.videoPlay.setUp(videoUrl, JCVideoPlayer.SCREEN_LAYOUT_LIST, "");
 
-            if (what){
-                viewHolder.videoPlay.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
-                Glide.with(context).load(imageUrl).into(viewHolder.videoPlay.thumbImageView);
+                if (what) {
+                    viewHolder.videoPlay.thumbImageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                    Glide.with(context).load(imageUrl).into(viewHolder.videoPlay.thumbImageView);
+                }
             }
         }
-
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.bean.JiFilmBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,40 +42,42 @@ public class MyJiAdapter extends RecyclerView.Adapter<MyJiAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Uri uri = Uri.parse(jiBeanList.get(position).getImageUrl());
-        holder.searchSimpleView.setImageURI(uri);
-        holder.searchFilmName.setText(jiBeanList.get(position).getName());
-        holder.searchSummary.setText("简介：" + jiBeanList.get(position).getSummary());
-        if (jiBeanList.get(position).getFollowMovie() == 1) {
-            holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_selected);
-        } else {
-            holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_default);
-        }
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(jiBeanList.get(position).getImageUrl());
+            holder.searchSimpleView.setImageURI(uri);
+            holder.searchFilmName.setText(jiBeanList.get(position).getName());
+            holder.searchSummary.setText("简介：" + jiBeanList.get(position).getSummary());
+            if (jiBeanList.get(position).getFollowMovie() == 1) {
+                holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_selected);
+            } else {
+                holder.searchCollection.setImageResource(R.mipmap.com_icon_collection_default);
+            }
 
-        holder.searchCollection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (attentionClick != null) {
-                    if (jiBeanList.get(position).getFollowMovie() == 1) {
-                        jiBeanList.get(position).setFollowMovie(2);
-                    } else {
-                        jiBeanList.get(position).setFollowMovie(1);
+            holder.searchCollection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (attentionClick != null) {
+                        if (jiBeanList.get(position).getFollowMovie() == 1) {
+                            jiBeanList.get(position).setFollowMovie(2);
+                        } else {
+                            jiBeanList.get(position).setFollowMovie(1);
+                        }
+                        int followMovie = jiBeanList.get(position).getFollowMovie();
+                        attentionClick.clickattention(jiBeanList.get(position).getId(), position, followMovie == 1);
+                        notifyDataSetChanged();
                     }
-                    int followMovie = jiBeanList.get(position).getFollowMovie();
-                    attentionClick.clickattention(jiBeanList.get(position).getId(), position, followMovie == 1);
-                    notifyDataSetChanged();
                 }
-            }
-        });
+            });
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                context.startActivity(new Intent(context, FilmDetailsActivity.class));
-                EventBus.getDefault().postSticky(jiBeanList.get(position).getId());
-            }
-        });
+                    context.startActivity(new Intent(context, FilmDetailsActivity.class));
+                    EventBus.getDefault().postSticky(jiBeanList.get(position).getId());
+                }
+            });
+        }
     }
 
     @Override

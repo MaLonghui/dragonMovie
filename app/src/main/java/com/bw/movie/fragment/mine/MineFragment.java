@@ -35,6 +35,7 @@ import com.bw.movie.bean.FindInfoBean;
 import com.bw.movie.bean.SignInBean;
 import com.bw.movie.bean.UserHeadIconBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NetWorkUtils;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -85,30 +86,33 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_mine, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        if (!userId.equals("") && !sessionId.equals("")) {
-            Map<String, Object> headMap1 = new HashMap<>();
-            headMap1.put("userId", userId);
-            headMap1.put("sessionId", sessionId);
-            mPresenter.SignInPresenter(headMap1);
-        }
+       if (NetWorkUtils.isNetworkAvailable(getActivity())){
+           unbinder = ButterKnife.bind(this, view);
+           sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+           userId = sp.getString("userId", "");
+           sessionId = sp.getString("sessionId", "");
+           if (!userId.equals("") && !sessionId.equals("")) {
+               Map<String, Object> headMap1 = new HashMap<>();
+               headMap1.put("userId", userId);
+               headMap1.put("sessionId", sessionId);
+               mPresenter.SignInPresenter(headMap1);
+           }
+       }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
 //        Log.i("aa",userId+"++++"+sessionId);
-        Map<String, Object> headMap = new HashMap<>();
-        headMap.put("userId", userId);
-        headMap.put("sessionId", sessionId);
-        mPresenter.userInfoPresenter(headMap);
-
+            Map<String, Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            mPresenter.userInfoPresenter(headMap);
+        }
 
 
     }
@@ -121,42 +125,48 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
 
     @Override
     public void userInfoView(Object obj) {
-        if (obj != null) {
-            findInfoBean = (FindInfoBean) obj;
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            if (obj != null) {
+                findInfoBean = (FindInfoBean) obj;
 //            Log.i("aa","findInfoBean:"+findInfoBean.getStatus());
-            if (findInfoBean.getStatus().equals("9999")) {
-                myLogout.setVisibility(View.GONE);
-            } else {
-                myLogout.setVisibility(View.VISIBLE);
-                myIcon.setImageURI(findInfoBean.getResult().getHeadPic());
-                myName.setText(findInfoBean.getResult().getNickName());
+                if (findInfoBean.getStatus().equals("9999")) {
+                    myLogout.setVisibility(View.GONE);
+                } else {
+                    myLogout.setVisibility(View.VISIBLE);
+                    myIcon.setImageURI(findInfoBean.getResult().getHeadPic());
+                    myName.setText(findInfoBean.getResult().getNickName());
+                }
             }
         }
     }
 
     @Override
     public void headIconView(Object object) {
-        if (object != null) {
-            UserHeadIconBean userHeadIconBean = (UserHeadIconBean) object;
-            Log.i("aa", "userHeadIconBean:" + userHeadIconBean.getMessage());
-            if (userHeadIconBean.getStatus().equals("0000")) {
-                myIcon.setImageURI(Uri.parse(userHeadIconBean.getHeadPath()));
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            if (object != null) {
+                UserHeadIconBean userHeadIconBean = (UserHeadIconBean) object;
+                Log.i("aa", "userHeadIconBean:" + userHeadIconBean.getMessage());
+                if (userHeadIconBean.getStatus().equals("0000")) {
+                    myIcon.setImageURI(Uri.parse(userHeadIconBean.getHeadPath()));
 //               Toast.makeText(getActivity(),userHeadIconBean.getMessage(),Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
     @Override
     public void SignInView(Object obj) {
-        if (obj != null) {
-            SignInBean signInBean = (SignInBean) obj;
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            if (obj != null) {
+                SignInBean signInBean = (SignInBean) obj;
 
-            if (signInBean.getStatus().equals("0000")) {
-                mySignIn.setBackgroundResource(R.drawable.shape_bg_button);
+                if (signInBean.getStatus().equals("0000")) {
+                    mySignIn.setBackgroundResource(R.drawable.shape_bg_button);
 //                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
-            } else {
-                mySignIn.setBackgroundResource(R.drawable.shape_signin);
+                } else {
+                    mySignIn.setBackgroundResource(R.drawable.shape_signin);
 //                Toast.makeText(getActivity(),signInBean.getMessage(),Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
@@ -166,49 +176,51 @@ public class MineFragment extends MVPBaseFragment<MineContract.View, MinePresent
         if (findInfoBean.getStatus().equals("9999")) {
             AlertDialogUtils.AlertDialogLogin(getActivity());
         } else {
-            switch (view.getId()) {
-                case R.id.my_message:
-                    startActivity(new Intent(getActivity(), MsgActivity.class));
-                    break;
-                case R.id.my_icon:
+            if (NetWorkUtils.isNetworkAvailable(getActivity())){
+                switch (view.getId()) {
+                    case R.id.my_message:
+                        startActivity(new Intent(getActivity(), MsgActivity.class));
+                        break;
+                    case R.id.my_icon:
 //                    Toast.makeText(getActivity(), "个人头像", Toast.LENGTH_LONG).show();
-                    showChoosePicPopWindow();
-                    break;
-                case R.id.my_name:
-                    break;
-                case R.id.my_sign_in:
-                    Map<String, Object> headMap1 = new HashMap<>();
-                    headMap1.put("userId", userId);
-                    headMap1.put("sessionId", sessionId);
-                    mPresenter.SignInPresenter(headMap1);
-                    break;
-                case R.id.my_info:
-                    startActivity(new Intent(getActivity(), InfoActivity.class));
-                    break;
-                case R.id.my_attentions:
-                    startActivity(new Intent(getActivity(), AttentionActivity.class));
-                    break;
-                case R.id.my_rccord:
-                    startActivity(new Intent(getActivity(), ReccordActivity.class));
-                    break;
-                case R.id.my_feedbacks:
-                    startActivity(new Intent(getActivity(), FeedbackActivity.class));
-                    break;
-                case R.id.my_version:
-                    startActivity(new Intent(getActivity(), VisionActivity.class));
-                    break;
-                case R.id.my_logout:
-                    Toast.makeText(getActivity(), "用户退出登录", Toast.LENGTH_LONG).show();
-                    SharedPreferences.Editor edit = sp.edit();
-                    edit.putString("userId", "");
-                    edit.putString("sessionId", "");
-                    edit.commit();
-                    Map<String, Object> headMap = new HashMap<>();
-                    headMap.put("userId", sp.getString("userId", userId));
-                    headMap.put("sessionId", sp.getString("sessionId", sessionId));
-                    mPresenter.userInfoPresenter(headMap);
-                    myLogout.setVisibility(View.GONE);
-                    break;
+                        showChoosePicPopWindow();
+                        break;
+                    case R.id.my_name:
+                        break;
+                    case R.id.my_sign_in:
+                        Map<String, Object> headMap1 = new HashMap<>();
+                        headMap1.put("userId", userId);
+                        headMap1.put("sessionId", sessionId);
+                        mPresenter.SignInPresenter(headMap1);
+                        break;
+                    case R.id.my_info:
+                        startActivity(new Intent(getActivity(), InfoActivity.class));
+                        break;
+                    case R.id.my_attentions:
+                        startActivity(new Intent(getActivity(), AttentionActivity.class));
+                        break;
+                    case R.id.my_rccord:
+                        startActivity(new Intent(getActivity(), ReccordActivity.class));
+                        break;
+                    case R.id.my_feedbacks:
+                        startActivity(new Intent(getActivity(), FeedbackActivity.class));
+                        break;
+                    case R.id.my_version:
+                        startActivity(new Intent(getActivity(), VisionActivity.class));
+                        break;
+                    case R.id.my_logout:
+                        Toast.makeText(getActivity(), "用户退出登录", Toast.LENGTH_LONG).show();
+                        SharedPreferences.Editor edit = sp.edit();
+                        edit.putString("userId", "");
+                        edit.putString("sessionId", "");
+                        edit.commit();
+                        Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", sp.getString("userId", userId));
+                        headMap.put("sessionId", sp.getString("sessionId", sessionId));
+                        mPresenter.userInfoPresenter(headMap);
+                        myLogout.setVisibility(View.GONE);
+                        break;
+                }
             }
         }
     }

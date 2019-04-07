@@ -2,6 +2,7 @@ package com.bw.movie.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -10,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.activity.login.LoginActivity;
 import com.bw.movie.bean.TicketBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.umeng.analytics.MobclickAgent;
 
 import java.text.ParseException;
@@ -46,31 +50,36 @@ public class MyWillMoneyAdapter extends RecyclerView.Adapter<MyWillMoneyAdapter.
     @SuppressLint("SimpleDateFormat")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder,final int i) {
-        //电影名
-        viewHolder.willTitle.setText(ticketBean.getResult().get(i).getMovieName());
-        viewHolder.willCode.setText("订单号："+ticketBean.getResult().get(i).getOrderId());
-        viewHolder.willCinema.setText("影院："+ticketBean.getResult().get(i).getCinemaName());
-        viewHolder.willHall.setText("影厅："+ticketBean.getResult().get(i).getScreeningHall());
-        Date date = new Date(ticketBean.getResult().get(i).getCreateTime());
-        SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd hh:mm");
-        String format = sd.format(date);
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            //电影名
+            viewHolder.willTitle.setText(ticketBean.getResult().get(i).getMovieName());
+            viewHolder.willCode.setText("订单号：" + ticketBean.getResult().get(i).getOrderId());
+            viewHolder.willCinema.setText("影院：" + ticketBean.getResult().get(i).getCinemaName());
+            viewHolder.willHall.setText("影厅：" + ticketBean.getResult().get(i).getScreeningHall());
+            Date date = new Date(ticketBean.getResult().get(i).getCreateTime());
+            SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd hh:mm");
+            String format = sd.format(date);
 
-        viewHolder.willTime.setText("时间："+format);
-        viewHolder.willAmount.setText("数量："+ticketBean.getResult().get(i).getAmount());
-        final double price = ticketBean.getResult().get(i).getPrice();
-        int amoung = Integer.parseInt(ticketBean.getResult().get(i).getAmount());
-        viewHolder.willPrice.setText("金额："+price*amoung);
-        viewHolder.willButt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (mWaitCallBack!=null){
-                    mWaitCallBack.waitcallback(price,i);
+            viewHolder.willTime.setText("时间：" + format);
+            viewHolder.willAmount.setText("数量：" + ticketBean.getResult().get(i).getAmount());
+            final double price = ticketBean.getResult().get(i).getPrice();
+            int amoung = Integer.parseInt(ticketBean.getResult().get(i).getAmount());
+            viewHolder.willPrice.setText("金额：" + price * amoung);
+            viewHolder.willButt.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetWorkUtils.isNetworkAvailable(context)) {
+                        if (mWaitCallBack != null) {
+                            mWaitCallBack.waitcallback(price, i);
+                        }
+                    }else{
+                        context.startActivity(new Intent(context,NetActivity.class));
+                        Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                    }
                 }
-            }
-        });
+            });
 
-
+        }
     }
 
     @Override

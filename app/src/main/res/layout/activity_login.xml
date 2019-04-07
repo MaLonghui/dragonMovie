@@ -48,7 +48,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/edit_pwd"
             android:layout_marginTop="@dimen/dp_10"
-            android:src="@mipmap/log_icon_eye_default"
+            android:background="@mipmap/icon_eye_close"
             />
     </RelativeLayout>
 

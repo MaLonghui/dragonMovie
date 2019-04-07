@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.CinemaCommentBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
@@ -54,47 +55,49 @@ public class MyCinemaCommmentAdapter extends RecyclerView.Adapter<MyCinemaCommme
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-        Uri uri = Uri.parse(list.get(i).getCommentHeadPic());
-        viewHolder.simPleCinemaComment.setImageURI(uri);
-        viewHolder.textNameCinemaComment.setText(list.get(i).getCommentUserName());
-        viewHolder.textContentCinemaComment.setText(list.get(i).getCommentContent());
-        Date date = new Date(list.get(i).getCommentTime());
-        SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
-        String format = sd.format(date);
-        viewHolder.textDateCinemaComment.setText(format);
-        viewHolder.textPraiseNum.setText(list.get(i).getGreatNum());
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(list.get(i).getCommentHeadPic());
+            viewHolder.simPleCinemaComment.setImageURI(uri);
+            viewHolder.textNameCinemaComment.setText(list.get(i).getCommentUserName());
+            viewHolder.textContentCinemaComment.setText(list.get(i).getCommentContent());
+            Date date = new Date(list.get(i).getCommentTime());
+            SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
+            String format = sd.format(date);
+            viewHolder.textDateCinemaComment.setText(format);
+            viewHolder.textPraiseNum.setText(list.get(i).getGreatNum());
 
-        if (list.get(i).getIsGreat().equals("0")){
-            viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
-        }else{
-            viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
-        }
-        viewHolder.btnPraiseCinema.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (btnPriaseListener!=null){
-                    if (list.get(i).getIsGreat().equals("0")){
-                        viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
-                    }else{
-                        viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
-                    }
-                    if (!userId.equals("")&&!sessionId.equals("")){
-                        viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
-                        if (list.get(i).getIsGreat().equals("0")){
-                            String greatNum = list.get(i).getGreatNum();
-                            int i1 = Integer.parseInt(greatNum);
-                            i1++;
-                            viewHolder.textPraiseNum.setText(String.valueOf(i1));
-                        }
-                    }else{
-                        viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
-                    }
-                    btnPriaseListener.praiseBtn(list.get(i).getCommentId(),list.get(i).getIsGreat());
-                    notifyDataSetChanged();
-                }
+            if (list.get(i).getIsGreat().equals("0")) {
+                viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
+            } else {
+                viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
             }
-        });
+            viewHolder.btnPraiseCinema.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (btnPriaseListener != null) {
+                        if (list.get(i).getIsGreat().equals("0")) {
+                            viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
+                        } else {
+                            viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
+                        }
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_selected);
+                            if (list.get(i).getIsGreat().equals("0")) {
+                                String greatNum = list.get(i).getGreatNum();
+                                int i1 = Integer.parseInt(greatNum);
+                                i1++;
+                                viewHolder.textPraiseNum.setText(String.valueOf(i1));
+                            }
+                        } else {
+                            viewHolder.btnPraiseCinema.setImageResource(R.mipmap.com_icon_praise_default);
+                        }
+                        btnPriaseListener.praiseBtn(list.get(i).getCommentId(), list.get(i).getIsGreat());
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
     }
 
     @Override

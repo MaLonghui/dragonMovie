@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bw.movie.R;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.bean.JiFilmBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,17 +42,19 @@ public class JiRecyclerAdapter extends RecyclerView.Adapter<JiRecyclerAdapter.Vi
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.filmName.getBackground().setAlpha(200);
-        holder.filmName.setText(jiFilmBeanResult.get(position).getName());
-        Uri uri = Uri.parse(jiFilmBeanResult.get(position).getImageUrl());
-        holder.filmSimpleView.setImageURI(uri);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context,FilmDetailsActivity.class));
-                EventBus.getDefault().postSticky(jiFilmBeanResult.get(position).getId());
-            }
-        });
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            holder.filmName.getBackground().setAlpha(200);
+            holder.filmName.setText(jiFilmBeanResult.get(position).getName());
+            Uri uri = Uri.parse(jiFilmBeanResult.get(position).getImageUrl());
+            holder.filmSimpleView.setImageURI(uri);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, FilmDetailsActivity.class));
+                    EventBus.getDefault().postSticky(jiFilmBeanResult.get(position).getId());
+                }
+            });
+        }
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.bw.movie.R;
 import com.bw.movie.activity.MainActivity;
 import com.bw.movie.bean.VisionBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NetWorkUtils;
 import com.bw.movie.utils.Utils;
 
 import java.io.File;
@@ -43,7 +44,7 @@ import io.github.lizhangqu.coreprogress.ProgressUIListener;
  * 邮箱 784787081@qq.com
  */
 
-public class VisionActivity extends MVPBaseActivity<VisionContract.View, VisionPresenter> implements VisionContract.View,View.OnClickListener {
+public class VisionActivity extends MVPBaseActivity<VisionContract.View, VisionPresenter> implements VisionContract.View, View.OnClickListener {
 
     private SharedPreferences sp;
     private String userId;
@@ -58,48 +59,55 @@ public class VisionActivity extends MVPBaseActivity<VisionContract.View, VisionP
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vision);
         ButterKnife.bind(this);
-        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
+        if (NetWorkUtils.isNetworkAvailable(VisionActivity.this)) {
+            sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
 
 
+            TextView tvCurrentVersionCode = (TextView) findViewById(R.id.tv_current_version_code);
+            tvCurrentVersionCode.setText("当前版本:" + Utils.getVersionCode(this));
 
-        TextView tvCurrentVersionCode= (TextView) findViewById(R.id.tv_current_version_code);
-        tvCurrentVersionCode.setText("当前版本:"+ Utils.getVersionCode(this));
+            //Android 6.0以上版本需要临时获取权限
+            if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1 &&
+                    PackageManager.PERMISSION_GRANTED != checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                requestPermissions(perms, PERMS_REQUEST_CODE);
+            } else {
+                findViewById(R.id.btn_check_update).setOnClickListener(this);
+            }
 
-        //Android 6.0以上版本需要临时获取权限
-        if(Build.VERSION.SDK_INT>Build.VERSION_CODES.LOLLIPOP_MR1&&
-                PackageManager.PERMISSION_GRANTED!=checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-            requestPermissions(perms,PERMS_REQUEST_CODE);
-        }else{
-            findViewById(R.id.btn_check_update).setOnClickListener(this);
+
         }
     }
 
     @Override
     public void visionView(Object obj) {
-        if (obj!=null){
-            visionBean = (VisionBean) obj;
-            if(visionBean.getStatus().equals("0000")){//有新版本
-                HTTPCaller.getInstance().get(VisionBean.class,visionBean.getDownloadUrl(),null,null);
-                showUpdaloadDialog(((VisionBean) obj).getDownloadUrl());
-            }else{//没有新版本
-                Toast.makeText(VisionActivity.this,((VisionBean) obj).getMessage(),Toast.LENGTH_LONG).show();
+        if (NetWorkUtils.isNetworkAvailable(VisionActivity.this)) {
+            if (obj != null) {
+                visionBean = (VisionBean) obj;
+                if (visionBean.getStatus().equals("0000")) {//有新版本
+                    HTTPCaller.getInstance().get(VisionBean.class, visionBean.getDownloadUrl(), null, null);
+                    showUpdaloadDialog(((VisionBean) obj).getDownloadUrl());
+                } else {//没有新版本
+                    Toast.makeText(VisionActivity.this, ((VisionBean) obj).getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.btn_check_update://检查更新
+        if (NetWorkUtils.isNetworkAvailable(VisionActivity.this)) {
+            switch (v.getId()) {
+                case R.id.btn_check_update://检查更新
 //                Log.i("aa","visionBean:"+ visionBean.getDownloadUrl());
-                Map<String,Object> headMap = new HashMap<>();
-                headMap.put("userId",userId);
-                headMap.put("sessionId",sessionId);
-                headMap.put("ak","0110010010000");
-                mPresenter.visionPresenter(headMap);
-                break;
+                    Map<String, Object> headMap = new HashMap<>();
+                    headMap.put("userId", userId);
+                    headMap.put("sessionId", sessionId);
+                    headMap.put("ak", "0110010010000");
+                    mPresenter.visionPresenter(headMap);
+                    break;
+            }
         }
     }
 
@@ -118,9 +126,10 @@ public class VisionActivity extends MVPBaseActivity<VisionContract.View, VisionP
 
     /**
      * 显示更新对话框
+     *
      * @param downloadUrl
      */
-    private void showUpdaloadDialog(final String downloadUrl){
+    private void showUpdaloadDialog(final String downloadUrl) {
         // 这里的属性可以一直设置，因为每次设置后返回的是一个builder对象
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         // 设置提示框的标题
@@ -140,32 +149,33 @@ public class VisionActivity extends MVPBaseActivity<VisionContract.View, VisionP
 
     /**
      * 开始下载
+     *
      * @param downloadUrl 下载url
      */
-    private void startUpload(String downloadUrl){
-        progressDialog=new ProgressDialog(this);
+    private void startUpload(String downloadUrl) {
+        progressDialog = new ProgressDialog(this);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         progressDialog.setMessage("正在下载新版本");
         progressDialog.setCancelable(false);//不能手动取消下载进度对话框
 
-        final String fileSavePath=Utils.getSaveFilePath(downloadUrl);
-        HTTPCaller.getInstance().downloadFile(downloadUrl,fileSavePath,null,new ProgressUIListener(){
+        final String fileSavePath = Utils.getSaveFilePath(downloadUrl);
+        HTTPCaller.getInstance().downloadFile(downloadUrl, fileSavePath, null, new ProgressUIListener() {
 
             @Override
             public void onUIProgressStart(long totalBytes) {//下载开始
-                progressDialog.setMax((int)totalBytes);
+                progressDialog.setMax((int) totalBytes);
                 progressDialog.show();
             }
 
             //更新进度
             @Override
             public void onUIProgressChanged(long numBytes, long totalBytes, float percent, float speed) {
-                progressDialog.setProgress((int)numBytes);
+                progressDialog.setProgress((int) numBytes);
             }
 
             @Override
             public void onUIProgressFinish() {//下载完成
-                Toast.makeText(VisionActivity.this,"下载完成",Toast.LENGTH_LONG).show();
+                Toast.makeText(VisionActivity.this, "下载完成", Toast.LENGTH_LONG).show();
                 progressDialog.dismiss();
                 openAPK(fileSavePath);
             }
@@ -174,10 +184,11 @@ public class VisionActivity extends MVPBaseActivity<VisionContract.View, VisionP
 
     /**
      * 下载完成安装apk
+     *
      * @param fileSavePath
      */
-    private void openAPK(String fileSavePath){
-        File file=new File(fileSavePath);
+    private void openAPK(String fileSavePath) {
+        File file = new File(fileSavePath);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         Uri data;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {//判断版本大于等于7.0
@@ -193,11 +204,11 @@ public class VisionActivity extends MVPBaseActivity<VisionContract.View, VisionP
     }
 
     @Override
-    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults){
-        switch(permsRequestCode){
+    public void onRequestPermissionsResult(int permsRequestCode, String[] permissions, int[] grantResults) {
+        switch (permsRequestCode) {
             case PERMS_REQUEST_CODE:
                 boolean storageAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                if(storageAccepted){
+                if (storageAccepted) {
                     findViewById(R.id.btn_check_update).setOnClickListener(this);
                 }
                 break;

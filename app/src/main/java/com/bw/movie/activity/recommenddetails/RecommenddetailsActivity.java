@@ -34,6 +34,8 @@ import com.bw.movie.bean.FilmFromIdBean;
 import com.bw.movie.bean.MovieIdAndFilmBean;
 import com.bw.movie.bean.RecommendDetailsBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NetWorkUtils;
+import com.bw.movie.recommenddetails.RecommendDetailsActivity;
 import com.bw.movie.utils.AlertDialogUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.jcodecraeer.xrecyclerview.XRecyclerView;
@@ -96,11 +98,12 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
         ButterKnife.bind(this);
         getWindow().setEnterTransition(new Explode().setDuration(1000));
         getWindow().setExitTransition(new Explode().setDuration(1000));
-        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        Intent intent = getIntent();
-        eid = intent.getStringExtra("eid");
+        if (NetWorkUtils.isNetworkAvailable(RecommenddetailsActivity.this)){
+            sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+            Intent intent = getIntent();
+            eid = intent.getStringExtra("eid");
 //        Log.i("aa", "eid:" + eid);
             if (!userId.equals("") && !sessionId.equals("")) {
                 Map<String, Object> headMap = new HashMap<>();
@@ -114,23 +117,24 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
             mPresenter.filmFromIdPresenter(eid);
 
 
-        recyclerFlowRecommend.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
-            @Override
-            public void onItemSelected(int position){
-                if (!filmFromIdBean.getMessage().equals("无数据")) {
-                    String id = filmFromIdBean.getResult().get(position).getId();
-                    mPresenter.movieIdAndfilmIdPresenter(id, eid);
+            recyclerFlowRecommend.setOnItemSelectedListener(new CoverFlowLayoutManger.OnSelected() {
+                @Override
+                public void onItemSelected(int position){
+                    if (!filmFromIdBean.getMessage().equals("无数据")) {
+                        String id = filmFromIdBean.getResult().get(position).getId();
+                        mPresenter.movieIdAndfilmIdPresenter(id, eid);
+                    }
                 }
-            }
-        });
+            });
 
-        imgRecommendDetails.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            imgRecommendDetails.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 //                Intent intent = new Intent(RecommenddetailsActivity.this, AMapActivity.class);
 //                startActivity(intent);
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
@@ -142,66 +146,72 @@ public class RecommenddetailsActivity extends MVPBaseActivity<RecommenddetailsCo
 
     @Override
     public void recommendDetailsView(Object obj) {
-        if (obj != null) {
-            recommendDetailsBean = (RecommendDetailsBean) obj;
-            if (recommendDetailsBean.getStatus().equals("0000")) {
+        if (NetWorkUtils.isNetworkAvailable(RecommenddetailsActivity.this)) {
+            if (obj != null) {
+                recommendDetailsBean = (RecommendDetailsBean) obj;
+                if (recommendDetailsBean.getStatus().equals("0000")) {
 //                Log.i("aa","recommendDetailsBean:"+recommendDetailsBean.getMessage());
-                Uri uri = Uri.parse(recommendDetailsBean.getResult().getLogo());
-                simPleRecommendDetails.setImageURI(uri);
-                textNameRecommendDetails.setText(recommendDetailsBean.getResult().getName());
-                textAddressRecommendDetails.setText(recommendDetailsBean.getResult().getAddress());
+                    Uri uri = Uri.parse(recommendDetailsBean.getResult().getLogo());
+                    simPleRecommendDetails.setImageURI(uri);
+                    textNameRecommendDetails.setText(recommendDetailsBean.getResult().getName());
+                    textAddressRecommendDetails.setText(recommendDetailsBean.getResult().getAddress());
+                }
             }
         }
     }
 
     @Override
     public void filmFromIdView(Object obj) {
-        if (obj != null) {
-            filmFromIdBean = (FilmFromIdBean) obj;
+        if (NetWorkUtils.isNetworkAvailable(RecommenddetailsActivity.this)) {
+            if (obj != null) {
+                filmFromIdBean = (FilmFromIdBean) obj;
 //            Log.i("aa","filmFromIdBean:"+filmFromIdBean.);
-            if (filmFromIdBean.getMessage().equals("无数据")) {
-                FlowAdapter flowAdapter = new FlowAdapter(this);
-                recyclerFlowRecommend.setAdapter(flowAdapter);
-                flowAdapter.setOnClickListener(new FlowAdapter.OnClickListener() {
-                    @Override
-                    public void click() {
+                if (filmFromIdBean.getMessage().equals("无数据")) {
+                    FlowAdapter flowAdapter = new FlowAdapter(this);
+                    recyclerFlowRecommend.setAdapter(flowAdapter);
+                    flowAdapter.setOnClickListener(new FlowAdapter.OnClickListener() {
+                        @Override
+                        public void click() {
 
-                    }
-                });
-                textErrorTitle.setVisibility(View.VISIBLE);
-                recyclerViewRecommend.setVisibility(View.GONE);
+                        }
+                    });
+                    textErrorTitle.setVisibility(View.VISIBLE);
+                    recyclerViewRecommend.setVisibility(View.GONE);
 //                Toast.makeText(this,"无数据",Toast.LENGTH_LONG).show();
-            } else {
-                for (FilmFromIdBean.ResultBean resultBean : filmFromIdBean.getResult()) {
-                    String id = resultBean.getId();
-                    Date date = new Date(resultBean.getReleaseTime());
-                    SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd");
-                    String format = sd.format(date);
-                    textDateDetails.setText(format);
+                } else {
+                    for (FilmFromIdBean.ResultBean resultBean : filmFromIdBean.getResult()) {
+                        String id = resultBean.getId();
+                        Date date = new Date(resultBean.getReleaseTime());
+                        SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd");
+                        String format = sd.format(date);
+                        textDateDetails.setText(format);
                         mPresenter.movieIdAndfilmIdPresenter(id, eid);
 
 
+                    }
+                    MyRecyclerFlowRecommendeAdapter myRecyclerFlowRecommende = new MyRecyclerFlowRecommendeAdapter(RecommenddetailsActivity.this, filmFromIdBean);
+                    recyclerFlowRecommend.setAdapter(myRecyclerFlowRecommende);
+                    textErrorTitle.setVisibility(View.GONE);
+                    recyclerViewRecommend.setVisibility(View.VISIBLE);
                 }
-                MyRecyclerFlowRecommendeAdapter myRecyclerFlowRecommende = new MyRecyclerFlowRecommendeAdapter(RecommenddetailsActivity.this, filmFromIdBean);
-                recyclerFlowRecommend.setAdapter(myRecyclerFlowRecommende);
-                textErrorTitle.setVisibility(View.GONE);
-                recyclerViewRecommend.setVisibility(View.VISIBLE);
-            }
 
+            }
         }
     }
 
     @Override
     public void movieIdAndfilmIdView(Object obj) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(RecommenddetailsActivity.this);
-        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        recyclerViewRecommend.setLayoutManager(linearLayoutManager);
-        if (obj != null) {
-            MovieIdAndFilmBean movieIdAndFilmBean = (MovieIdAndFilmBean) obj;
+        if (NetWorkUtils.isNetworkAvailable(RecommenddetailsActivity.this)) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(RecommenddetailsActivity.this);
+            linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+            recyclerViewRecommend.setLayoutManager(linearLayoutManager);
+            if (obj != null) {
+                MovieIdAndFilmBean movieIdAndFilmBean = (MovieIdAndFilmBean) obj;
 //            Log.i("aa","movieIdAndFilmBean:"+movieIdAndFilmBean.getMessage());
-            if (movieIdAndFilmBean != null) {
-                MyMovieIdAndFilmAdapter myMovieIdAndFilmAdapter = new MyMovieIdAndFilmAdapter(this, movieIdAndFilmBean);
-                recyclerViewRecommend.setAdapter(myMovieIdAndFilmAdapter);
+                if (movieIdAndFilmBean != null) {
+                    MyMovieIdAndFilmAdapter myMovieIdAndFilmAdapter = new MyMovieIdAndFilmAdapter(this, movieIdAndFilmBean);
+                    recyclerViewRecommend.setAdapter(myMovieIdAndFilmAdapter);
+                }
             }
         }
     }

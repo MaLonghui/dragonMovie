@@ -25,6 +25,7 @@ import com.bw.movie.bean.CinemaAttentionBean;
 import com.bw.movie.bean.CinemaByIdBean;
 import com.bw.movie.bean.FilmDetailsBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NetWorkUtils;
 import com.bw.movie.utils.AlertDialogUtils;
 
 import java.util.HashMap;
@@ -64,117 +65,125 @@ public class CinemaByMovieIdActivity extends MVPBaseActivity<CinemaByMovieIdCont
         ButterKnife.bind(this);
         getWindow().setEnterTransition(new Explode().setDuration(800));
         getWindow().setExitTransition(new Explode().setDuration(800));
-        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        Intent intent = getIntent();
-        resultBean = (FilmDetailsBean.ResultBean) intent.getSerializableExtra("resultBean");
-        id = resultBean.getId()+"";
-        movieName.setText(resultBean.getName());
-        Map<String,Object> headMap = new HashMap<>();
-        headMap.put("userId",userId);
-        headMap.put("sessionId",sessionId);
-        mPresenter.getPresenterData(headMap,id);
-        movieReturn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
+        if (NetWorkUtils.isNetworkAvailable(CinemaByMovieIdActivity.this)){
+            sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+            Intent intent = getIntent();
+            resultBean = (FilmDetailsBean.ResultBean) intent.getSerializableExtra("resultBean");
+            id = resultBean.getId()+"";
+            movieName.setText(resultBean.getName());
+            Map<String,Object> headMap = new HashMap<>();
+            headMap.put("userId",userId);
+            headMap.put("sessionId",sessionId);
+            mPresenter.getPresenterData(headMap,id);
+            movieReturn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onBackPressed();
 
-            }
-        });
+                }
+            });
 
-        //布局管理器
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        movieRecyclerView.setLayoutManager(linearLayoutManager);
+            //布局管理器
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+            linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+            movieRecyclerView.setLayoutManager(linearLayoutManager);
+        }
 
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        if (!userId.equals("")&&!sessionId.equals("")){
-            Map<String,Object> headMap = new HashMap<>();
-            headMap.put("userId",userId);
-            headMap.put("sessionId",sessionId);
-            mPresenter.getPresenterData(headMap,id);
-        }else {
-            Map<String,Object> headMap = new HashMap<>();
-            mPresenter.getPresenterData(headMap,id);
+        if (NetWorkUtils.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+            if (!userId.equals("") && !sessionId.equals("")) {
+                Map<String, Object> headMap = new HashMap<>();
+                headMap.put("userId", userId);
+                headMap.put("sessionId", sessionId);
+                mPresenter.getPresenterData(headMap, id);
+            } else {
+                Map<String, Object> headMap = new HashMap<>();
+                mPresenter.getPresenterData(headMap, id);
+            }
         }
-
     }
 
     @Override
     public void getViewData(Object object) {
-        final CinemaByIdBean cinemaByIdBean = (CinemaByIdBean) object;
-        //Log.i(TAG, "getViewData: "+cinemaByIdBean.getMessage());
-        beanResult = cinemaByIdBean.getResult();
-        cinemaByIdAdapter = new MyCinemaByIdAdapter(this, beanResult);
+        if (NetWorkUtils.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
+            final CinemaByIdBean cinemaByIdBean = (CinemaByIdBean) object;
+            //Log.i(TAG, "getViewData: "+cinemaByIdBean.getMessage());
+            beanResult = cinemaByIdBean.getResult();
+            cinemaByIdAdapter = new MyCinemaByIdAdapter(this, beanResult);
 
-        movieRecyclerView.setAdapter(cinemaByIdAdapter);
-        cinemaByIdAdapter.setAttentionClick(new MyCinemaByIdAdapter.CinemaAttentionClick() {
-            @Override
-            public void clickattention(String cinemaId, boolean b) {
-                if (b) {
-                    if (!userId.equals("") && !sessionId.equals("")) {
-                        Map<String, Object> headMap = new HashMap<>();
-                        headMap.put("userId", userId);
-                        headMap.put("sessionId", sessionId);
-                        mPresenter.AttentionPresenter(headMap, cinemaId);
-                        cinemaByIdAdapter.notifyDataSetChanged();
-                        for (CinemaByIdBean.ResultBean bean : beanResult) {
-                            Log.i("aa","bean:"+bean.getFollowCinema());
+            movieRecyclerView.setAdapter(cinemaByIdAdapter);
+            cinemaByIdAdapter.setAttentionClick(new MyCinemaByIdAdapter.CinemaAttentionClick() {
+                @Override
+                public void clickattention(String cinemaId, boolean b) {
+                    if (b) {
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            Map<String, Object> headMap = new HashMap<>();
+                            headMap.put("userId", userId);
+                            headMap.put("sessionId", sessionId);
+                            mPresenter.AttentionPresenter(headMap, cinemaId);
+                            cinemaByIdAdapter.notifyDataSetChanged();
+                            for (CinemaByIdBean.ResultBean bean : beanResult) {
+                                Log.i("aa", "bean:" + bean.getFollowCinema());
+                            }
+                        } else {
+                            AlertDialogUtils.AlertDialogLogin(CinemaByMovieIdActivity.this);
                         }
-                    } else {
-                        AlertDialogUtils.AlertDialogLogin(CinemaByMovieIdActivity.this);
-                    }
-                    cinemaByIdAdapter.notifyDataSetChanged();
-                } else {
-                    if (!userId.equals("") && !sessionId.equals("")) {
-                        Map<String, Object> headMap = new HashMap<>();
-                        headMap.put("userId", userId);
-                        headMap.put("sessionId", sessionId);
-                        mPresenter.CancelAttentionPresenter(headMap, cinemaId);
                         cinemaByIdAdapter.notifyDataSetChanged();
                     } else {
-                        AlertDialogUtils.AlertDialogLogin(CinemaByMovieIdActivity.this);
+                        if (!userId.equals("") && !sessionId.equals("")) {
+                            Map<String, Object> headMap = new HashMap<>();
+                            headMap.put("userId", userId);
+                            headMap.put("sessionId", sessionId);
+                            mPresenter.CancelAttentionPresenter(headMap, cinemaId);
+                            cinemaByIdAdapter.notifyDataSetChanged();
+                        } else {
+                            AlertDialogUtils.AlertDialogLogin(CinemaByMovieIdActivity.this);
+                        }
                     }
                 }
-            }
-        });
-        cinemaByIdAdapter.setOnClicklistener(new MyCinemaByIdAdapter.onClicklistener() {
-            @Override
-            public void click(CinemaByIdBean.ResultBean bean) {
-                Bundle bundle = new Bundle();
-                //FilmDetailsBean.ResultBean resultBean = (FilmDetailsBean.ResultBean) bundle.getSerializable("resultBean");
-                bundle.putSerializable("resultBean",resultBean);
-                bundle.putSerializable("bean",bean);
-                Intent intent = new Intent(CinemaByMovieIdActivity.this, MovieScheduleListActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(CinemaByMovieIdActivity.this).toBundle());
-            }
-        });
-
+            });
+            cinemaByIdAdapter.setOnClicklistener(new MyCinemaByIdAdapter.onClicklistener() {
+                @Override
+                public void click(CinemaByIdBean.ResultBean bean) {
+                    Bundle bundle = new Bundle();
+                    //FilmDetailsBean.ResultBean resultBean = (FilmDetailsBean.ResultBean) bundle.getSerializable("resultBean");
+                    bundle.putSerializable("resultBean", resultBean);
+                    bundle.putSerializable("bean", bean);
+                    Intent intent = new Intent(CinemaByMovieIdActivity.this, MovieScheduleListActivity.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(CinemaByMovieIdActivity.this).toBundle());
+                }
+            });
+        }
     }
 
     @Override
     public void AttentionView(Object obj) {
-        if (obj!=null){
-            CinemaAttentionBean cinemaAttentionBean = (CinemaAttentionBean) obj;
-            if (cinemaAttentionBean.getStatus().equals("0000")){
-                Toast.makeText(CinemaByMovieIdActivity.this, cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+        if (NetWorkUtils.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
+            if (obj != null) {
+                CinemaAttentionBean cinemaAttentionBean = (CinemaAttentionBean) obj;
+                if (cinemaAttentionBean.getStatus().equals("0000")) {
+                    Toast.makeText(CinemaByMovieIdActivity.this, cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
     @Override
     public void CancelAttentionView(Object obj) {
-        CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
-        if (cancelAttentionBean.getStatus().equals("0000")) {
-            Toast.makeText(CinemaByMovieIdActivity.this, cancelAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+        if (NetWorkUtils.isNetworkAvailable(CinemaByMovieIdActivity.this)) {
+            CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
+            if (cancelAttentionBean.getStatus().equals("0000")) {
+                Toast.makeText(CinemaByMovieIdActivity.this, cancelAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

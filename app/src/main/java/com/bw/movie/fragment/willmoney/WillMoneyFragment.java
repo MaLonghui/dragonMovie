@@ -36,6 +36,7 @@ import com.bw.movie.bean.PayBean;
 import com.bw.movie.bean.PayResult;
 import com.bw.movie.bean.TicketBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NetWorkUtils;
 import com.bw.movie.wxapi.WXPayEntryActivity;
 import com.umeng.analytics.MobclickAgent;
 
@@ -104,18 +105,20 @@ public class WillMoneyFragment extends MVPBaseFragment<WillMoneyContract.View, W
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_willmoney, container, false);
-        sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        headMap = new HashMap<>();
-        headMap.put("userId", userId);
-        headMap.put("sessionId", sessionId);
-        Map<String, Object> parms = new HashMap<>();
-        parms.put("page", 1);
-        parms.put("count", 100);
-        parms.put("status", 1);
-        mPresenter.WillTicketPresenter(headMap, parms);
-        unbinder = ButterKnife.bind(this, view);
+       if (NetWorkUtils.isNetworkAvailable(getActivity())){
+           sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+           userId = sp.getString("userId", "");
+           sessionId = sp.getString("sessionId", "");
+           headMap = new HashMap<>();
+           headMap.put("userId", userId);
+           headMap.put("sessionId", sessionId);
+           Map<String, Object> parms = new HashMap<>();
+           parms.put("page", 1);
+           parms.put("count", 100);
+           parms.put("status", 1);
+           mPresenter.WillTicketPresenter(headMap, parms);
+           unbinder = ButterKnife.bind(this, view);
+       }
         return view;
     }
 

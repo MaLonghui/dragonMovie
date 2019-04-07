@@ -38,6 +38,7 @@ import com.bw.movie.bean.CinemaByNameBean;
 import com.bw.movie.bean.NearbyCinemasBean;
 import com.bw.movie.bean.RecommendCinemasBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NetWorkUtils;
 import com.bw.movie.utils.AlertDialogUtils;
 //import com.zaaach.citypicker.CityPickerActivity;
 
@@ -100,69 +101,73 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         View view = inflater.inflate(R.layout.fragment_cinema_layout, container, false);
         unbinder = ButterKnife.bind(this, view);
-        sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
+       if (NetWorkUtils.isNetworkAvailable(getActivity())){
+           sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+           userId = sp.getString("userId", "");
+           sessionId = sp.getString("sessionId", "");
 
 
-        if (!userId.equals("") && !sessionId.equals("")) {
-            Map<String, Object> headMap = new HashMap<>();
-            headMap.put("userId", userId);
-            headMap.put("sessionId", sessionId);
-            Map<String, Object> parms = new HashMap<>();
-            parms.put("page", page);
-            parms.put("count", count);
-            mPresenter.recommendPresenter(headMap, parms);
-        } else {
-            Map<String, Object> headMap = new HashMap<>();
-            Map<String, Object> parms = new HashMap<>();
-            parms.put("page", page);
-            parms.put("count", count);
-            mPresenter.recommendPresenter(headMap, parms);
-        }
+           if (!userId.equals("") && !sessionId.equals("")) {
+               Map<String, Object> headMap = new HashMap<>();
+               headMap.put("userId", userId);
+               headMap.put("sessionId", sessionId);
+               Map<String, Object> parms = new HashMap<>();
+               parms.put("page", page);
+               parms.put("count", count);
+               mPresenter.recommendPresenter(headMap, parms);
+           } else {
+               Map<String, Object> headMap = new HashMap<>();
+               Map<String, Object> parms = new HashMap<>();
+               parms.put("page", page);
+               parms.put("count", count);
+               mPresenter.recommendPresenter(headMap, parms);
+           }
 
-        btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
-        btnRecommend.setTextColor(Color.WHITE);
-        if (!userId.equals("") && !sessionId.equals("")) {
-            headMap = new HashMap<>();
-            headMap.put("userId", userId);
-            headMap.put("sessionId", sessionId);
-            parms = new HashMap<>();
-            parms.put("page", page);
-            parms.put("count", count);
-            parms1 = new HashMap<>();
-            parms1.put("page", page);
-            parms1.put("count", count);
-            parms1.put("longitude", longitude);
-            parms1.put("latitude", latitude);
-            mPresenter.recommendPresenter(headMap, parms);
-            mPresenter.nearbyPresenter(headMap, parms1);
-        }
+           btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
+           btnRecommend.setTextColor(Color.WHITE);
+           if (!userId.equals("") && !sessionId.equals("")) {
+               headMap = new HashMap<>();
+               headMap.put("userId", userId);
+               headMap.put("sessionId", sessionId);
+               parms = new HashMap<>();
+               parms.put("page", page);
+               parms.put("count", count);
+               parms1 = new HashMap<>();
+               parms1.put("page", page);
+               parms1.put("count", count);
+               parms1.put("longitude", longitude);
+               parms1.put("latitude", latitude);
+               mPresenter.recommendPresenter(headMap, parms);
+               mPresenter.nearbyPresenter(headMap, parms1);
+           }
 
-        btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
-        btnRecommend.setTextColor(Color.WHITE);
+           btnRecommend.setBackgroundResource(R.drawable.top_btn_shape);
+           btnRecommend.setTextColor(Color.WHITE);
+       }
         return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        if (!userId.equals("") && !sessionId.equals("")) {
-            Map<String, Object> headMap = new HashMap<>();
-            headMap.put("userId", userId);
-            headMap.put("sessionId", sessionId);
-            Map<String, Object> parms = new HashMap<>();
-            parms.put("page", page);
-            parms.put("count", count);
-            mPresenter.recommendPresenter(headMap, parms);
-        } else {
-            Map<String, Object> headMap = new HashMap<>();
-            Map<String, Object> parms = new HashMap<>();
-            parms.put("page", page);
-            parms.put("count", count);
-            mPresenter.recommendPresenter(headMap, parms);
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+            if (!userId.equals("") && !sessionId.equals("")) {
+                Map<String, Object> headMap = new HashMap<>();
+                headMap.put("userId", userId);
+                headMap.put("sessionId", sessionId);
+                Map<String, Object> parms = new HashMap<>();
+                parms.put("page", page);
+                parms.put("count", count);
+                mPresenter.recommendPresenter(headMap, parms);
+            } else {
+                Map<String, Object> headMap = new HashMap<>();
+                Map<String, Object> parms = new HashMap<>();
+                parms.put("page", page);
+                parms.put("count", count);
+                mPresenter.recommendPresenter(headMap, parms);
+            }
         }
     }
 
@@ -175,58 +180,18 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
     @Override
     public void recommendView(Object obj) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        xrecyclerView.setLayoutManager(linearLayoutManager);
-        if (obj != null) {
-            recommendCinemasBean = (RecommendCinemasBean) obj;
-            result = recommendCinemasBean.getResult();
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+            xrecyclerView.setLayoutManager(linearLayoutManager);
+            if (obj != null) {
+                recommendCinemasBean = (RecommendCinemasBean) obj;
+                result = recommendCinemasBean.getResult();
 //            Log.i("aa","recommendCinemasBean:"+recommendCinemasBean.getMessage());
-            myRecommendAdapter = new MyRecommendAdapter(getActivity());
-            xrecyclerView.setAdapter(myRecommendAdapter);
-            myRecommendAdapter.setList(recommendCinemasBean);
-            myRecommendAdapter.setAttentionClick(new MyRecommendAdapter.AttentionClick() {
-                @Override
-                public void clickattention(String cinemaId, boolean b) {
-                    if (b) {
-                        if (!userId.equals("") && !sessionId.equals("")) {
-                            Map<String, Object> headMap = new HashMap<>();
-                            headMap.put("userId", userId);
-                            headMap.put("sessionId", sessionId);
-                            mPresenter.AttentionPresenter(headMap, cinemaId);
-                            myRecommendAdapter.notifyDataSetChanged();
-                        } else {
-                            AlertDialogUtils.AlertDialogLogin(getActivity());
-                        }
-                        myRecommendAdapter.notifyDataSetChanged();
-                    } else {
-                        if (!userId.equals("") && !sessionId.equals("")) {
-                            Map<String, Object> headMap = new HashMap<>();
-                            headMap.put("userId", userId);
-                            headMap.put("sessionId", sessionId);
-                            mPresenter.CancelAttentionPresenter(headMap, cinemaId);
-                            myRecommendAdapter.notifyDataSetChanged();
-                        } else {
-                            AlertDialogUtils.AlertDialogLogin(getActivity());
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    @Override
-    public void nearbyView(Object obj) {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
-        xrecyclerView.setLayoutManager(linearLayoutManager);
-        if (obj != null) {
-            NearbyCinemasBean nearbyCinemasBean = (NearbyCinemasBean) obj;
-//            Log.i("aa","nearbyCinemasBean:"+nearbyCinemasBean.getMessage());
-            if (nearbyCinemasBean != null) {
-                final MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(), nearbyCinemasBean);
-                xrecyclerView.setAdapter(myNearbyAdapter);
-                myNearbyAdapter.setAttentionClick(new MyNearbyAdapter.AttentionClick() {
+                myRecommendAdapter = new MyRecommendAdapter(getActivity());
+                xrecyclerView.setAdapter(myRecommendAdapter);
+                myRecommendAdapter.setList(recommendCinemasBean);
+                myRecommendAdapter.setAttentionClick(new MyRecommendAdapter.AttentionClick() {
                     @Override
                     public void clickattention(String cinemaId, boolean b) {
                         if (b) {
@@ -235,18 +200,18 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
                                 headMap.put("userId", userId);
                                 headMap.put("sessionId", sessionId);
                                 mPresenter.AttentionPresenter(headMap, cinemaId);
-                                myNearbyAdapter.notifyDataSetChanged();
+                                myRecommendAdapter.notifyDataSetChanged();
                             } else {
                                 AlertDialogUtils.AlertDialogLogin(getActivity());
                             }
-                            myNearbyAdapter.notifyDataSetChanged();
+                            myRecommendAdapter.notifyDataSetChanged();
                         } else {
                             if (!userId.equals("") && !sessionId.equals("")) {
                                 Map<String, Object> headMap = new HashMap<>();
                                 headMap.put("userId", userId);
                                 headMap.put("sessionId", sessionId);
                                 mPresenter.CancelAttentionPresenter(headMap, cinemaId);
-                                myNearbyAdapter.notifyDataSetChanged();
+                                myRecommendAdapter.notifyDataSetChanged();
                             } else {
                                 AlertDialogUtils.AlertDialogLogin(getActivity());
                             }
@@ -258,20 +223,68 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
     }
 
     @Override
+    public void nearbyView(Object obj) {
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+            linearLayoutManager.setOrientation(OrientationHelper.VERTICAL);
+            xrecyclerView.setLayoutManager(linearLayoutManager);
+            if (obj != null) {
+                NearbyCinemasBean nearbyCinemasBean = (NearbyCinemasBean) obj;
+//            Log.i("aa","nearbyCinemasBean:"+nearbyCinemasBean.getMessage());
+                if (nearbyCinemasBean != null) {
+                    final MyNearbyAdapter myNearbyAdapter = new MyNearbyAdapter(getActivity(), nearbyCinemasBean);
+                    xrecyclerView.setAdapter(myNearbyAdapter);
+                    myNearbyAdapter.setAttentionClick(new MyNearbyAdapter.AttentionClick() {
+                        @Override
+                        public void clickattention(String cinemaId, boolean b) {
+                            if (b) {
+                                if (!userId.equals("") && !sessionId.equals("")) {
+                                    Map<String, Object> headMap = new HashMap<>();
+                                    headMap.put("userId", userId);
+                                    headMap.put("sessionId", sessionId);
+                                    mPresenter.AttentionPresenter(headMap, cinemaId);
+                                    myNearbyAdapter.notifyDataSetChanged();
+                                } else {
+                                    AlertDialogUtils.AlertDialogLogin(getActivity());
+                                }
+                                myNearbyAdapter.notifyDataSetChanged();
+                            } else {
+                                if (!userId.equals("") && !sessionId.equals("")) {
+                                    Map<String, Object> headMap = new HashMap<>();
+                                    headMap.put("userId", userId);
+                                    headMap.put("sessionId", sessionId);
+                                    mPresenter.CancelAttentionPresenter(headMap, cinemaId);
+                                    myNearbyAdapter.notifyDataSetChanged();
+                                } else {
+                                    AlertDialogUtils.AlertDialogLogin(getActivity());
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    @Override
     public void AttentionView(Object obj) {
-        if (obj != null) {
-            cinemaAttentionBean = (CinemaAttentionBean) obj;
-            if (cinemaAttentionBean.getStatus().equals("0000")) {
-                Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            if (obj != null) {
+                cinemaAttentionBean = (CinemaAttentionBean) obj;
+                if (cinemaAttentionBean.getStatus().equals("0000")) {
+                    Toast.makeText(getActivity(), cinemaAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
     @Override
     public void CancelAttentionView(Object obj) {
-        CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
-        if (cancelAttentionBean.getStatus().equals("0000")) {
-            Toast.makeText(getActivity(), cancelAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            CancelAttentionBean cancelAttentionBean = (CancelAttentionBean) obj;
+            if (cancelAttentionBean.getStatus().equals("0000")) {
+                Toast.makeText(getActivity(), cancelAttentionBean.getMessage(), Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -281,55 +294,56 @@ public class CinemaFragment extends MVPBaseFragment<CinemaContract.View, CinemaP
 
     @OnClick({R.id.btn_Recommend, R.id.btn_Nearby})
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_Recommend:
-                if (!userId.equals("") && !sessionId.equals("")) {
-                    Map<String, Object> headMap = new HashMap<>();
-                    headMap.put("userId", userId);
-                    headMap.put("sessionId", sessionId);
-                    Map<String, Object> parms = new HashMap<>();
-                    parms.put("page", page);
-                    parms.put("count", count);
-                    mPresenter.recommendPresenter(headMap, parms);
-                } else {
-                    Map<String, Object> headMap = new HashMap<>();
-                    Map<String, Object> parms = new HashMap<>();
-                    parms.put("page", page);
-                    parms.put("count", count);
-                    mPresenter.recommendPresenter(headMap, parms);
-                }
-                btnRecommend.setBackgroundResource(R.drawable.button_ripple);
-                btnRecommend.setTextColor(Color.WHITE);
-                btnNearby.setTextColor(Color.BLACK);
-                btnNearby.setBackgroundResource(R.color.colorWhite);
-                break;
-            case R.id.btn_Nearby:
-                if (!userId.equals("") && !sessionId.equals("")) {
-                    Map<String, Object> headMap = new HashMap<>();
-                    headMap.put("userId", userId);
-                    headMap.put("sessionId", sessionId);
-                    Map<String, Object> parms1 = new HashMap<>();
-                    parms1.put("page", page);
-                    parms1.put("count", count);
-                    parms1.put("longitude", longitude);
-                    parms1.put("latitude", latitude);
-                    mPresenter.nearbyPresenter(headMap, parms1);
-                } else {
-                    Map<String, Object> headMap = new HashMap<>();
-                    Map<String, Object> parms1 = new HashMap<>();
-                    parms1.put("page", page);
-                    parms1.put("count", count);
-                    parms1.put("longitude", longitude);
-                    parms1.put("latitude", latitude);
-                    mPresenter.nearbyPresenter(headMap, parms1);
-                }
-                btnNearby.setBackgroundResource(R.drawable.button_ripple);
-                btnRecommend.setBackgroundResource(R.color.colorWhite);
-                btnNearby.setTextColor(Color.WHITE);
-                btnRecommend.setTextColor(Color.BLACK);
-                break;
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            switch (view.getId()) {
+                case R.id.btn_Recommend:
+                    if (!userId.equals("") && !sessionId.equals("")) {
+                        Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", userId);
+                        headMap.put("sessionId", sessionId);
+                        Map<String, Object> parms = new HashMap<>();
+                        parms.put("page", page);
+                        parms.put("count", count);
+                        mPresenter.recommendPresenter(headMap, parms);
+                    } else {
+                        Map<String, Object> headMap = new HashMap<>();
+                        Map<String, Object> parms = new HashMap<>();
+                        parms.put("page", page);
+                        parms.put("count", count);
+                        mPresenter.recommendPresenter(headMap, parms);
+                    }
+                    btnRecommend.setBackgroundResource(R.drawable.button_ripple);
+                    btnRecommend.setTextColor(Color.WHITE);
+                    btnNearby.setTextColor(Color.BLACK);
+                    btnNearby.setBackgroundResource(R.color.colorWhite);
+                    break;
+                case R.id.btn_Nearby:
+                    if (!userId.equals("") && !sessionId.equals("")) {
+                        Map<String, Object> headMap = new HashMap<>();
+                        headMap.put("userId", userId);
+                        headMap.put("sessionId", sessionId);
+                        Map<String, Object> parms1 = new HashMap<>();
+                        parms1.put("page", page);
+                        parms1.put("count", count);
+                        parms1.put("longitude", longitude);
+                        parms1.put("latitude", latitude);
+                        mPresenter.nearbyPresenter(headMap, parms1);
+                    } else {
+                        Map<String, Object> headMap = new HashMap<>();
+                        Map<String, Object> parms1 = new HashMap<>();
+                        parms1.put("page", page);
+                        parms1.put("count", count);
+                        parms1.put("longitude", longitude);
+                        parms1.put("latitude", latitude);
+                        mPresenter.nearbyPresenter(headMap, parms1);
+                    }
+                    btnNearby.setBackgroundResource(R.drawable.button_ripple);
+                    btnRecommend.setBackgroundResource(R.color.colorWhite);
+                    btnNearby.setTextColor(Color.WHITE);
+                    btnRecommend.setTextColor(Color.BLACK);
+                    break;
+            }
         }
     }
-
 
 }
