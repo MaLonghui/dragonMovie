@@ -18,6 +18,7 @@ import com.bw.movie.R;
 import com.bw.movie.adapter.MyAlreadyMoneyAdapter;
 import com.bw.movie.bean.TicketBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -47,18 +48,21 @@ public class AlreadyMoneyFragment extends MVPBaseFragment<AlreadyMoneyContract.V
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_alreadymoney, container, false);
         unbinder = ButterKnife.bind(this, view);
-        sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        Map<String, Object> headMap = new HashMap<>();
-        headMap.put("userId", userId);
-        headMap.put("sessionId", sessionId);
-        Map<String, Object> parms = new HashMap<>();
-        parms.put("page", 1);
-        parms.put("count", 100);
-        parms.put("status", 2);
-        mPresenter.AlreadyTicketPresenter(headMap, parms);
+        if (NetWorkUtils.isNetworkAvailable(getActivity())) {
+            sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+            Map<String, Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            Map<String, Object> parms = new HashMap<>();
+            parms.put("page", 1);
+            parms.put("count", 100);
+            parms.put("status", 2);
+            mPresenter.AlreadyTicketPresenter(headMap, parms);
+        }
         return view;
+
     }
 
     @Override
@@ -71,8 +75,8 @@ public class AlreadyMoneyFragment extends MVPBaseFragment<AlreadyMoneyContract.V
             if (ticketBean != null) {
 //                recyclerViewAlready.setVisibility(View.VISIBLE);
 //                imageWuhuo.setVisibility(View.GONE);
-                    MyAlreadyMoneyAdapter myAlreadyMoneyAdapter = new MyAlreadyMoneyAdapter(getActivity(), ticketBean);
-                    recyclerViewAlready.setAdapter(myAlreadyMoneyAdapter);
+                MyAlreadyMoneyAdapter myAlreadyMoneyAdapter = new MyAlreadyMoneyAdapter(getActivity(), ticketBean);
+                recyclerViewAlready.setAdapter(myAlreadyMoneyAdapter);
             }
         }
     }

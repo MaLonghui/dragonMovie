@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.FilmAttentionBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.text.SimpleDateFormat;
@@ -39,14 +40,16 @@ public class MyFilmAttentionAdapter extends RecyclerView.Adapter<MyFilmAttention
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Uri uri = Uri.parse(filmAttentionBean.getResult().get(i).getImageUrl());
-        viewHolder.simPleTitleFilmAttention.setImageURI(uri);
-        viewHolder.textTitleFilmAttention.setText(filmAttentionBean.getResult().get(i).getName());
-        viewHolder.textCountFilmAttention.setText(filmAttentionBean.getResult().get(i).getSummary());
-        Date date = new Date(filmAttentionBean.getResult().get(i).getReleaseTime());
-        SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd");
-        String format = sd.format(date);
-        viewHolder.textTimeFilmAttention.setText(format);
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(filmAttentionBean.getResult().get(i).getImageUrl());
+            viewHolder.simPleTitleFilmAttention.setImageURI(uri);
+            viewHolder.textTitleFilmAttention.setText(filmAttentionBean.getResult().get(i).getName());
+            viewHolder.textCountFilmAttention.setText(filmAttentionBean.getResult().get(i).getSummary());
+            Date date = new Date(filmAttentionBean.getResult().get(i).getReleaseTime());
+            SimpleDateFormat sd = new SimpleDateFormat("yy-MM-dd");
+            String format = sd.format(date);
+            viewHolder.textTimeFilmAttention.setText(format);
+        }
     }
 
     @Override

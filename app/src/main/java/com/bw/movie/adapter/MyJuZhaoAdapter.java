@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.FilmDetailsBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
@@ -35,9 +36,10 @@ public class MyJuZhaoAdapter extends RecyclerView.Adapter<MyJuZhaoAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Uri uri = Uri.parse(resultBean.getPosterList().get(i));
-        viewHolder.juzhaoSimpleView.setImageURI(uri);
-
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(resultBean.getPosterList().get(i));
+            viewHolder.juzhaoSimpleView.setImageURI(uri);
+        }
     }
 
     @Override

@@ -126,7 +126,6 @@ public class NetWorkUtils {
                     Animation rotateAnimation = AnimationUtils.loadAnimation(context, R.anim.qiuqiu);
                     LinearInterpolator interpolator = new LinearInterpolator();
                     rotateAnimation.setInterpolator(interpolator);
-
                     final Dialog dialog = new AlertDialog.Builder(context).create();
                     dialog.setCancelable(false);
                     dialog.show();

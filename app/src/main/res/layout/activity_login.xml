@@ -5,7 +5,6 @@
     android:fitsSystemWindows="true"
     android:orientation="vertical"
     android:layout_height="match_parent">
-
     <EditText
         android:id="@+id/edit_phone"
         android:layout_marginTop="@dimen/dp_130"
@@ -48,7 +47,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignTop="@id/edit_pwd"
             android:layout_marginTop="@dimen/dp_10"
-            android:src="@mipmap/log_icon_eye_default"
+            android:background="@mipmap/icon_eye_close"
             />
     </RelativeLayout>
 

@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.activity.filmdetails.FilmDetailsActivity;
 import com.bw.movie.bean.ReFilmBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -40,18 +43,25 @@ public class ReRecylerAdapter extends RecyclerView.Adapter<ReRecylerAdapter.View
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        holder.filmName.getBackground().setAlpha(200);
-        holder.filmName.setText(reFilmBeanResult.get(position).getName());
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            holder.filmName.getBackground().setAlpha(200);
+            holder.filmName.setText(reFilmBeanResult.get(position).getName());
 
-        Uri uri = Uri.parse(reFilmBeanResult.get(position).getImageUrl());
-        holder.filmSimpleView.setImageURI(uri);
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                context.startActivity(new Intent(context,FilmDetailsActivity.class));
-                EventBus.getDefault().postSticky(reFilmBeanResult.get(position).getId());
-            }
-        });
+            Uri uri = Uri.parse(reFilmBeanResult.get(position).getImageUrl());
+            holder.filmSimpleView.setImageURI(uri);
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetWorkUtils.isNetworkAvailable(context)) {
+                        context.startActivity(new Intent(context, FilmDetailsActivity.class));
+                        EventBus.getDefault().postSticky(reFilmBeanResult.get(position).getId());
+                    }else{
+                        context.startActivity(new Intent(context,NetActivity.class));
+                        Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override

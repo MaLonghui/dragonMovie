@@ -16,10 +16,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.activity.filmsearch.FilmSearchActivity;
 import com.bw.movie.bean.JiFilmBean;
 import com.bw.movie.bean.ReFilmBean;
 import com.bw.movie.bean.ShangFilmBean;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -77,98 +79,118 @@ public class FilmAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            if (holder instanceof ItemOneViewHoder) {
+                FlowAdapter flowAdapter = new FlowAdapter(context);
+                ((ItemOneViewHoder) holder).recyclerFlow.setAdapter(flowAdapter);
+                flowAdapter.setOnClickListener(new FlowAdapter.OnClickListener() {
+                    @Override
+                    public void click() {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                        bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                        bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
+                        Intent intent = new Intent(context, FilmSearchActivity.class);
+                        intent.putExtras(bundle);
+                        intent.putExtra("type", 0);
+                        context.startActivity(intent);
+                    }
+                });
 
-        if (holder instanceof ItemOneViewHoder) {
-            FlowAdapter flowAdapter = new FlowAdapter(context);
-            ((ItemOneViewHoder) holder).recyclerFlow.setAdapter(flowAdapter);
-            flowAdapter.setOnClickListener(new FlowAdapter.OnClickListener() {
-                @Override
-                public void click() {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
-                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
-                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
-                    Intent intent = new Intent(context, FilmSearchActivity.class);
-                    intent.putExtras(bundle);
-                    intent.putExtra("type", 0);
-                    context.startActivity(intent);
-                }
-            });
-
-        }
-
-
-        if (holder instanceof ItemTwoViewHolder) {
-            ((ItemTwoViewHolder) holder).filmTitle.setText("热门电影");
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
-            ((ItemTwoViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
-            if (reFilmBeanResult.size() != 0) {
-                ReRecylerAdapter reRecylerAdapter = new ReRecylerAdapter(context, reFilmBeanResult);
-                ((ItemTwoViewHolder) holder).filmItemRecyclerView.setAdapter(reRecylerAdapter);
             }
-            //点击进入电影详情
-            ((ItemTwoViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
-                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
-                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
-                    Intent intent = new Intent(context, FilmSearchActivity.class);
-                    intent.putExtras(bundle);
-                    intent.putExtra("type", 0);
-                    context.startActivity(intent);
 
 
+            if (holder instanceof ItemTwoViewHolder) {
+                ((ItemTwoViewHolder) holder).filmTitle.setText("热门电影");
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
+                ((ItemTwoViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
+                if (reFilmBeanResult.size() != 0) {
+                    ReRecylerAdapter reRecylerAdapter = new ReRecylerAdapter(context, reFilmBeanResult);
+                    ((ItemTwoViewHolder) holder).filmItemRecyclerView.setAdapter(reRecylerAdapter);
                 }
-            });
-        }
-        if (holder instanceof ItemThreeViewHolder) {
-            ((ItemThreeViewHolder) holder).filmTitle.setText("正在热映");
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
-            ((ItemThreeViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
-            if (shangFilmBeanResult.size() != 0) {
-                ZhengRecyclerAdapter zhengRecyclerAdapter = new ZhengRecyclerAdapter(context, shangFilmBeanResult);
-                ((ItemThreeViewHolder) holder).filmItemRecyclerView.setAdapter(zhengRecyclerAdapter);
+                //点击进入电影详情
+                ((ItemTwoViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (NetWorkUtils.isNetworkAvailable(context)) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                            bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                            bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
+                            Intent intent = new Intent(context, FilmSearchActivity.class);
+                            intent.putExtras(bundle);
+                            intent.putExtra("type", 0);
+                            context.startActivity(intent);
+
+
+                        }else{
+                            context.startActivity(new Intent(context,NetActivity.class));
+                            Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
-            ((ItemThreeViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
-                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
-                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
-                    Intent intent = new Intent(context, FilmSearchActivity.class);
-                    intent.putExtras(bundle);
-                    intent.putExtra("type", 1);
-                    context.startActivity(intent);
+            if (holder instanceof ItemThreeViewHolder) {
+                ((ItemThreeViewHolder) holder).filmTitle.setText("正在热映");
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
+                ((ItemThreeViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
+                if (shangFilmBeanResult.size() != 0) {
+                    ZhengRecyclerAdapter zhengRecyclerAdapter = new ZhengRecyclerAdapter(context, shangFilmBeanResult);
+                    ((ItemThreeViewHolder) holder).filmItemRecyclerView.setAdapter(zhengRecyclerAdapter);
                 }
-            });
-        }
-        if (holder instanceof ItemFourViewHolder) {
-            ((ItemFourViewHolder) holder).filmTitle.setText("即将上映");
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
-            linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
-            ((ItemFourViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
-            if (jiFilmBeanResult.size() != 0) {
-                JiRecyclerAdapter jiRecyclerAdapter = new JiRecyclerAdapter(context, jiFilmBeanResult);
-                ((ItemFourViewHolder) holder).filmItemRecyclerView.setAdapter(jiRecyclerAdapter);
+                ((ItemThreeViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (NetWorkUtils.isNetworkAvailable(context)) {
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                            bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                            bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
+                            Intent intent = new Intent(context, FilmSearchActivity.class);
+                            intent.putExtras(bundle);
+                            intent.putExtra("type", 1);
+                            context.startActivity(intent);
+                        }else{
+                            context.startActivity(new Intent(context,NetActivity.class));
+                            Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
             }
-            ((ItemFourViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
-                    bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
-                    bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
-                    Intent intent = new Intent(context, FilmSearchActivity.class);
-                    intent.putExtras(bundle);
-                    intent.putExtra("type", 2);
-                    context.startActivity(intent);
+            if (holder instanceof ItemFourViewHolder) {
+                ((ItemFourViewHolder) holder).filmTitle.setText("即将上映");
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+                linearLayoutManager.setOrientation(OrientationHelper.HORIZONTAL);
+                ((ItemFourViewHolder) holder).filmItemRecyclerView.setLayoutManager(linearLayoutManager);
+                if (jiFilmBeanResult.size() != 0) {
+                    JiRecyclerAdapter jiRecyclerAdapter = new JiRecyclerAdapter(context, jiFilmBeanResult);
+                    ((ItemFourViewHolder) holder).filmItemRecyclerView.setAdapter(jiRecyclerAdapter);
                 }
-            });
+                ((ItemFourViewHolder) holder).flimImgNext.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (NetWorkUtils.isNetworkAvailable(context)) {
+                            if (NetWorkUtils.isNetworkAvailable(context)) {
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("reBeanList", (Serializable) reFilmBeanResult);
+                                bundle.putSerializable("shangBeanList", (Serializable) shangFilmBeanResult);
+                                bundle.putSerializable("jiBeanList", (Serializable) jiFilmBeanResult);
+                                Intent intent = new Intent(context, FilmSearchActivity.class);
+                                intent.putExtras(bundle);
+                                intent.putExtra("type", 2);
+                                context.startActivity(intent);
+                            } else {
+                                Toast.makeText(context, "没网还点啥呀", Toast.LENGTH_LONG).show();
+                            }
+                        }else{
+                            context.startActivity(new Intent(context,NetActivity.class));
+                            Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
         }
     }
 

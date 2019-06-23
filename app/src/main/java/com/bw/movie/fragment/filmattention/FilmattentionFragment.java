@@ -18,6 +18,7 @@ import com.bw.movie.R;
 import com.bw.movie.adapter.MyFilmAttentionAdapter;
 import com.bw.movie.bean.FilmAttentionBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,19 +43,21 @@ public class FilmattentionFragment extends MVPBaseFragment<FilmattentionContract
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_filmattention, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-        String userId = sp.getString("userId", "");
-        String sessionId = sp.getString("sessionId", "");
-        if (!userId.equals("")&&!sessionId.equals("")){
-            Map<String,Object> headMap = new HashMap<>();
-            headMap.put("userId",userId);
-            headMap.put("sessionId",sessionId);
-            Map<String,Object> parms = new HashMap<>();
-            parms.put("page",1);
-            parms.put("count",10);
-            mPresenter.FilmAttentionPresenter(headMap,parms);
-        }
+       if (NetWorkUtils.isNetworkAvailable(getActivity())){
+           unbinder = ButterKnife.bind(this, view);
+           sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+           String userId = sp.getString("userId", "");
+           String sessionId = sp.getString("sessionId", "");
+           if (!userId.equals("")&&!sessionId.equals("")){
+               Map<String,Object> headMap = new HashMap<>();
+               headMap.put("userId",userId);
+               headMap.put("sessionId",sessionId);
+               Map<String,Object> parms = new HashMap<>();
+               parms.put("page",1);
+               parms.put("count",10);
+               mPresenter.FilmAttentionPresenter(headMap,parms);
+           }
+       }
         return view;
     }
 

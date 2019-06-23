@@ -25,8 +25,10 @@ public abstract class MVPBaseActivity<V extends BaseView,T extends BasePresenter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-                mPresenter= getInstance(this,1);
-                mPresenter.attachView((V) this);
+        if (NetWorkUtils.isNetworkAvailable(this)){
+            mPresenter= getInstance(this,1);
+            mPresenter.attachView((V) this);
+        }
         connectionReceiver = connectionReceiver;
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
@@ -36,10 +38,9 @@ public abstract class MVPBaseActivity<V extends BaseView,T extends BasePresenter
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(connectionReceiver);
         if (mPresenter!=null)
         mPresenter.detachView();
-        unregisterReceiver(connectionReceiver);
-
     }
 
 

@@ -24,6 +24,7 @@ import com.bw.movie.activity.regist.RegistActivity;
 import com.bw.movie.aes.EncryptUtil;
 import com.bw.movie.bean.LoginBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NetWorkUtils;
 import com.bw.movie.utils.WeiXinUtil;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -76,18 +77,20 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
         ButterKnife.bind(this);
         getWindow().setEnterTransition(new Explode().setDuration(800));
         getWindow().setExitTransition(new Explode().setDuration(800));
-        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        boolean flag = sp.getBoolean("flag", false);
-        Log.i("aa", "flag" + flag);
-        if (flag) {
-            String phone = sp.getString("phone", "");
-            String pwd = sp.getString("pwd", "");
-            editPhone.setText(phone);
-            checkLogin.setChecked(flag);
-            String decrypt = EncryptUtil.decrypt(pwd);
-            editPwd.setText(decrypt);
+        if (NetWorkUtils.isNetworkAvailable(LoginActivity.this)) {
+            sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+            boolean flag = sp.getBoolean("flag", false);
+            Log.i("aa", "flag" + flag);
+            if (flag) {
+                String phone = sp.getString("phone", "");
+                String pwd = sp.getString("pwd", "");
+                editPhone.setText(phone);
+                checkLogin.setChecked(flag);
+                String decrypt = EncryptUtil.decrypt(pwd);
+                editPwd.setText(decrypt);
+            }
+            login_Wx();
         }
-        login_Wx();
     }
 
     @Override
@@ -106,47 +109,57 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.jump_regist:
-                startActivity(new Intent(LoginActivity.this, RegistActivity.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                if (NetWorkUtils.isNetworkAvailable(LoginActivity.this)) {
+                    startActivity(new Intent(LoginActivity.this, RegistActivity.class), ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+                }
                 break;
             case R.id.btn_login:
-                phone = editPhone.getText().toString().trim();
-                String pwd = editPwd.getText().toString().trim();
-                encrypt = EncryptUtil.encrypt(pwd);
-                mPresenter.loginPresenter(phone, encrypt);
-                MobclickAgent.onProfileSignIn("as");
-                MobclickAgent.onEvent(LoginActivity.this, "login_mlh");
-                MobclickAgent.onProfileSignIn("userId");
-                MobclickAgent.setSessionContinueMillis(1000*40);
-                MobclickAgent.onEvent(LoginActivity.this, "login_id");
+                if (NetWorkUtils.isNetworkAvailable(LoginActivity.this)) {
+
+
+                    phone = editPhone.getText().toString().trim();
+                    String pwd = editPwd.getText().toString().trim();
+                    encrypt = EncryptUtil.encrypt(pwd);
+                    mPresenter.loginPresenter(phone, encrypt);
+                    MobclickAgent.onProfileSignIn("as");
+                    MobclickAgent.onEvent(LoginActivity.this, "login_mlh");
+                    MobclickAgent.onProfileSignIn("userId");
+                    MobclickAgent.setSessionContinueMillis(1000 * 40);
+                    MobclickAgent.onEvent(LoginActivity.this, "login_id");
+                }
                 break;
             case R.id.btn_eyePwd:
                 if (editPwd.getInputType() == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
                     //密码可见,点击之后设置成不可见的
+                    btnEyePwd.setBackgroundResource(R.mipmap.icon_eye_close);
                     editPwd.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 } else {
                     //不可见设置成可见
+                    btnEyePwd.setBackgroundResource(R.mipmap.log_icon_eye_default);
                     editPwd.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 }
                 break;
             case R.id.login_wx:
-                if (!WeiXinUtil.success(this)) {
-                    Toast.makeText(this, "请先安装应用", Toast.LENGTH_SHORT).show();
-                } else {
-                    //  验证
-                    SendAuth.Req req = new SendAuth.Req();
-                    req.scope = "snsapi_userinfo";
-                    req.state = "wechat_sdk_demo_test_neng";
-                    WeiXinUtil.reg(LoginActivity.this).sendReq(req);
-                    finish();
-                }
-                MobclickAgent.onProfileSignIn("userId1");
-                MobclickAgent.setSessionContinueMillis(1000*40);
-                MobclickAgent.onEvent(LoginActivity.this, "login_wx");
+               if (NetWorkUtils.isNetworkAvailable(LoginActivity.this)){
+                   if (!WeiXinUtil.success(this)) {
+                       Toast.makeText(this, "请先安装应用", Toast.LENGTH_SHORT).show();
+                   } else {
+                       //  验证
+                       SendAuth.Req req = new SendAuth.Req();
+                       req.scope = "snsapi_userinfo";
+                       req.state = "wechat_sdk_demo_test_neng";
+                       WeiXinUtil.reg(LoginActivity.this).sendReq(req);
+                       finish();
+                   }
+                   MobclickAgent.onProfileSignIn("userId1");
+                   MobclickAgent.setSessionContinueMillis(1000 * 40);
+                   MobclickAgent.onEvent(LoginActivity.this, "login_wx");
+               }
                 break;
         }
     }
 
-    public void login_Wx(){
+    public void login_Wx() {
         RxView.clicks(loginWx)
                 .throttleFirst(2, TimeUnit.SECONDS)
                 .subscribe(new Consumer<Object>() {

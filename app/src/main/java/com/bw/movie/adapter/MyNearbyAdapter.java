@@ -11,10 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.activity.recommenddetails.RecommenddetailsActivity;
 import com.bw.movie.bean.NearbyCinemasBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
@@ -41,42 +44,49 @@ public class MyNearbyAdapter extends RecyclerView.Adapter<MyNearbyAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        Uri uri = Uri.parse(nearbyCinemasBean.getResult().get(i).getLogo());
-        viewHolder.simPleRecommend.setImageURI(uri);
-        viewHolder.textNameRecommend.setText(nearbyCinemasBean.getResult().get(i).getName());
-        TextPaint paint = viewHolder.textNameRecommend.getPaint();
-        paint.setFakeBoldText(true);
-        viewHolder.textAddressRecommend.setText(nearbyCinemasBean.getResult().get(i).getAddress());
-        viewHolder.textKmRecommend.setText(nearbyCinemasBean.getResult().get(i).getDistance() + "km");
-        final String followCinema = nearbyCinemasBean.getResult().get(i).getFollowCinema();
-        if (followCinema.equals("1")) {
-            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_selected);
-        } else {
-            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_default);
-        }
-        viewHolder.cinemaPrise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (attentionClick != null) {
-                    if (nearbyCinemasBean.getResult().get(i).getFollowCinema().equals("1")) {
-                        nearbyCinemasBean.getResult().get(i).setFollowCinema("2");
-                    } else {
-                        nearbyCinemasBean.getResult().get(i).setFollowCinema("1");
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(nearbyCinemasBean.getResult().get(i).getLogo());
+            viewHolder.simPleRecommend.setImageURI(uri);
+            viewHolder.textNameRecommend.setText(nearbyCinemasBean.getResult().get(i).getName());
+            TextPaint paint = viewHolder.textNameRecommend.getPaint();
+            paint.setFakeBoldText(true);
+            viewHolder.textAddressRecommend.setText(nearbyCinemasBean.getResult().get(i).getAddress());
+            viewHolder.textKmRecommend.setText(nearbyCinemasBean.getResult().get(i).getDistance() + "km");
+            final String followCinema = nearbyCinemasBean.getResult().get(i).getFollowCinema();
+            if (followCinema.equals("1")) {
+                viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_selected);
+            } else {
+                viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_default);
+            }
+            viewHolder.cinemaPrise.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (attentionClick != null) {
+                        if (nearbyCinemasBean.getResult().get(i).getFollowCinema().equals("1")) {
+                            nearbyCinemasBean.getResult().get(i).setFollowCinema("2");
+                        } else {
+                            nearbyCinemasBean.getResult().get(i).setFollowCinema("1");
+                        }
+                        String followCinema1 = nearbyCinemasBean.getResult().get(i).getFollowCinema();
+                        attentionClick.clickattention(nearbyCinemasBean.getResult().get(i).getId(), followCinema1.equals("1"));
+                        notifyDataSetChanged();
                     }
-                    String followCinema1 = nearbyCinemasBean.getResult().get(i).getFollowCinema();
-                    attentionClick.clickattention(nearbyCinemasBean.getResult().get(i).getId(), followCinema1.equals("1"));
-                    notifyDataSetChanged();
                 }
-            }
-        });
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, RecommenddetailsActivity.class);
-                intent.putExtra("eid", nearbyCinemasBean.getResult().get(i).getId());
-                context.startActivity(intent);
-            }
-        });
+            });
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetWorkUtils.isNetworkAvailable(context)) {
+                        Intent intent = new Intent(context, RecommenddetailsActivity.class);
+                        intent.putExtra("eid", nearbyCinemasBean.getResult().get(i).getId());
+                        context.startActivity(intent);
+                    }else{
+                        context.startActivity(new Intent(context,NetActivity.class));
+                        Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override

@@ -7,8 +7,10 @@
     >
 
     <RelativeLayout
+        android:layout_gravity="center"
         android:id="@+id/rl_dialog_content"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/dp_200"
+        android:gravity="center"
         android:layout_height="@dimen/dp_200"
         android:padding="8dp"
         >
@@ -16,7 +18,7 @@
         <ImageView
             android:id="@+id/qiuqiu"
             android:layout_centerInParent="true"
-            android:src="@drawable/qiuqiu"
+            android:src="@mipmap/zaijia"
             android:layout_width="@dimen/dp_80"
             android:layout_height="@dimen/dp_80" />
         <TextView

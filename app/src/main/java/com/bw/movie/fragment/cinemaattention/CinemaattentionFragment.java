@@ -17,6 +17,7 @@ import com.bw.movie.R;
 import com.bw.movie.adapter.MyMovieAttentionAdapter;
 import com.bw.movie.bean.MovieAttentionBean;
 import com.bw.movie.mvp.MVPBaseFragment;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,18 +43,20 @@ public class CinemaattentionFragment extends MVPBaseFragment<CinemaattentionCont
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cinemaattention, container, false);
         unbinder = ButterKnife.bind(this, view);
-        sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
-        String userId = sp.getString("userId", "");
-        String sessionId = sp.getString("sessionId", "");
-        if (!userId.equals("")&&!sessionId.equals("")){
-            Map<String,Object> headMap = new HashMap<>();
-            headMap.put("userId",userId);
-            headMap.put("sessionId",sessionId);
-            Map<String,Object> parms = new HashMap<>();
-            parms.put("page",1);
-            parms.put("count",10);
-            mPresenter.MovieAttentionPresenter(headMap,parms);
-        }
+       if (NetWorkUtils.isNetworkAvailable(getActivity())){
+           sp = getActivity().getSharedPreferences("config", Context.MODE_PRIVATE);
+           String userId = sp.getString("userId", "");
+           String sessionId = sp.getString("sessionId", "");
+           if (!userId.equals("")&&!sessionId.equals("")){
+               Map<String,Object> headMap = new HashMap<>();
+               headMap.put("userId",userId);
+               headMap.put("sessionId",sessionId);
+               Map<String,Object> parms = new HashMap<>();
+               parms.put("page",1);
+               parms.put("count",10);
+               mPresenter.MovieAttentionPresenter(headMap,parms);
+           }
+       }
         return view;
     }
 

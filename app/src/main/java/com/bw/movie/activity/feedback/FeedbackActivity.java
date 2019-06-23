@@ -11,8 +11,10 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.cinemabymovieid.CinemaByMovieIdActivity;
 import com.bw.movie.bean.FeedBackBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -44,27 +46,33 @@ public class FeedbackActivity extends MVPBaseActivity<FeedbackContract.View, Fee
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         ButterKnife.bind(this);
-        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
+       if (NetWorkUtils.isNetworkAvailable(FeedbackActivity.this)){
+           sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+           userId = sp.getString("userId", "");
+           sessionId = sp.getString("sessionId", "");
+       }
     }
 
     @Override
     public void FeekbackView(Object obj) {
-        if (obj != null) {
-            FeedBackBean feedBackBean = (FeedBackBean) obj;
-            if (feedBackBean.getStatus().equals("0000")) {
-                relatFeek.setVisibility(View.VISIBLE);
+        if (NetWorkUtils.isNetworkAvailable(FeedbackActivity.this)) {
+            if (obj != null) {
+                FeedBackBean feedBackBean = (FeedBackBean) obj;
+                if (feedBackBean.getStatus().equals("0000")) {
+                    relatFeek.setVisibility(View.VISIBLE);
+                }
             }
         }
     }
 
     @OnClick(R.id.btn_tj)
     public void onViewClicked() {
-        Map<String, Object> headMap = new HashMap<>();
-        headMap.put("userId", userId);
-        headMap.put("sessionId", sessionId);
-        String trim = editContent.getText().toString().trim();
-        mPresenter.FeekbackPresenter(headMap, trim);
+        if (NetWorkUtils.isNetworkAvailable(FeedbackActivity.this)) {
+            Map<String, Object> headMap = new HashMap<>();
+            headMap.put("userId", userId);
+            headMap.put("sessionId", sessionId);
+            String trim = editContent.getText().toString().trim();
+            mPresenter.FeekbackPresenter(headMap, trim);
+        }
     }
 }

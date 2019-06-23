@@ -9,10 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.activity.seat.SeatActivity;
 import com.bw.movie.bean.MovieIdAndFilmBean;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.util.List;
 
@@ -40,32 +43,38 @@ public class MyScheduleAdapter extends RecyclerView.Adapter<MyScheduleAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        viewHolder.textNameMovieandfilm.setText(resultBeans.get(i).getScreeningHall());
-        viewHolder.textTimeMovieandfilm.setText(resultBeans.get(i).getBeginTime());
-        viewHolder.textTime1Movieandfilm.setText(resultBeans.get(i).getEndTime());
-        String[] split = resultBeans.get(i).getPrice().split("\\.");
-        viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
-        viewHolder.textPrice1Movieandfilm.setText(split[1]);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                double price = Double.parseDouble(resultBeans.get(i).getPrice());
-                String beginTime = resultBeans.get(i).getBeginTime();
-                String endTime = resultBeans.get(i).getEndTime();
-                String seatsUseCount = resultBeans.get(i).getSeatsUseCount();
-                String screeningHall = resultBeans.get(i).getScreeningHall();
-                String id = resultBeans.get(i).getId();
-                Intent intent = new Intent(context, SeatActivity.class);
-                intent.putExtra("price",price);
-                intent.putExtra("beginTime",beginTime);
-                intent.putExtra("endTime",endTime);
-                intent.putExtra("seatsUseCount",seatsUseCount);
-                intent.putExtra("screeningHall",screeningHall);
-                intent.putExtra("scheduleId",id);
-                context.startActivity(intent);
-            }
-        });
-
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            viewHolder.textNameMovieandfilm.setText(resultBeans.get(i).getScreeningHall());
+            viewHolder.textTimeMovieandfilm.setText(resultBeans.get(i).getBeginTime());
+            viewHolder.textTime1Movieandfilm.setText(resultBeans.get(i).getEndTime());
+            String[] split = resultBeans.get(i).getPrice().split("\\.");
+            viewHolder.textPriceMovieandfilm.setText(split[0] + ".");
+            viewHolder.textPrice1Movieandfilm.setText(split[1]);
+            viewHolder.imgIconSit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetWorkUtils.isNetworkAvailable(context)) {
+                        double price = Double.parseDouble(resultBeans.get(i).getPrice());
+                        String beginTime = resultBeans.get(i).getBeginTime();
+                        String endTime = resultBeans.get(i).getEndTime();
+                        String seatsUseCount = resultBeans.get(i).getSeatsUseCount();
+                        String screeningHall = resultBeans.get(i).getScreeningHall();
+                        String id = resultBeans.get(i).getId();
+                        Intent intent = new Intent(context, SeatActivity.class);
+                        intent.putExtra("price", price);
+                        intent.putExtra("beginTime", beginTime);
+                        intent.putExtra("endTime", endTime);
+                        intent.putExtra("seatsUseCount", seatsUseCount);
+                        intent.putExtra("screeningHall", screeningHall);
+                        intent.putExtra("scheduleId", id);
+                        context.startActivity(intent);
+                    }else{
+                        context.startActivity(new Intent(context,NetActivity.class));
+                        Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override

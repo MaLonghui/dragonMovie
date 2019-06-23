@@ -15,6 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bw.movie.R;
 import com.bw.movie.bean.FilmFromIdBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
@@ -40,6 +41,7 @@ public class MyRecyclerFlowRecommendeAdapter extends RecyclerView.Adapter<MyRecy
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        if (NetWorkUtils.isNetworkAvailable(context)) {
         /*//设置图片圆角角度
         RoundedCorners roundedCorners= new RoundedCorners(8);
         //通过RequestOptions扩展功能,override:采样率,因为ImageView就这么大,可以压缩图片,降低内存消耗
@@ -47,8 +49,9 @@ public class MyRecyclerFlowRecommendeAdapter extends RecyclerView.Adapter<MyRecy
 
         Glide.with(context).load( filmFromIdBean.getResult().get(i).getImageUrl()).apply(options)
                 .into(viewHolder.img);*/
-        Uri uri = Uri.parse(filmFromIdBean.getResult().get(i).getImageUrl());
-        viewHolder.img.setImageURI(uri);
+            Uri uri = Uri.parse(filmFromIdBean.getResult().get(i).getImageUrl());
+            viewHolder.img.setImageURI(uri);
+        }
     }
 
     @Override

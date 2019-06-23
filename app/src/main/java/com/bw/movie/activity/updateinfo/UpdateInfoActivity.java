@@ -17,6 +17,7 @@ import com.bw.movie.R;
 import com.bw.movie.activity.info.InfoActivity;
 import com.bw.movie.bean.UpdateInfoBean;
 import com.bw.movie.mvp.MVPBaseActivity;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -51,36 +52,42 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_updateinfo);
         ButterKnife.bind(this);
-        sp = getSharedPreferences("config", Context.MODE_PRIVATE);
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
-        Intent intent = getIntent();
-        String nickName = intent.getStringExtra("nickName");
-        String sexse = intent.getStringExtra("sex");
-        if (sexse.equals("1")){
-            editSexUpdate.setText("男");
-        }else{
-            editSexUpdate.setText("女");
+        if (NetWorkUtils.isNetworkAvailable(UpdateInfoActivity.this)){
+            sp = getSharedPreferences("config", Context.MODE_PRIVATE);
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+            Intent intent = getIntent();
+            String nickName = intent.getStringExtra("nickName");
+            String sexse = intent.getStringExtra("sex");
+            if (sexse.equals("1")){
+                editSexUpdate.setText("男");
+            }else{
+                editSexUpdate.setText("女");
+            }
+            String email = intent.getStringExtra("email");
+            editNickUpdate.setText(nickName);
+            editEmailUpdate.setText(email);
         }
-        String email = intent.getStringExtra("email");
-        editNickUpdate.setText(nickName);
-        editEmailUpdate.setText(email);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        userId = sp.getString("userId", "");
-        sessionId = sp.getString("sessionId", "");
+        if (NetWorkUtils.isNetworkAvailable(UpdateInfoActivity.this)) {
+            userId = sp.getString("userId", "");
+            sessionId = sp.getString("sessionId", "");
+        }
     }
 
     @Override
     public void updateInfoView(Object obj) {
-        if (obj != null) {
-            UpdateInfoBean updateInfoBean = (UpdateInfoBean) obj;
-            Log.i("aa", "updateInfoBean:" + updateInfoBean.getMessage());
-            if (updateInfoBean.getStatus().equals("0000")){
-                startActivity(new Intent(UpdateInfoActivity.this,InfoActivity.class));
+        if (NetWorkUtils.isNetworkAvailable(UpdateInfoActivity.this)) {
+            if (obj != null) {
+                UpdateInfoBean updateInfoBean = (UpdateInfoBean) obj;
+                Log.i("aa", "updateInfoBean:" + updateInfoBean.getMessage());
+                if (updateInfoBean.getStatus().equals("0000")) {
+                    startActivity(new Intent(UpdateInfoActivity.this, InfoActivity.class));
+                }
             }
         }
 
@@ -88,29 +95,33 @@ public class UpdateInfoActivity extends MVPBaseActivity<UpdateInfoContract.View,
 
     @OnClick(R.id.btn_update_info)
     public void onViewClicked() {
-        String editNick = editNickUpdate.getText().toString().trim();
-        String editSex = editSexUpdate.getText().toString().trim();
-        if (editSex.equals("男")){
-            sex = 1;
-        }else{
-            sex = 2;
-        }
-        String editEmail = editEmailUpdate.getText().toString().trim();
-        if (TextUtils.isEmpty(editNick)&&TextUtils.isEmpty(editSex)&&TextUtils.isEmpty(editEmail)){
-            Toast.makeText(UpdateInfoActivity.this,"内容不能为空",Toast.LENGTH_LONG).show();
-        }else{
-            Map<String,Object> headMap = new HashMap<>();
-            headMap.put("userId",userId);
-            headMap.put("sessionId",sessionId);
-            Map<String,Object> parms = new HashMap<>();
-            parms.put("nickName",editNick);
-            parms.put("sex", sex);
-            parms.put("email",editEmail);
-            mPresenter.updateInfoPresenter(headMap,parms);
+        if (NetWorkUtils.isNetworkAvailable(UpdateInfoActivity.this)) {
+            String editNick = editNickUpdate.getText().toString().trim();
+            String editSex = editSexUpdate.getText().toString().trim();
+            if (editSex.equals("男")) {
+                sex = 1;
+            } else {
+                sex = 2;
+            }
+            String editEmail = editEmailUpdate.getText().toString().trim();
+            if (TextUtils.isEmpty(editNick) && TextUtils.isEmpty(editSex) && TextUtils.isEmpty(editEmail)) {
+                Toast.makeText(UpdateInfoActivity.this, "内容不能为空", Toast.LENGTH_LONG).show();
+            } else {
+                Map<String, Object> headMap = new HashMap<>();
+                headMap.put("userId", userId);
+                headMap.put("sessionId", sessionId);
+                Map<String, Object> parms = new HashMap<>();
+                parms.put("nickName", editNick);
+                parms.put("sex", sex);
+                parms.put("email", editEmail);
+                mPresenter.updateInfoPresenter(headMap, parms);
+            }
+            startActivity(new Intent(UpdateInfoActivity.this, InfoActivity.class));
+            startActivity(new Intent(this, InfoActivity.class), ActivityOptions.makeSceneTransitionAnimation(UpdateInfoActivity.this).toBundle());
+            finish();
         }
         startActivity(new Intent(this,InfoActivity.class),ActivityOptions.makeSceneTransitionAnimation(UpdateInfoActivity.this).toBundle());
         startActivity(new Intent(UpdateInfoActivity.this,InfoActivity.class));
         finish();
     }
-
 }

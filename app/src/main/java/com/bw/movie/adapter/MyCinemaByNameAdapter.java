@@ -13,11 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
 import com.bw.movie.activity.CinemaByNameActivity;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.activity.recommenddetails.RecommenddetailsActivity;
 import com.bw.movie.bean.CinemaByNameBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
@@ -45,25 +48,32 @@ public class MyCinemaByNameAdapter extends RecyclerView.Adapter<MyCinemaByNameAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, final int i) {
-        Uri uri = Uri.parse(nameBeanResult.get(i).getLogo());
-        viewHolder.simPleRecommend.setImageURI(uri);
-        viewHolder.textNameRecommend.setText(nameBeanResult.get(i).getName());
-        TextPaint paint = viewHolder.textNameRecommend.getPaint();
-        paint.setFakeBoldText(true);
-        viewHolder.textAddressRecommend.setText(nameBeanResult.get(i).getAddress());
-        viewHolder.textKmRecommend.setText(nameBeanResult.get(i).getDistance() + "km");
-        final String followCinema = nameBeanResult.get(i).getFollowCinema();
-        if (followCinema.equals("1")){
-            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_selected);
-        }else{
-            viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_default);
-        }
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-              onItemClickListener.click(nameBeanResult.get(i).getId());
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(nameBeanResult.get(i).getLogo());
+            viewHolder.simPleRecommend.setImageURI(uri);
+            viewHolder.textNameRecommend.setText(nameBeanResult.get(i).getName());
+            TextPaint paint = viewHolder.textNameRecommend.getPaint();
+            paint.setFakeBoldText(true);
+            viewHolder.textAddressRecommend.setText(nameBeanResult.get(i).getAddress());
+            viewHolder.textKmRecommend.setText(nameBeanResult.get(i).getDistance() + "km");
+            final String followCinema = nameBeanResult.get(i).getFollowCinema();
+            if (followCinema.equals("1")) {
+                viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_selected);
+            } else {
+                viewHolder.cinemaPrise.setImageResource(R.mipmap.com_icon_collection_default);
             }
-        });
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetWorkUtils.isNetworkAvailable(context)) {
+                        onItemClickListener.click(nameBeanResult.get(i).getId());
+                    }else{
+                        context.startActivity(new Intent(context,NetActivity.class));
+                        Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override

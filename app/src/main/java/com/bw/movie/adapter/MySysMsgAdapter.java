@@ -1,6 +1,7 @@
 package com.bw.movie.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -8,9 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bw.movie.R;
+import com.bw.movie.activity.NetActivity;
 import com.bw.movie.bean.SysMsgBean;
+import com.bw.movie.net.NetWorkUtils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -43,25 +47,32 @@ public class MySysMsgAdapter extends RecyclerView.Adapter<MySysMsgAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-        viewHolder.textTitleRemindMine.setText(sysMsgBean.getResult().get(i).getTitle());
-        viewHolder.textContextRemindMine.setText(sysMsgBean.getResult().get(i).getContent());
-        Date date = new Date(sysMsgBean.getResult().get(i).getPushTime());
-        SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
-        String format = sd.format(date);
-        viewHolder.textTimeRemindMine.setText(format);
-        if (sysMsgBean.getResult().get(i).getStatus().equals("0")){
-            viewHolder.picStatusRemindMine.setVisibility(View.VISIBLE);
-        }else{
-            viewHolder.picStatusRemindMine.setVisibility(View.GONE);
-        }
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (sysMsgStatusClick!=null){
-                    sysMsgStatusClick.statusClick(sysMsgBean.getResult().get(i).getId());
-                }
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            viewHolder.textTitleRemindMine.setText(sysMsgBean.getResult().get(i).getTitle());
+            viewHolder.textContextRemindMine.setText(sysMsgBean.getResult().get(i).getContent());
+            Date date = new Date(sysMsgBean.getResult().get(i).getPushTime());
+            SimpleDateFormat sd = new SimpleDateFormat("MM-dd hh:mm");
+            String format = sd.format(date);
+            viewHolder.textTimeRemindMine.setText(format);
+            if (sysMsgBean.getResult().get(i).getStatus().equals("0")) {
+                viewHolder.picStatusRemindMine.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.picStatusRemindMine.setVisibility(View.GONE);
             }
-        });
+            viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (NetWorkUtils.isNetworkAvailable(context)) {
+                        if (sysMsgStatusClick != null) {
+                            sysMsgStatusClick.statusClick(sysMsgBean.getResult().get(i).getId());
+                        }
+                    }else{
+                        context.startActivity(new Intent(context,NetActivity.class));
+                        Toast.makeText(context,"没网还点啥呀",Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
     }
 
     @Override

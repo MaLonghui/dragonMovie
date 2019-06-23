@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.TicketBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.bw.movie.utils.DateUtils;
 
 import butterknife.BindView;
@@ -35,18 +36,20 @@ public class MyAlreadyMoneyAdapter extends RecyclerView.Adapter<MyAlreadyMoneyAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        //标题
-        viewHolder.finshTitle.setText(ticketBean.getResult().get(i).getMovieName());
-        //播放时间
-        String beginTime = ticketBean.getResult().get(i).getBegintime();
-        String endTime = ticketBean.getResult().get(i).getEndTime();
-        String date = DateUtils.getDateToStrings(ticketBean.getResult().get(i).getCreateTime());
-        viewHolder.finshCode.setText("订单号："+ticketBean.getResult().get(i).getOrderId());
-        viewHolder.finshCinema.setText("影院："+ticketBean.getResult().get(i).getCinemaName());
-        viewHolder.finshOrdertime.setText("下单时间："+date);
-        viewHolder.finshHall.setText("影厅："+ticketBean.getResult().get(i).getScreeningHall());
-        viewHolder.finshAmount.setText("数量："+ticketBean.getResult().get(i).getAmount());
-        viewHolder.finshPrice.setText("金额："+ticketBean.getResult().get(i).getPrice());
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            //标题
+            viewHolder.finshTitle.setText(ticketBean.getResult().get(i).getMovieName());
+            //播放时间
+            String beginTime = ticketBean.getResult().get(i).getBegintime();
+            String endTime = ticketBean.getResult().get(i).getEndTime();
+            String date = DateUtils.getDateToStrings(ticketBean.getResult().get(i).getCreateTime());
+            viewHolder.finshCode.setText("订单号：" + ticketBean.getResult().get(i).getOrderId());
+            viewHolder.finshCinema.setText("影院：" + ticketBean.getResult().get(i).getCinemaName());
+            viewHolder.finshOrdertime.setText("下单时间：" + date);
+            viewHolder.finshHall.setText("影厅：" + ticketBean.getResult().get(i).getScreeningHall());
+            viewHolder.finshAmount.setText("数量：" + ticketBean.getResult().get(i).getAmount());
+            viewHolder.finshPrice.setText("金额：" + ticketBean.getResult().get(i).getPrice());
+        }
     }
 
     @Override

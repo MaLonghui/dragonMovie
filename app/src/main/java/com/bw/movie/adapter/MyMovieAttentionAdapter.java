@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bw.movie.R;
 import com.bw.movie.bean.MovieAttentionBean;
+import com.bw.movie.net.NetWorkUtils;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.BindView;
@@ -36,10 +37,12 @@ public class MyMovieAttentionAdapter extends RecyclerView.Adapter<MyMovieAttenti
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
-        Uri uri = Uri.parse(movieAttentionBean.getResult().get(i).getLogo());
-        viewHolder.simPleAttentionCinema.setImageURI(uri);
-        viewHolder.textTitleAttentionCinema.setText(movieAttentionBean.getResult().get(i).getName());
-        viewHolder.textCountAttentionCinema.setText(movieAttentionBean.getResult().get(i).getAddress());
+        if (NetWorkUtils.isNetworkAvailable(context)) {
+            Uri uri = Uri.parse(movieAttentionBean.getResult().get(i).getLogo());
+            viewHolder.simPleAttentionCinema.setImageURI(uri);
+            viewHolder.textTitleAttentionCinema.setText(movieAttentionBean.getResult().get(i).getName());
+            viewHolder.textCountAttentionCinema.setText(movieAttentionBean.getResult().get(i).getAddress());
+        }
     }
 
     @Override
